@@ -113,4 +113,9 @@ use {
     },
     config = get_config("tree")
 }
+
+use {
+  'sindrets/diffview.nvim',
+  requires = 'nvim-lua/plenary.nvim'
+}
 -- use "andweeb/presence.nvim"

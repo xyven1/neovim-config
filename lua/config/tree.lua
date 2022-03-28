@@ -1,4 +1,4 @@
-require'nvim-tree'.setup { -- BEGIN_DEFAULT_OPTS
+require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
   auto_reload_on_write = true,
   disable_netrw = false,
   hide_root_folder = false,
