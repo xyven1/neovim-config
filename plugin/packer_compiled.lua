@@ -135,6 +135,12 @@ _G.packer_plugins = {
     path = "/home/xyven/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
   },
+  ["nvim-tree.lua"] = {
+    config = { 'require("config/tree")' },
+    loaded = true,
+    path = "/home/xyven/.local/share/nvim/site/pack/packer/start/nvim-tree.lua",
+    url = "https://github.com/kyazdani42/nvim-tree.lua"
+  },
   ["nvim-treesitter"] = {
     config = { 'require("config/treesitter")' },
     loaded = true,
@@ -181,44 +187,48 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: nvim-dap
-time([[Config for nvim-dap]], true)
-require("config/dap")
-time([[Config for nvim-dap]], false)
--- Config for: nvim-treesitter
-time([[Config for nvim-treesitter]], true)
-require("config/treesitter")
-time([[Config for nvim-treesitter]], false)
--- Config for: coq_nvim
-time([[Config for coq_nvim]], true)
-require("config/coq")
-time([[Config for coq_nvim]], false)
--- Config for: nvim-dap-ui
-time([[Config for nvim-dap-ui]], true)
-require("config/dapui")
-time([[Config for nvim-dap-ui]], false)
--- Config for: coq.thirdparty
-time([[Config for coq.thirdparty]], true)
-require("config/coqthirdparty")
-time([[Config for coq.thirdparty]], false)
--- Config for: sessions.nvim
-time([[Config for sessions.nvim]], true)
-require("config/sessions")
-time([[Config for sessions.nvim]], false)
--- Config for: nvim-lspconfig
-time([[Config for nvim-lspconfig]], true)
-require("config/lsp")
-time([[Config for nvim-lspconfig]], false)
+-- Config for: nvim-tree.lua
+time([[Config for nvim-tree.lua]], true)
+require("config/tree")
+time([[Config for nvim-tree.lua]], false)
 -- Config for: todo-comments.nvim
 time([[Config for todo-comments.nvim]], true)
 require("config/todo")
 time([[Config for todo-comments.nvim]], false)
+-- Config for: nvim-treesitter
+time([[Config for nvim-treesitter]], true)
+require("config/treesitter")
+time([[Config for nvim-treesitter]], false)
+-- Config for: coq.thirdparty
+time([[Config for coq.thirdparty]], true)
+require("config/coqthirdparty")
+time([[Config for coq.thirdparty]], false)
+-- Config for: coq_nvim
+time([[Config for coq_nvim]], true)
+require("config/coq")
+time([[Config for coq_nvim]], false)
+-- Config for: nvim-dap
+time([[Config for nvim-dap]], true)
+require("config/dap")
+time([[Config for nvim-dap]], false)
+-- Config for: nvim-dap-ui
+time([[Config for nvim-dap-ui]], true)
+require("config/dapui")
+time([[Config for nvim-dap-ui]], false)
+-- Config for: nvim-lspconfig
+time([[Config for nvim-lspconfig]], true)
+require("config/lsp")
+time([[Config for nvim-lspconfig]], false)
+-- Config for: sessions.nvim
+time([[Config for sessions.nvim]], true)
+require("config/sessions")
+time([[Config for sessions.nvim]], false)
 vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Event lazy-loads
 time([[Defining lazy-load event autocommands]], true)
-vim.cmd [[au BufReadPre * ++once lua require("packer.load")({'gitsigns.nvim'}, { event = "BufReadPre *" }, _G.packer_plugins)]]
 vim.cmd [[au VimEnter * ++once lua require("packer.load")({'lualine.nvim'}, { event = "VimEnter *" }, _G.packer_plugins)]]
+vim.cmd [[au BufReadPre * ++once lua require("packer.load")({'gitsigns.nvim'}, { event = "BufReadPre *" }, _G.packer_plugins)]]
 time([[Defining lazy-load event autocommands]], false)
 vim.cmd("augroup END")
 if should_profile then save_profiles() end
