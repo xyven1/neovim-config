@@ -102,7 +102,7 @@ use {
 -- }
 
 use {
-  "https://github.com/natecraddock/sessions.nvim",
+  "natecraddock/sessions.nvim",
   config = get_config("sessions")
 }
 
@@ -118,4 +118,6 @@ use {
   'sindrets/diffview.nvim',
   requires = 'nvim-lua/plenary.nvim'
 }
+
+use 'arkav/lualine-lsp-progress'
 -- use "andweeb/presence.nvim"

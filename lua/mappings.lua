@@ -14,6 +14,7 @@ map("n", "<Space>", "<NOP>", default_options)
 vim.g.mapleader = " "
 
 map("n", "<Leader>c", ":lua require('fzf-lua').commands()<CR>", default_options)
+map("n", "<Leader>o", ":lua require('fzf-lua').files()<CR>", default_options)
 
 -- map keys for debuggingk
 map("n", "<Leader>d", ":lua require('dapui').toggle()<CR>", default_options)
