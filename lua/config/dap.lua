@@ -5,4 +5,73 @@ dap.adapters.lldb = {
   command = '/usr/bin/lldb-vscode-13', -- adjust as needed
   name = "lldb"
 }
+dap.configurations.cpp = {
+  {
+    name = "Launch",
+    type = "lldb",
+    request = "launch",
+    program = function()
+      local path = vim.fn.getcwd() .. "/config.txt"
+      if vim.fn.filereadable(path) ~= 0 then
+        print("Found config.txt")
+        local config = vim.fn.readfile(path)
+        for i, line in ipairs(config) do
+          if line:match("^program") then
+            return line:match("^program%s*=%s*(.+)")
+          end
+        end
+      end
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    cwd = '${workspaceFolder}',
+    stopOnEntry = false,
+    args = function()
+      local path = vim.fn.getcwd() .. "/config.txt"
+      if vim.fn.filereadable(path) ~= 0 then
+        local config = vim.fn.readfile(path)
+        for i, line in ipairs(config) do
+          -- check for line with args and opening curly brace
+          if line:match("^args") and line:match("{") then
+          -- read lines until we find closing curly brace
+            local args = {}
+            for j = i + 1, #config do
+              if config[j]:match("^%s*%}") then
+                break
+              end
+              table.insert(args, config[j]:match("^%s*(.+)"))
+            end
+            return args
+          end
+        end
+      end
+      return {}
+    end,
 
+    -- 💀
+    -- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
+    --
+    --    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+    --
+    -- Otherwise you might get the following error:
+    --
+    --    Error on launch: Failed to attach to the target process
+    --
+    -- But you should be aware of the implications:
+    -- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
+
+    runInTerminal = false,
+
+    -- 💀
+    -- If you use `runInTerminal = true` and resize the terminal window,
+    -- lldb-vscode will receive a `SIGWINCH` signal which can cause problems
+    -- To avoid that uncomment the following option
+    -- See https://github.com/mfussenegger/nvim-dap/issues/236#issuecomment-1066306073
+    postRunCommands = {'process handle -p true -s false -n false SIGWINCH'}
+  },
+}
+
+
+-- If you want to use this for rust and c, add something like this:
+
+dap.configurations.c = dap.configurations.cpp
+dap.configurations.rust = dap.configurations.cpp
