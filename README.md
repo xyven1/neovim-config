@@ -13,7 +13,7 @@ This is my neovim configuration.
 4. Restart nvim, and everything should work
 
 # External Dependencies
-- rust-analyzer                 (use scripts/rust-analyzer.sh)
-- fzf >24                       (manual install or Ubuntu release Impish)
-- sumneko/lua-language-server   (use scripts/lua.sh)
-- python3-venv
+- rust-analyzer (use scripts/rust-analyzer.sh)
+- fzf >24 (manual install or Ubuntu release Impish)
+- sumneko/lua-language-server (put files in .local and place symlink in .local/bin)
+- python3-venv (for coq_nvim)
