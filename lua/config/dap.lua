@@ -1,4 +1,11 @@
 local dap = require('dap')
+function Split(s, delimiter)
+    local result = {};
+    for match in (s..delimiter):gmatch("(.-)"..delimiter) do
+        table.insert(result, match);
+    end
+    return result;
+end
 
 dap.adapters.lldb = {
   type = 'executable',
@@ -15,7 +22,7 @@ dap.configurations.cpp = {
       if vim.fn.filereadable(path) ~= 0 then
         print("Found config.txt")
         local config = vim.fn.readfile(path)
-        for i, line in ipairs(config) do
+        for _, line in ipairs(config) do
           if line:match("^program") then
             return line:match("^program%s*=%s*(.+)")
           end
@@ -44,7 +51,8 @@ dap.configurations.cpp = {
           end
         end
       end
-      return {}
+      local args = vim.fn.input('Arguments: ', '')
+      return Split(args, ' ')
     end,
 
     -- 💀

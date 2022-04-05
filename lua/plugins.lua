@@ -30,9 +30,15 @@ packer.reset()
 -- plugins list
 use "wbthomason/packer.nvim"
 
-use {"neovim/nvim-lspconfig", config = get_config("lsp")}
+use {
+  "neovim/nvim-lspconfig",
+  config = get_config("lsp")
+}
 
-use {"ggandor/lightspeed.nvim", opt = false}
+use {
+  "ggandor/lightspeed.nvim",
+  opt = false
+}
 
 use "github/copilot.vim"
 
@@ -77,9 +83,7 @@ use {
   config = get_config("coq")
 }
 
-use {
- "ms-jpq/coq.artifacts"
-}
+use "ms-jpq/coq.artifacts"
 
 use {
   "ms-jpq/coq.thirdparty",
@@ -120,4 +124,11 @@ use {
 }
 
 use 'arkav/lualine-lsp-progress'
+
+use {
+  "folke/trouble.nvim",
+  requires = "kyazdani42/nvim-web-devicons",
+  config = get_config("trouble")
+}
+
 -- use "andweeb/presence.nvim"

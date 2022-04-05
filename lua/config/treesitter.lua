@@ -1,9 +1,5 @@
 require"nvim-treesitter.configs".setup {
-    ensure_installed = {
-        "bash", "cmake", "dockerfile", "go", "hcl", "html", "java",
-        "javascript", "json", "latex", "ledger", "lua", "python", "toml",
-        "yaml", "markdown"
-    }, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+    ensure_installed = "maintained",
     ignore_install = {}, -- List of parsers to ignore installing
     highlight = {
         enable = true, -- false will disable the whole extension
@@ -38,7 +34,15 @@ require"nvim-treesitter.configs".setup {
                 ["ir"] = "@parameter.inner",
                 ["ar"] = "@parameter.outer"
             }
-        }
+        },
+      lsp_interop = {
+        enable = true,
+        border = 'none',
+        peek_definition_code = {
+          ["<leader>df"] = "@function.outer",
+          ["<leader>dF"] = "@class.outer",
+        },
+      },
     },
     rainbow = {
         enable = true,
