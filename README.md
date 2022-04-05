@@ -1,4 +1,4 @@
-# neovim-config
+# Neovim Configuration
 This is my neovim configuration.
 
 # Install Steps
