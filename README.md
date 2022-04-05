@@ -4,7 +4,7 @@ This is my neovim configuration.
 # Install Steps
 
 1. First clone this repo into ~/.config/ with the a command like the following:
-  - `git clone https://github.com/Xyven1/neovim-config.git ~/.config/nvim`
+`git clone https://github.com/Xyven1/neovim-config.git ~/.config/nvim`
 2. Use the nvim install script in `~/.config/nvim/scripts/nvim.sh` to install nvim
 3. Install the dependencies listed below
 3. Run the command `nvim`, and then `:PackerSync`
