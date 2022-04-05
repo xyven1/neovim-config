@@ -3,17 +3,12 @@ This is my neovim configuration.
 
 # Install Steps
 
-First clone this repo into ~/.config/ with the a command like the following:
-
-`git clone https://github.com/Xyven1/neovim-config.git ~/.config/nvim`
-
-Use the nvim install script in nvim/scripts to install nvim
-
-Install the dependencies listed below
-
-run the command `nvim`, and then :PackerSync
-
-Restart nvim, and everything should work
+1. First clone this repo into ~/.config/ with the a command like the following:
+  - `git clone https://github.com/Xyven1/neovim-config.git ~/.config/nvim`
+2. Use the nvim install script in `~/.config/nvim/scripts/nvim.sh` to install nvim
+3. Install the dependencies listed below
+3. Run the command `nvim`, and then `:PackerSync`
+4. Restart nvim, and everything should work
 
 # External Dependencies
 - rust-analyzer                 (use scripts/rust-analyzer.sh)
