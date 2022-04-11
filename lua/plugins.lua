@@ -131,4 +131,10 @@ use {
   config = get_config("trouble")
 }
 
+use {
+  'ray-x/go.nvim',
+  config = get_config("go")
+}
+use 'theHamsta/nvim-dap-virtual-text'
+
 -- use "andweeb/presence.nvim"

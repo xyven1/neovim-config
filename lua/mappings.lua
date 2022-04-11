@@ -17,7 +17,7 @@ map("n", "<Leader>c", ":lua require('fzf-lua').commands()<CR>", default_options)
 map("n", "<Leader>o", ":lua require('fzf-lua').files()<CR>", default_options)
 
 -- map keys for debuggingk
-map("n", "<F5>", ":lua require('dapui').toggle()<CR>", default_options)
+map("n", "<F4>", ":lua require('dapui').toggle()<CR>", default_options)
 map("n", "<F5>", ":lua require'dap'.continue()<CR>", default_options)
 map("n", "<F10>", ":lua require'dap'.step_over()<CR>", default_options)
 map("n", "<F11>", ":lua require'dap'.step_into()<CR>", default_options)
