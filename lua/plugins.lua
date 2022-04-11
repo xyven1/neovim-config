@@ -42,7 +42,6 @@ use {
 
 use "github/copilot.vim"
 
--- use {"projekt0n/github-nvim-theme", config = get_config("github-theme")}
 use "tomasiser/vim-code-dark"
 
 use {
@@ -51,6 +50,8 @@ use {
     event = "VimEnter",
     requires = {"kyazdani42/nvim-web-devicons", opt = true}
 }
+
+use 'arkav/lualine-lsp-progress'
 
 use {
     "lewis6991/gitsigns.nvim",
@@ -122,8 +123,6 @@ use {
   'sindrets/diffview.nvim',
   requires = 'nvim-lua/plenary.nvim'
 }
-
-use 'arkav/lualine-lsp-progress'
 
 use {
   "folke/trouble.nvim",
