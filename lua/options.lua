@@ -11,3 +11,6 @@ o.shiftwidth = 2 -- the number of spaces inserted for each indentation
 o.smartindent = true -- make indenting smarter again
 o.tabstop = 2 -- how many columns a tab counts for
 o.termguicolors = true -- use terminal colors
+
+
+vim.g.suda_smart_edit = 1

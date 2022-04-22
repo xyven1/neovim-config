@@ -136,4 +136,6 @@ use {
 }
 use 'theHamsta/nvim-dap-virtual-text'
 
+use 'lambdalisue/suda.vim'
+
 -- use "andweeb/presence.nvim"
