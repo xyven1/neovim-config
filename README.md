@@ -29,3 +29,8 @@ This is my neovim configuration.
 - elixir
 - nodejs
 - haskell
+
+Notes about asdf dependencies:
+- In order to run any of these command with sudo the following alias must be used ```alias psudo='sudo env "PATH=$PATH"'```
+- In order to avoid any slow downs due to shims, use direnv with a .envrc at / with the following lines ```DIRENV_LOG_FORMAT=''
+use asdf```
