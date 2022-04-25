@@ -147,4 +147,10 @@ use {
   'kazhala/close-buffers.nvim',
   config = get_config("closebuf")
 }
+
+use {
+  'numToStr/Comment.nvim',
+  config = get_config("comment")
+}
+
 -- use "andweeb/presence.nvim"
