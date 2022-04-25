@@ -138,4 +138,8 @@ use 'theHamsta/nvim-dap-virtual-text'
 
 use 'lambdalisue/suda.vim'
 
+use {
+  'akinsho/bufferline.nvim',
+  config = get_config("bufferline")
+}
 -- use "andweeb/presence.nvim"
