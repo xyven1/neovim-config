@@ -1,4 +1,5 @@
 local o = vim.opt
+local g = vim.g
 
 o.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
 o.expandtab = true -- convert tabs to spaces
@@ -12,5 +13,4 @@ o.smartindent = true -- make indenting smarter again
 o.tabstop = 2 -- how many columns a tab counts for
 o.termguicolors = true -- use terminal colors
 
-
-vim.g.suda_smart_edit = 1
+g.suda_smart_edit = 1
