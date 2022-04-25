@@ -1,4 +1,4 @@
-require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
+require'nvim-tree'.setup {
   auto_reload_on_write = true,
   disable_netrw = false,
   hide_root_folder = false,
@@ -7,6 +7,7 @@ require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
   hijack_unnamed_buffer_when_opening = false,
   ignore_buffer_on_setup = false,
   open_on_setup = false,
+  open_on_setup_file = false,
   open_on_tab = false,
   sort_by = "name",
   update_cwd = false,
@@ -24,6 +25,19 @@ require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
         { key = "<S-v>", action = "vsplit" },
         { key = "<S-x>", action = "split" },
       },
+    },
+  },
+  renderer = {
+    indent_markers = {
+      enable = true,
+      icons = {
+        corner = "└ ",
+        edge = "│ ",
+        none = "  ",
+      },
+    },
+    icons = {
+      webdev_colors = true,
     },
   },
   hijack_directories = {
@@ -61,9 +75,11 @@ require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
     timeout = 400,
   },
   actions = {
+    use_system_clipboard = true,
     change_dir = {
       enable = true,
       global = false,
+      restrict_above_cwd = false,
     },
     open_file = {
       quit_on_open = false,
@@ -89,6 +105,7 @@ require('nvim-tree').setup { -- BEGIN_DEFAULT_OPTS
       all = false,
       config = false,
       copy_paste = false,
+      diagnostics = false,
       git = false,
       profile = false,
     },
