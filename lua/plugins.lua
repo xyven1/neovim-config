@@ -142,4 +142,9 @@ use {
   'akinsho/bufferline.nvim',
   config = get_config("bufferline")
 }
+
+use {
+  'kazhala/close-buffers.nvim',
+  config = get_config("closebuf")
+}
 -- use "andweeb/presence.nvim"
