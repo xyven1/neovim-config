@@ -51,7 +51,7 @@ use {
 
 use "github/copilot.vim"
 
-use "tomasiser/vim-code-dark"
+use 'Mofiqul/vscode.nvim'
 
 use {
     "nvim-lualine/lualine.nvim",
@@ -157,4 +157,7 @@ use {
   config = get_config("comment")
 }
 
-use "andweeb/presence.nvim"
+use {
+  "andweeb/presence.nvim",
+  config = get_config("presence")
+}

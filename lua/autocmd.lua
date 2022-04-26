@@ -8,6 +8,6 @@ vim.api.nvim_exec([[
   ]], false)
 -- Set color scheme
 vim.cmd([[
-  colorscheme codedark
+  colorscheme vscode
 ]])
 

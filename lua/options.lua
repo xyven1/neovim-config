@@ -16,3 +16,5 @@ g.coq_settings = {
   auto_start = 'shut-up',
 }
 g.suda_smart_edit = 1
+g.vscode_style = "dark"
+g.vscode_disable_nvimtree_bg = true
