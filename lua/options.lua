@@ -1,6 +1,18 @@
 local o = vim.opt
 local g = vim.g
 
+g.clipboard = {
+  name= 'win32yank',
+  copy= {
+     ['+'] = 'win32yank -i --crlf',
+     ['*'] = 'win32yank -i --crlf',
+   },
+  paste= {
+     ['+'] = 'win32yank -o --lf',
+     ['*'] = 'win32yank -o --lf',
+  },
+  cache_enabled= 0,
+}
 o.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
 o.expandtab = true -- convert tabs to spaces
 o.exrc = true -- load .nvimrc files
@@ -13,4 +25,7 @@ o.smartindent = true -- make indenting smarter again
 o.tabstop = 2 -- how many columns a tab counts for
 o.termguicolors = true -- use terminal colors
 
+g.coq_settings = {
+  auto_start = 'shut-up',
+}
 g.suda_smart_edit = 1

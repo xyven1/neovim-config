@@ -36,6 +36,10 @@ use {
 }
 
 use {
+  "williamboman/nvim-lsp-installer"
+}
+
+use {
   "ggandor/lightspeed.nvim",
   opt = false
 }
@@ -101,11 +105,6 @@ use {
   config = get_config("dapui")
 }
 
--- use {
---   "natecraddock/workspaces.nvim",
---   config = get_config("workspaces")
--- }
-
 use {
   "natecraddock/sessions.nvim",
   config = get_config("sessions")
@@ -153,4 +152,4 @@ use {
   config = get_config("comment")
 }
 
--- use "andweeb/presence.nvim"
+use "andweeb/presence.nvim"
