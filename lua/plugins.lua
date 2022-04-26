@@ -30,13 +30,16 @@ packer.reset()
 -- plugins list
 use "wbthomason/packer.nvim"
 
-use {
-  "neovim/nvim-lspconfig",
-  config = get_config("lsp")
-}
+-- for performance
+
+use "nathom/filetype.nvim"
+
+use "lewis6991/impatient.nvim"
 
 use {
-  "williamboman/nvim-lsp-installer"
+  "neovim/nvim-lspconfig",
+  "williamboman/nvim-lsp-installer",
+  config = get_config("lsp")
 }
 
 use {

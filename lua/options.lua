@@ -1,18 +1,18 @@
 local o = vim.opt
 local g = vim.g
 
-g.clipboard = {
-  name= 'win32yank',
-  copy= {
-     ['+'] = 'win32yank -i --crlf',
-     ['*'] = 'win32yank -i --crlf',
-   },
-  paste= {
-     ['+'] = 'win32yank -o --lf',
-     ['*'] = 'win32yank -o --lf',
-  },
-  cache_enabled= 0,
-}
+-- g.clipboard = {
+--   name= 'win32yank-wsl',
+--   copy= {
+--      ['+'] = 'win32yank.exe -i --crlf',
+--      ['*'] = 'win32yank.exe -i --crlf',
+--    },
+--   paste= {
+--      ['+'] = 'win32yank.exe -o --lf',
+--      ['*'] = 'win32yank.exe -o --lf',
+--   },
+--   cache_enabled= true,
+-- }
 o.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
 o.expandtab = true -- convert tabs to spaces
 o.exrc = true -- load .nvimrc files
