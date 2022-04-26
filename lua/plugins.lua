@@ -36,6 +36,8 @@ use "nathom/filetype.nvim"
 
 use "lewis6991/impatient.nvim"
 
+use "dstein64/vim-startuptime"
+
 use {
   "neovim/nvim-lspconfig",
   "williamboman/nvim-lsp-installer",
