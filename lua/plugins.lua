@@ -27,16 +27,19 @@ packer.init {
 local use = packer.use
 packer.reset()
 
+use "lewis6991/impatient.nvim"
+require"impatient".enable_profile()
+
+use "nathom/filetype.nvim"
+
+
+use "dstein64/vim-startuptime"
+
+
 -- plugins list
 use "wbthomason/packer.nvim"
 
 -- for performance
-
-use "nathom/filetype.nvim"
-
-use "lewis6991/impatient.nvim"
-
-use "dstein64/vim-startuptime"
 
 use {
   "neovim/nvim-lspconfig",
