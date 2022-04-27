@@ -7,4 +7,4 @@ require("options")
 -- Vim autocommands/autogroups
 require("autocmd")
 -- Performance
-require"impatient".enable_profile()
+require("impatient").enable_profile()
