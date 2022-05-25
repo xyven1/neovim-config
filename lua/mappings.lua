@@ -6,9 +6,10 @@ map("n", ";", ":", default_options)
 map("v", ";", ":", default_options)
 
 -- Tab switch buffer
-map("n", "<TAB>", ":bnext<CR>", default_options)
-map("n", "<S-TAB>", ":bprevious<CR>", default_options)
-
+map("n", "<TAB>", ":BufferLineCycleNext<CR>", default_options)
+map("n", "<S-TAB>", ":BufferLineCyclePrev<CR>", default_options)
+map("n", "[b", ":BufferLineMovePrev<CR>", default_options)
+map("n", "]b", ":BufferLineMoveNext<CR>", default_options)
 -- map the leader key
 map("n", "<Space>", "<NOP>", default_options)
 vim.g.mapleader = " "
@@ -40,6 +41,7 @@ map("n", "<Leader>t", ":NvimTreeToggle<CR>", default_options)
 
 -- Close Buffers
 map("n", "<Leader>xx", ":lua require('close_buffers').delete({type='this'})<CR>", default_options)
+map("n", "<Leader>xf", ":lua require('close_buffers').delete({type='this', force = true})<CR>", default_options)
 map("n", "<Leader>xn", ":lua require('close_buffers').delete({type='nameless'})<CR>", default_options)
 map("n", "<Leader>xh", ":lua require('close_buffers').delete({type='hidden'})<CR>", default_options)
 map("n", "<Leader>xa", ":lua require('close_buffers').delete({type='all'})<CR>", default_options)
