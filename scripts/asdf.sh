@@ -5,27 +5,4 @@ echo '. $HOME/.asdf/asdf.sh' >> ~/.bashrc
 echo '. $HOME/.asdf/completions/asdf.bash' >> ~/.bashrc
 . ~/.bashrc
 
-packages=(
-"neovim"
-"direnv"
-"fzf"
-"gitui"
-"rust"
-"rust-analyzer:Xyven1/asdf-rust-analyzer"
-"lua"
-"lua-language-server:spencergilbert/asdf-lua-language-server"
-"golang"
-"erlang"
-"elixir"
-"nodejs"
-"haskell"
-)
-
-for value in ${packages[@]}; do
-    vals=(${value//:/ })
-    if((${#vals[@]} == 2)); then
-        asdf plugin-add ${vals[0]} "https://github.com/${vals[1]}.git"
-    else
-        asdf plugin-add ${vals[0]}
-    fi
-done
+cat .tool-versions | cut -d' ' -f1 | grep "^[^\#]" | xargs -i asdf plugin add  {}
