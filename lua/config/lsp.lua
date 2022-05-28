@@ -1,7 +1,11 @@
-local lsp_installer = require("nvim-lsp-installer")
+local lspconfig = require('lspconfig')
+local coq = require("coq")
+require("nvim-lsp-installer").setup({
+  automatic_installation = true,
+})
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('coq').lsp_ensure_capabilities(capabilities)
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- capabilities = require('coq').lsp_ensure_capabilities(capabilities)
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -42,13 +46,11 @@ end
 
 -- Register a handler that will be called for each installed server when it's ready (i.e. when installation is finished
 -- or if the server is already installed).
-lsp_installer.on_server_ready(function(server)
-  local opts = {
+local servers = { 'cmake', 'elixirls', 'hls', 'jsonls', 'pyright', 'rust_analyzer', 'sumneko_lua', 'svelte', 'tailwindcss', 'tsserver', 'volar' }
+for _, lsp in pairs(servers) do
+  lspconfig[lsp].setup(coq.lsp_ensure_capabilities({
     on_attach = on_attach,
-    capabilities = capabilities,
-  }
-  if server.name == "sumneko_lua" then
-    opts.settings = {
+    settings = {
       Lua = {
         diagnostics = {
           globals = { 'vim' },
@@ -60,10 +62,6 @@ lsp_installer.on_server_ready(function(server)
           enable = false,
         },
       },
-    }
-  end
-  -- This setup() function will take the provided server configuration and decorate it with the necessary properties
-  -- before passing it onwards to lspconfig.
-  -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-  server:setup(opts)
-end)
+    },
+  }))
+end

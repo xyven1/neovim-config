@@ -100,6 +100,11 @@ use {
 }
 
 use {
+  "ray-x/lsp_signature.nvim",
+  config = get_config("signature")
+}
+
+use {
   "mfussenegger/nvim-dap",
   config = get_config("dap")
 }
