@@ -46,7 +46,7 @@ end
 
 -- Register a handler that will be called for each installed server when it's ready (i.e. when installation is finished
 -- or if the server is already installed).
-local servers = { 'cmake', 'elixirls', 'hls', 'jsonls', 'pyright', 'rust_analyzer', 'sumneko_lua', 'svelte', 'tailwindcss', 'tsserver', 'volar' }
+local servers = { 'cmake', 'elixirls', 'hls', 'jsonls', 'pyright', 'rust_analyzer', 'sumneko_lua', 'svelte', 'tailwindcss', 'tsserver', 'volar', 'html' }
 for _, lsp in pairs(servers) do
   lspconfig[lsp].setup(coq.lsp_ensure_capabilities({
     on_attach = on_attach,
