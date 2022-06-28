@@ -73,6 +73,8 @@ use { 'ibhagwan/fzf-lua',
   requires = { 'kyazdani42/nvim-web-devicons' }
 }
 
+use {'kevinhwang91/nvim-bqf', ft = 'qf'}
+
 use {
   "nvim-treesitter/nvim-treesitter",
   config = get_config("treesitter"),
