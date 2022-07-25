@@ -1,17 +1,27 @@
 local dap = require('dap')
 function Split(s, delimiter)
-    local result = {};
-    for match in (s..delimiter):gmatch("(.-)"..delimiter) do
-        table.insert(result, match);
-    end
-    return result;
+  local result = {};
+  for match in (s .. delimiter):gmatch("(.-)" .. delimiter) do
+    table.insert(result, match);
+  end
+  return result;
 end
 
+-- adapters
 dap.adapters.lldb = {
   type = 'executable',
   command = '/usr/bin/lldb-vscode-13', -- adjust as needed
   name = "lldb"
 }
+dap.adapters.delve = {
+  type = 'server',
+  port = '${port}',
+  executable = {
+    command = 'dlv',
+    args = { 'dap', '-l', '127.0.0.1:${port}' },
+  }
+}
+-- configurations
 dap.configurations.cpp = {
   {
     name = "Launch",
@@ -39,7 +49,7 @@ dap.configurations.cpp = {
         for i, line in ipairs(config) do
           -- check for line with args and opening curly brace
           if line:match("^args") and line:match("{") then
-          -- read lines until we find closing curly brace
+            -- read lines until we find closing curly brace
             local args = {}
             for j = i + 1, #config do
               if config[j]:match("^%s*%}") then
@@ -74,12 +84,31 @@ dap.configurations.cpp = {
     -- lldb-vscode will receive a `SIGWINCH` signal which can cause problems
     -- To avoid that uncomment the following option
     -- See https://github.com/mfussenegger/nvim-dap/issues/236#issuecomment-1066306073
-    postRunCommands = {'process handle -p true -s false -n false SIGWINCH'}
+    postRunCommands = { 'process handle -p true -s false -n false SIGWINCH' }
   },
 }
-
-
--- If you want to use this for rust and c, add something like this:
-
+dap.configurations.go = {
+  {
+    type = "delve",
+    name = "Debug",
+    request = "launch",
+    program = "${file}"
+  },
+  {
+    type = "delve",
+    name = "Debug test", -- configuration for debugging test files
+    request = "launch",
+    mode = "test",
+    program = "${file}"
+  },
+  -- works with go.mod packages and sub packages
+  {
+    type = "delve",
+    name = "Debug test (go.mod)",
+    request = "launch",
+    mode = "test",
+    program = "./${relativeFileDirname}"
+  }
+}
 dap.configurations.c = dap.configurations.cpp
 dap.configurations.rust = dap.configurations.cpp
