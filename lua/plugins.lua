@@ -68,8 +68,8 @@ use {
   config = get_config("gitsigns")
 }
 
-use { 'ibhagwan/fzf-lua',
-  -- optional for icon support
+use {
+  'ibhagwan/fzf-lua',
   requires = { 'kyazdani42/nvim-web-devicons' }
 }
 
@@ -117,15 +117,12 @@ use {
 }
 
 use {
-  "natecraddock/sessions.nvim",
-  config = get_config("sessions")
-}
-
-use {
   'kyazdani42/nvim-tree.lua',
   requires = {
-    'kyazdani42/nvim-web-devicons', -- optional, for file icon
+    'kyazdani42/nvim-web-devicons',
   },
+  opt = true,
+  cmd = {"NvimTreeOpen", "NvimTreeToggle"},
   config = get_config("tree")
 }
 
@@ -136,11 +133,16 @@ use {
 
 use {
   "folke/trouble.nvim",
+  opt = true,
+  cmd = {"Trouble", "TroubleToggle"},
   requires = "kyazdani42/nvim-web-devicons",
   config = get_config("trouble")
 }
 
-use 'theHamsta/nvim-dap-virtual-text'
+use {
+  'theHamsta/nvim-dap-virtual-text',
+  config = get_config("dapvirtualtext")
+}
 
 use 'lambdalisue/suda.vim'
 
@@ -162,4 +164,24 @@ use {
 use {
   "andweeb/presence.nvim",
   config = get_config("presence")
+}
+
+use {
+  "folke/which-key.nvim",
+  config = get_config("whichkey")
+}
+
+use {
+  'glepnir/dashboard-nvim',
+  config = get_config("dashboard")
+}
+
+use {
+  'Shatur/neovim-session-manager',
+  config = get_config("session")
+}
+
+use {
+  'smjonas/inc-rename.nvim',
+  config = get_config("increname")
 }

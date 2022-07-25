@@ -13,6 +13,7 @@ o.foldmethod = 'expr'
 o.foldexpr = 'nvim_treesitter#foldexpr()'
 o.foldlevelstart=99
 o.pumblend = 30
+o.mouse = '' -- disable mouse support
 
 g.suda_smart_edit = 1
 g.vscode_style = "dark"

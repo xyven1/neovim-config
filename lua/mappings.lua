@@ -51,7 +51,7 @@ map("n", "<Leader>xo", ":lua require('close_buffers').delete({type='other'})<CR>
 function EscapePair()
   local closers = { ")", "]", "}", ">", "'", "\"", "`", "," }
   local line = vim.api.nvim_get_current_line()
-  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local row, col = table.unpack(vim.api.nvim_win_get_cursor(0))
   local after = line:sub(col + 1, -1)
   local closer_col = #after + 1
   local closer_i = nil
