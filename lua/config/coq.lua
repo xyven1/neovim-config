@@ -6,5 +6,5 @@ vim.g.coq_settings = {
     paths = { preview_lines = 3 }
   },
   display = { icons = { mode = 'short' } },
-  keymap = { recommended = true },
+  keymap = { recommended = false },
 }

@@ -185,3 +185,8 @@ use {
   'smjonas/inc-rename.nvim',
   config = get_config("increname")
 }
+
+use {
+  'windwp/nvim-autopairs',
+  config = get_config("autopairs")
+}
