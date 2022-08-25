@@ -1,5 +1,5 @@
 # Neovim Configuration
-This is my neovim configuration.
+This is my neovim configuration. It uses recent and maintained plugins with a focus on performance and a vscode like experience in many ways. Completion with CoQ, only using nvim-lsp for language server features (which is great for standarization and simplicity) along side nvim-dap (with related plugins) and lsp-installer. 65ms load times.
 
 # Install Steps
 
@@ -7,19 +7,19 @@ This is my neovim configuration.
 
 `git clone https://github.com/Xyven1/neovim-config.git ~/.config/nvim`
 
-2. Use asdf to install neovim (recommended), or use the following script:  `~/.config/nvim/scripts/nvim.sh`
-3. Install the dependencies listed below
-3. Run the command `nvim`, and then `:PackerSync`
-4. Restart nvim, and everything should work
+2. Use asdf to install neovim (recommended), or use the following script:  `~/.config/nvim/scripts/nvim.sh` (need to use nightly)
+3. Install the dependencies listed below (ones necessary for basic functionality are marked with !)
+3. Run the command `nvim`, and then `:PackerSync`, then `:PackerCompile`
+4. Restart nvim, and everything should work  (you may see some errors, but do steps 3-4 till you don't)
 
 # External dependencies
 - python3-venv (for coq_nvim)
 
 # asdf dependencies
-- neovim
-- direnv
-- fzf
-- gitui
+- !neovim (nightly)
+- direnv (fpr avoiding shim slowdowns with asdf)
+- !fzf
+- gitui (There is no git manager plugin installed, so use git externally using C-z, gitui, and finally fg when you are done with git)
 - rust
 - rust-analyzer
 - lua
