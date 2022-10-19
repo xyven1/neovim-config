@@ -1,5 +1,5 @@
 local lspconfig = require('lspconfig')
-local coq = require("coq")
+local coq = require('coq')
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -36,31 +36,20 @@ for type, icon in pairs(signs) do
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
-local registry = require "mason-registry"
-local server_mapping = require "mason-lspconfig.mappings.server"
-
-local servers = {}
-
--- Any lsp server which is installed by mason will automatically be added to serverlist
-for _, package in ipairs(registry.get_installed_packages()) do
-  local name = server_mapping.package_to_lspconfig[package.name]
-  if name then
-    table.insert(servers, name)
-  end
-end
-
-for _, lsp in pairs(servers) do
-  lspconfig[lsp].setup(coq.lsp_ensure_capabilities({
-    on_attach = on_attach,
-    settings = {
-      Lua = {
-        diagnostics = {
-          globals = { 'vim' },
+require("mason-lspconfig").setup_handlers {
+  function(server_name)
+    lspconfig[server_name].setup(coq.lsp_ensure_capabilities({
+      on_attach = on_attach,
+      settings = {
+        Lua = {
+          diagnostics = {
+            globals = { 'vim' },
+          },
         },
-      },
-    }
-  }))
-end
+      }
+    }))
+  end
+}
 
 local notify = vim.notify
 vim.notify = function(msg, ...)
