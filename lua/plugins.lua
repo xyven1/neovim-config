@@ -125,7 +125,7 @@ use {
 }
 
 -- preview when using quick fix window
-use { 'kevinhwang92/nvim-bqf', ft = 'qf' }
+use { 'kevinhwang91/nvim-bqf', ft = 'qf' }
 
 -- special highlights for // TODO: style comments
 use {
