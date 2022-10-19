@@ -8,3 +8,10 @@ vim.g.coq_settings = {
   display = { icons = { mode = 'short' } },
   keymap = { recommended = false },
 }
+
+local opts = { noremap = true, silent = true }
+
+vim.keymap.set('i', '<esc>', vim.fn.pumvisible() and "<c-e><esc>" or "<esc>", opts)
+vim.keymap.set('i', '<c-c>', vim.fn.pumvisible() and "<c-e><c-c>" or "<c-c>", opts)
+vim.keymap.set('i', '<tab>', vim.fn.pumvisible() and "<c-n>" or "<tab>", opts)
+vim.keymap.set('i', '<s-tab>', vim.fn.pumvisible() and "<c-p>" or "<bs>", opts)

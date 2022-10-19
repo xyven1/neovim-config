@@ -1,11 +1,5 @@
 local lspconfig = require('lspconfig')
 local coq = require("coq")
-require("nvim-lsp-installer").setup({
-  automatic_installation = true,
-})
-
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
--- capabilities = require('coq').lsp_ensure_capabilities(capabilities)
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -17,24 +11,20 @@ vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<C
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-local function on_attach(client, bufnr)
+local function on_attach(_, bufnr)
   local opts = { noremap = true, silent = true, buffer = bufnr }
-  -- Mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', keymapOpts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', keymapOpts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', keymapOpts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', keymapOpts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', keymapOpts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', keymapOpts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', keymapOpts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', keymapOpts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', keymapOpts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>IncRename <CR>', keymapOpts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', keymapOpts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', keymapOpts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', keymapOpts)
-
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+  vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+  vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+  vim.keymap.set('n', '<space>wl', vim.lsp.buf.list_workspace_folders, opts)
+  vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, opts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+  vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, opts)
   vim.keymap.set('n', '<leader>rn', ':IncRename ', opts)
 end
 
@@ -55,22 +45,16 @@ for _, lsp in pairs(servers) do
         diagnostics = {
           globals = { 'vim' },
         },
-        workspace = {
-          -- library = vim.api.nvim_get_runtime_file("", true),
-        },
-        telemetry = {
-          enable = false,
-        },
       },
-    },
+    }
   }))
 end
 
 local notify = vim.notify
 vim.notify = function(msg, ...)
-    if msg:match("warning: multiple different client offset_encodings") then
-        return
-    end
+  if msg:match("warning: multiple different client offset_encodings") then
+    return
+  end
 
-    notify(msg, ...)
+  notify(msg, ...)
 end

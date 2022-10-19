@@ -39,17 +39,37 @@ use "dstein64/vim-startuptime"
 
 ----------- Coding productivity plugins ---------------
 
--- for LSP and DAP
-use "neovim/nvim-lspconfig"
+-- autocompletion tool
+use {
+  "ms-jpq/coq_nvim",
+  config = get_config("coq")
+}
+
+use "ms-jpq/coq.artifacts"
 
 use {
+  "ms-jpq/coq.thirdparty",
+  config = get_config("coqthirdparty")
+}
+
+-- lsp and dap installer plugin
+use {
   "williamboman/mason.nvim",
+  "williamboman/mason-lspconfig.nvim",
+  "jayp0521/mason-nvim-dap.nvim",
   config = get_config("mason")
 }
 
+-- lsp configuration plugin
+use {
+  "neovim/nvim-lspconfig",
+  config = get_config("lsp")
+}
+
+-- dap configuration plugin
 use {
   "mfussenegger/nvim-dap",
-  config = get_config("dap")
+  -- config = get_config("dap")
 }
 
 use {
@@ -72,19 +92,6 @@ use {
 }
 
 use "nvim-treesitter/nvim-treesitter-textobjects"
-
--- autocompletion tool
-use {
-  "ms-jpq/coq_nvim",
-  config = get_config("coq")
-}
-
-use "ms-jpq/coq.artifacts"
-
-use {
-  "ms-jpq/coq.thirdparty",
-  config = get_config("coqthirdparty")
-}
 
 -- shows signature of function when typing
 use {

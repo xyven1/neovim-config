@@ -1,28 +1,16 @@
-require("nvim-autopairs").setup({
+local npairs = require('nvim-autopairs')
+npairs.setup({
   disable_filetype = { "TelescopePrompt" },
   check_ts = true,
   ts_config = {
   },
+  map_bs = false,
+  map_cr = false,
 })
 
-local remap = vim.api.nvim_set_keymap
-local npairs = require('nvim-autopairs')
-local default_opts = { expr = true, noremap = true }
+local opts = { noremap = true, silent = true }
 
-npairs.setup({ map_bs = false, map_cr = false })
-
-vim.g.coq_settings = { keymap = { recommended = false } }
-
--- these mappings are coq recommended mappings unrelated to nvim-autopairs
-remap('i', '<esc>', [[pumvisible() ? "<c-e><esc>" : "<esc>"]], default_opts)
-remap('i', '<c-c>', [[pumvisible() ? "<c-e><c-c>" : "<c-c>"]], default_opts)
-remap('i', '<tab>', [[pumvisible() ? "<c-n>" : "<tab>"]], default_opts)
-remap('i', '<s-tab>', [[pumvisible() ? "<c-p>" : "<bs>"]], default_opts)
-
--- skip it, if you use another global object
-_G.MUtils= {}
-
-MUtils.CR = function()
+vim.keymap.set('i', '<cr>', function()
   if vim.fn.pumvisible() ~= 0 then
     if vim.fn.complete_info({ 'selected' }).selected ~= -1 then
       return npairs.esc('<c-y>')
@@ -32,14 +20,12 @@ MUtils.CR = function()
   else
     return npairs.autopairs_cr()
   end
-end
-remap('i', '<cr>', 'v:lua.MUtils.CR()', default_opts)
+end, opts)
 
-MUtils.BS = function()
+vim.keymap.set('i', '<bs>', function()
   if vim.fn.pumvisible() ~= 0 and vim.fn.complete_info({ 'mode' }).mode == 'eval' then
     return npairs.esc('<c-e>') .. npairs.autopairs_bs()
   else
     return npairs.autopairs_bs()
   end
-end
-remap('i', '<bs>', 'v:lua.MUtils.BS()', default_opts)
+end, opts)
