@@ -125,7 +125,7 @@ use {
 }
 
 -- preview when using quick fix window
-use { 'kevinhwang91/nvim-bqf', ft = 'qf' }
+use { 'kevinhwang92/nvim-bqf', ft = 'qf' }
 
 -- special highlights for // TODO: style comments
 use {
@@ -140,10 +140,15 @@ use {
   config = get_config("dashboard")
 }
 
+use {
+  'edluffy/specs.nvim',
+  config = get_config("specs")
+}
+
 ----------- Navigation plugins ------------------------
 -- quick jumping functionality
 use {
-  "ggandor/lightspeed.nvim",
+  'ggandor/lightspeed.nvim',
   opt = false
 }
 

@@ -24,8 +24,8 @@ end, expr_opts)
 
 vim.keymap.set('i', '<bs>', function()
   if vim.fn.pumvisible() ~= 0 and vim.fn.complete_info({ 'mode' }).mode == 'eval' then
-    return npairs.esc('<c-e>') .. npairs.autopairs_bs()
+    return npairs.esc('<c-e>') .. '<bs>'
   else
-    return npairs.autopairs_bs()
+    return '<bs>'
   end
 end, expr_opts)

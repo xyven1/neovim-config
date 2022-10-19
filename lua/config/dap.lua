@@ -113,7 +113,6 @@ dap.configurations.go = {
 dap.configurations.c = dap.configurations.cpp
 dap.configurations.rust = dap.configurations.cpp
 
-dap.setup()
 require("mason-nvim-dap").setup({
   ensure_installed = {}
 })
