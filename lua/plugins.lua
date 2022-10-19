@@ -53,11 +53,15 @@ use {
 }
 
 -- NOTE: Some of the ordering of the plugin loads is sensitive here
--- lsp and dap installer plugin
+-- mason lsp and dap extensions
+use {
+  "williamboman/mason-lspconfig.nvim",
+  "jayp0521/mason-nvim-dap.nvim"
+}
+
+-- mason, general purpose language specific tool installer
 use {
   "williamboman/mason.nvim",
-  "williamboman/mason-lspconfig.nvim",
-  "jayp0521/mason-nvim-dap.nvim",
   config = get_config("mason")
 }
 
