@@ -103,6 +103,8 @@ use {
 
 ----------- UI plugins --------------------------------
 
+use 'nvim-tree/nvim-web-devicons'
+
 -- vscode themes
 use 'Mofiqul/vscode.nvim'
 
@@ -111,7 +113,7 @@ use {
   "nvim-lualine/lualine.nvim",
   config = get_config("lualine"),
   event = "VimEnter",
-  requires = { "kyazdani42/nvim-web-devicons", opt = true }
+  requires = { "nvim-tree/nvim-web-devicons", opt = true }
 }
 
 use 'arkav/lualine-lsp-progress'
@@ -159,14 +161,14 @@ use {
 -- catch all navigation tool
 use {
   'ibhagwan/fzf-lua',
-  requires = { 'kyazdani42/nvim-web-devicons' }
+  requires = { 'nvim-tree/nvim-web-devicons' }
 }
 
 -- file explorer
 use {
-  'kyazdani42/nvim-tree.lua',
+  'nvim-tree/nvim-tree.lua',
   requires = {
-    'kyazdani42/nvim-web-devicons',
+    'nvim-tree/nvim-web-devicons',
   },
   opt = true,
   cmd = { "NvimTreeOpen", "NvimTreeToggle" },
@@ -178,7 +180,7 @@ use {
   "folke/trouble.nvim",
   opt = true,
   cmd = { "Trouble", "TroubleToggle" },
-  requires = "kyazdani42/nvim-web-devicons",
+  requires = "nvim-tree/nvim-web-devicons",
   config = get_config("trouble")
 }
 
