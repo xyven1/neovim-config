@@ -20,7 +20,9 @@ local function on_attach(_, bufnr)
   vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
   vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
   vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
-  vim.keymap.set('n', '<space>wl', vim.lsp.buf.list_workspace_folders, opts)
+  vim.keymap.set('n', '<space>wl', function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, opts)
   vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
   vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, opts)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
@@ -34,9 +36,19 @@ for type, icon in pairs(signs) do
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
--- Register a handler that will be called for each installed server when it's ready (i.e. when installation is finished
--- or if the server is already installed).
-local servers = { 'cmake', 'elixirls', 'hls', 'jsonls', 'pyright', 'rust_analyzer', 'sumneko_lua', 'svelte', 'tailwindcss', 'tsserver', 'volar', 'html', 'gopls', 'ccls' }
+local registry = require "mason-registry"
+local server_mapping = require "mason-lspconfig.mappings.server"
+
+local servers = {}
+
+-- Any lsp server which is installed by mason will automatically be added to serverlist
+for _, package in ipairs(registry.get_installed_packages()) do
+  local name = server_mapping.package_to_lspconfig[package.name]
+  if name then
+    table.insert(servers, name)
+  end
+end
+
 for _, lsp in pairs(servers) do
   lspconfig[lsp].setup(coq.lsp_ensure_capabilities({
     on_attach = on_attach,

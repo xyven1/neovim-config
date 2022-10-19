@@ -52,6 +52,7 @@ use {
   config = get_config("coqthirdparty")
 }
 
+-- NOTE: Some of the ordering of the plugin loads is sensitive here
 -- lsp and dap installer plugin
 use {
   "williamboman/mason.nvim",
@@ -69,18 +70,15 @@ use {
 -- dap configuration plugin
 use {
   "mfussenegger/nvim-dap",
-  -- config = get_config("dap")
-}
-
-use {
-  "rcarriga/nvim-dap-ui",
-  config = get_config("dapui")
+  config = get_config("dap")
 }
 
 use {
   'theHamsta/nvim-dap-virtual-text',
   config = get_config("dapvirtualtext")
 }
+
+-- NOTE: Ordering should stop mattering here
 
 use "github/copilot.vim"
 
@@ -113,6 +111,12 @@ use {
 }
 
 use 'arkav/lualine-lsp-progress'
+
+-- basic ui for using DAP
+use {
+  "rcarriga/nvim-dap-ui",
+  config = get_config("dapui")
+}
 
 -- better buffer line
 use {
@@ -176,7 +180,6 @@ use {
   cmd = { "SymbolsOutline" },
   config = get_config("symbolsoutline")
 }
-
 
 ----------- Miscellanious plugins ---------------------
 -- for editing file which need sudo permissions

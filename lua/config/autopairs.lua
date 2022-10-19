@@ -8,7 +8,7 @@ npairs.setup({
   map_cr = false,
 })
 
-local opts = { noremap = true, silent = true }
+local expr_opts = { noremap = true, expr = true, silent = true }
 
 vim.keymap.set('i', '<cr>', function()
   if vim.fn.pumvisible() ~= 0 then
@@ -20,7 +20,7 @@ vim.keymap.set('i', '<cr>', function()
   else
     return npairs.autopairs_cr()
   end
-end, opts)
+end, expr_opts)
 
 vim.keymap.set('i', '<bs>', function()
   if vim.fn.pumvisible() ~= 0 and vim.fn.complete_info({ 'mode' }).mode == 'eval' then
@@ -28,4 +28,4 @@ vim.keymap.set('i', '<bs>', function()
   else
     return npairs.autopairs_bs()
   end
-end, opts)
+end, expr_opts)

@@ -9,9 +9,9 @@ vim.g.coq_settings = {
   keymap = { recommended = false },
 }
 
-local opts = { noremap = true, silent = true }
+local expr_opts = { noremap = true, expr = true, silent = true }
 
-vim.keymap.set('i', '<esc>', vim.fn.pumvisible() and "<c-e><esc>" or "<esc>", opts)
-vim.keymap.set('i', '<c-c>', vim.fn.pumvisible() and "<c-e><c-c>" or "<c-c>", opts)
-vim.keymap.set('i', '<tab>', vim.fn.pumvisible() and "<c-n>" or "<tab>", opts)
-vim.keymap.set('i', '<s-tab>', vim.fn.pumvisible() and "<c-p>" or "<bs>", opts)
+vim.keymap.set('i', '<esc>', function() return vim.fn.pumvisible() == 1 and "<c-e><esc>" or "<esc>" end, expr_opts)
+vim.keymap.set('i', '<c-c', function() return vim.fn.pumvisible() == 1 and "<c-e><c-c>" or "<c-c>" end, expr_opts)
+vim.keymap.set('i', '<tab>', function() return vim.fn.pumvisible() == 1 and "<c-n>" or "<tab>" end, expr_opts)
+vim.keymap.set('i', '<s-tab>', function() return vim.fn.pumvisible() == 1 and "<c-p>" or "<bs>" end, expr_opts)
