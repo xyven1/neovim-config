@@ -52,7 +52,6 @@ use {
   config = get_config("coqthirdparty")
 }
 
--- NOTE: Some of the ordering of the plugin loads is sensitive here
 -- mason lsp and dap extensions
 use {
   "williamboman/mason-lspconfig.nvim",
