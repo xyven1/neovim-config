@@ -81,8 +81,6 @@ use {
   config = get_config("dapvirtualtext")
 }
 
--- NOTE: Ordering should stop mattering here
-
 use "github/copilot.vim"
 
 -- for syntax highlighting and other goodies
