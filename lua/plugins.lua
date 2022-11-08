@@ -33,8 +33,6 @@ use "wbthomason/packer.nvim"
 ----------- Purely preformance related ----------------
 use "lewis6991/impatient.nvim"
 
-use "nathom/filetype.nvim"
-
 use "dstein64/vim-startuptime"
 
 ----------- Coding productivity plugins ---------------
@@ -67,7 +65,8 @@ use {
 -- lsp configuration plugin
 use {
   "neovim/nvim-lspconfig",
-  config = get_config("lsp")
+  config = get_config("lsp"),
+  after = "coq_nvim"
 }
 
 -- dap configuration plugin
