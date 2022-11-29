@@ -1,13 +1,15 @@
 -- Remove all trailing whitespace on save
-vim.api.nvim_exec([[
-  augroup TrimWhiteSpace
-    au!
-    autocmd BufWritePre * :%s/\s\+$//e
-  augroup END
-  autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync()
-  ]], false)
--- Set color scheme
-vim.cmd([[
-  colorscheme vscode
-]])
+local trim = vim.api.nvim_create_augroup('TrimWhiteSpace', { clear = true })
+vim.api.nvim_create_autocmd("BufWritePre", {
+  group = trim,
+  command = [[:%s/\s\+$//e]]
+})
 
+-- Auto format on save
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  callback = function() vim.lsp.buf.format { async = false } end,
+})
+
+-- Set color scheme
+vim.cmd 'colorscheme vscode'
