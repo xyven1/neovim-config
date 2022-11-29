@@ -52,6 +52,11 @@ require('bufferline').setup {
     separator_style = 'none',
     enforce_regular_tabs = false,
     always_show_bufferline = true,
+    hover = {
+      enabled = true,
+      delay = 200,
+      reveal = { 'close' }
+    },
     sort_by = 'insert_after_current',
   }
 }
