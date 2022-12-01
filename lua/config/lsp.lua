@@ -1,6 +1,13 @@
 local lspconfig = require('lspconfig')
 local coq = require('coq')
 
+vim.diagnostic.config({
+  virtual_text = {
+    source = 'ifmany',
+  },
+  severity_sort = true,
+})
+
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local keymapOpts = { noremap = true, silent = true }
@@ -24,7 +31,7 @@ local function on_attach(_, bufnr)
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, opts)
   vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
-  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, opts)
+  vim.keymap.set('n', '<space>a', vim.lsp.buf.code_action, opts)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
   vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, opts)
   vim.keymap.set('n', '<leader>rn', ':IncRename ', opts)
@@ -48,7 +55,19 @@ require("mason-lspconfig").setup_handlers {
         },
       }
     }))
-  end
+  end,
+  ["rust_analyzer"] = function()
+    lspconfig.rust_analyzer.setup(coq.lsp_ensure_capabilities({
+      on_attach = on_attach,
+      settings = {
+        ["rust-analyzer"] = {
+          checkOnSave = {
+            command = "clippy",
+          },
+        },
+      },
+    }))
+  end,
 }
 
 local notify = vim.notify
