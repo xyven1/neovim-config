@@ -91,6 +91,8 @@ use {
 
 use "nvim-treesitter/nvim-treesitter-textobjects"
 
+use 'nvim-treesitter/playground'
+
 -- shows signature of function when typing
 use {
   "ray-x/lsp_signature.nvim",
@@ -99,17 +101,24 @@ use {
 
 ----------- UI plugins --------------------------------
 
-use 'nvim-tree/nvim-web-devicons'
+use {
+  'nvim-tree/nvim-web-devicons',
+  after = 'vscode.nvim'
+}
 
 -- vscode themes
-use 'Mofiqul/vscode.nvim'
+use {
+  'Mofiqul/vscode.nvim',
+  config = get_config("vscode")
+}
 
 -- better status line
 use {
   "nvim-lualine/lualine.nvim",
   config = get_config("lualine"),
   event = "VimEnter",
-  requires = { "nvim-tree/nvim-web-devicons", opt = true }
+  requires = { "nvim-tree/nvim-web-devicons", opt = true },
+  after = "vscode.nvim"
 }
 
 use 'arkav/lualine-lsp-progress'
@@ -123,7 +132,9 @@ use {
 -- better buffer line
 use {
   'akinsho/bufferline.nvim',
-  config = get_config("bufferline")
+  config = get_config("bufferline"),
+  after = "vscode.nvim"
+
 }
 
 -- preview when using quick fix window

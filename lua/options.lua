@@ -16,5 +16,3 @@ o.pumblend = 30
 o.mouse = '' -- disable mouse support
 
 g.suda_smart_edit = 1
-g.vscode_style = "dark"
-g.vscode_disable_nvimtree_bg = true
