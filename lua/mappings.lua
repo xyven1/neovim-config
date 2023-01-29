@@ -9,8 +9,8 @@ map("v", ";", ":", opts)
 map("n", "<TAB>", ":BufferLineCycleNext<CR>", opts)
 map("n", "<S-TAB>", ":BufferLineCyclePrev<CR>", opts)
 map("n", "[b", ":BufferLineMovePrev<CR>", opts)
-
 map("n", "]b", ":BufferLineMoveNext<CR>", opts)
+
 -- map the leader key
 map("n", "<Space>", "<NOP>", opts)
 vim.g.mapleader = " "
@@ -22,7 +22,6 @@ map("n", "<Leader>g", fzf.builtin, opts)
 
 -- map keys for debuggingk
 local dap = require("dap")
-map("n", "<F4>", require("dapui").toggle, opts)
 map("n", "<F5>", dap.continue, opts)
 map("n", "<F10>", dap.step_over, opts)
 map("n", "<F11>", dap.step_into, opts)
@@ -31,6 +30,34 @@ map("n", "<Leader>b", dap.toggle_breakpoint, opts)
 map("n", "<Leader>B", function()
   dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
 end, opts)
+
+-- coq mappings
+map('i', '<esc>', function() return vim.fn.pumvisible() == 1 and "<c-e><esc>" or "<esc>" end, expr_opts)
+map('i', '<c-c', function() return vim.fn.pumvisible() == 1 and "<c-e><c-c>" or "<c-c>" end, expr_opts)
+map('i', '<tab>', function() return vim.fn.pumvisible() == 1 and "<c-n>" or "<tab>" end, expr_opts)
+map('i', '<s-tab>', function() return vim.fn.pumvisible() == 1 and "<c-p>" or "<bs>" end, expr_opts)
+
+-- auto pairs
+local npairs = require('nvim-autopairs')
+map('i', '<cr>', function()
+  if vim.fn.pumvisible() ~= 0 then
+    if vim.fn.complete_info({ 'selected' }).selected ~= -1 then
+      return npairs.esc('<c-y>')
+    else
+      return npairs.esc('<c-e>') .. npairs.autopairs_cr()
+    end
+  else
+    return npairs.autopairs_cr()
+  end
+end, expr_opts)
+
+map('i', '<bs>', function()
+  if vim.fn.pumvisible() ~= 0 and vim.fn.complete_info({ 'mode' }).mode == 'eval' then
+    return npairs.esc('<c-e>') .. '<bs>'
+  else
+    return '<bs>'
+  end
+end, expr_opts)
 
 -- paste over currently selected text without yanking it
 map("v", "p", "\"_dP", opts)

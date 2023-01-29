@@ -1,254 +1,223 @@
-local execute = vim.api.nvim_command
-local fn = vim.fn
-
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-
--- returns the require for use in `config` parameter of packer's use
--- expects the name of the config file
-local function get_config(name)
-  return string.format("require(\"config/%s\")", name)
-end
-
--- bootstrap packer if not installed
-if fn.empty(fn.glob(install_path)) > 0 then
-  fn.system({
-    "git", "clone", "https://github.com/wbthomason/packer.nvim",
-    install_path
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "--single-branch",
+    "https://github.com/folke/lazy.nvim.git",
+    lazypath,
   })
-  execute "packadd packer.nvim"
+end
+vim.opt.runtimepath:prepend(lazypath)
+
+vim.g.mapleader = " "
+
+local function get_config(name)
+  return function()
+    require("config/" .. name)
+  end
 end
 
--- initialize and configure packer
-local packer = require("packer")
-packer.init {
-  enable = true, -- enable profiling via :PackerCompile profile=true
-  threshold = 0 -- the amount in ms that a plugins load time must be over for it to be included in the profile
-}
-local use = packer.use
-packer.reset()
-
--- plugins list
-use "wbthomason/packer.nvim"
-
------------ Purely preformance related ----------------
-use "lewis6991/impatient.nvim"
-
-use "dstein64/vim-startuptime"
-
------------ Coding productivity plugins ---------------
-
--- autocompletion tool
-use {
-  "ms-jpq/coq_nvim",
-  config = get_config("coq")
-}
-
-use "ms-jpq/coq.artifacts"
-
-use {
-  "ms-jpq/coq.thirdparty",
-  config = get_config("coqthirdparty")
-}
-
--- mason lsp and dap extensions
-use {
-  "williamboman/mason-lspconfig.nvim",
-  "jayp0521/mason-nvim-dap.nvim"
-}
-
--- mason, general purpose language specific tool installer
-use {
-  "williamboman/mason.nvim",
-  config = get_config("mason")
-}
-
--- lsp configuration plugin
-use {
-  "neovim/nvim-lspconfig",
-  config = get_config("lsp"),
-  after = "coq_nvim"
-}
-
--- dap configuration plugin
-use {
-  "mfussenegger/nvim-dap",
-  config = get_config("dap")
-}
-
-use {
-  'theHamsta/nvim-dap-virtual-text',
-  config = get_config("dapvirtualtext")
-}
-
-use "github/copilot.vim"
-
--- for syntax highlighting and other goodies
-use {
-  "nvim-treesitter/nvim-treesitter",
-  config = get_config("treesitter"),
-  run = ":TSUpdate"
-}
-
-use "nvim-treesitter/nvim-treesitter-textobjects"
-
-use 'nvim-treesitter/playground'
-
--- shows signature of function when typing
-use {
-  "ray-x/lsp_signature.nvim",
-  config = get_config("signature")
-}
-
------------ UI plugins --------------------------------
-
-use {
-  'nvim-tree/nvim-web-devicons',
-  after = 'vscode.nvim'
-}
-
--- vscode themes
-use {
-  'Mofiqul/vscode.nvim',
-  config = get_config("vscode")
-}
-
--- better status line
-use {
-  "nvim-lualine/lualine.nvim",
-  config = get_config("lualine"),
-  event = "VimEnter",
-  requires = { "nvim-tree/nvim-web-devicons", opt = true },
-  after = "vscode.nvim"
-}
-
-use 'arkav/lualine-lsp-progress'
-
--- basic ui for using DAP
-use {
-  "rcarriga/nvim-dap-ui",
-  config = get_config("dapui")
-}
-
--- better buffer line
-use {
-  'akinsho/bufferline.nvim',
-  config = get_config("bufferline"),
-  after = "vscode.nvim"
-
-}
-
--- preview when using quick fix window
-use { 'kevinhwang91/nvim-bqf', ft = 'qf' }
-
--- special highlights for // TODO: style comments
-use {
-  "folke/todo-comments.nvim",
-  requires = { "nvim-lua/plenary.nvim" },
-  config = get_config("todo")
-}
-
--- simple dashboard
-use {
-  'glepnir/dashboard-nvim',
-  config = get_config("dashboard")
-}
-
-use {
-  'edluffy/specs.nvim',
-  config = get_config("specs")
-}
-
------------ Navigation plugins ------------------------
--- quick jumping functionality
-use {
-  'ggandor/lightspeed.nvim',
-  opt = false
-}
-
--- catch all navigation tool
-use {
-  'ibhagwan/fzf-lua',
-  requires = { 'nvim-tree/nvim-web-devicons' }
-}
-
--- file explorer
-use {
-  'nvim-tree/nvim-tree.lua',
-  requires = {
-    'nvim-tree/nvim-web-devicons',
+require("lazy").setup({
+  -- Performance
+  { 'dstein64/vim-startuptime', cmd = "StartupTime" },
+  -- Coding productivity
+  { 'ms-jpq/coq_nvim' },
+  { 'ms-jpq/coq.artifacts' },
+  { 'ms-jpq/coq.thirdparty', config = function()
+    require("coq_3p") {
+      { src = "copilot", short_name = "COP", accept_key = "<c-f>" }
+    }
+  end },
+  { 'williamboman/mason-lspconfig.nvim',
+    opts = {
+      ensure_installed = {}
+    },
+    dependencies = { "williamboman/mason.nvim" } },
+  { 'jayp0521/mason-nvim-dap.nvim',
+    opts = {
+      automatic_setup = true,
+    },
+    dependencies = { "williamboman/mason.nvim" } },
+  { 'williamboman/mason.nvim', config = true },
+  { 'neovim/nvim-lspconfig',
+    config = get_config("lsp"),
+    dependencies = "coq_nvim" },
+  { 'mfussenegger/nvim-dap', config = get_config("dap") },
+  { 'theHamsta/nvim-dap-virtual-text', config = true },
+  { 'github/copilot.vim' },
+  { 'nvim-treesitter/nvim-treesitter', config = get_config("treesitter") },
+  { 'nvim-treesitter/nvim-treesitter-textobjects' },
+  { 'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle' },
+  { 'ray-x/lsp_signature.nvim',
+    opts = {
+      hint_enable = false,
+      toggle_key = '<M-x>' -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'
+    } },
+  -- UI plugins
+  { 'nvim-tree/nvim-web-devicons' },
+  { 'Mofiqul/vscode.nvim',
+    opts = {
+      italic_comments = true,
+    } },
+  { 'nvim-lualine/lualine.nvim',
+    opts = {
+      options = {
+        icons_enabled = true,
+        theme = 'auto',
+        component_separators = { left = '', right = '' },
+        section_separators = { left = '', right = '' },
+        disabled_filetypes = {},
+        always_divide_middle = true,
+        globalstatus = true,
+      },
+      sections = {
+        lualine_a = { 'mode' },
+        lualine_b = { 'branch', 'diff', 'diagnostics' },
+        lualine_c = { 'filename', 'lsp_progress' },
+        lualine_x = { 'encoding', 'fileformat', 'filetype' },
+        lualine_y = { 'progress' },
+        lualine_z = { 'location' }
+      },
+      inactive_sections = {
+        lualine_a = {},
+        lualine_b = {},
+        lualine_c = { 'filename' },
+        lualine_x = { 'location' },
+        lualine_y = {},
+        lualine_z = {}
+      },
+      tabline = {},
+      extensions = {}
+    },
+    event = "VimEnter",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
   },
-  opt = true,
-  cmd = { "NvimTreeOpen", "NvimTreeToggle" },
-  config = get_config("tree")
-}
+  { 'arkav/lualine-lsp-progress' },
+  { 'rcarriga/nvim-dap-ui',
+    keys = {
+      { "<F4>", require("dapui").toggle },
+    },
+    config = true },
+  { 'akinsho/bufferline.nvim',
+    opts = {
+      options = {
+        diagnostics = "nvim_lsp",
+        diagnostics_indicator = function(count, level, diagnostics_dict, context)
+          local s = ""
+          local level_str = {
+            error = " ", -- warning = " ", info = " ", hint = " ",
+          }
+          for e, n in pairs(diagnostics_dict) do
+            if n > 0 and level_str[e] ~= nil then
+              s = s .. n .. level_str[e]
+            end
+          end
+          return s
+        end,
+        offsets = { { filetype = "NvimTree", text = "File Explorer", text_align = "left" } },
+        show_buffer_close_icons = false,
+        show_close_icon = false,
+        separator_style = "none",
+      }
+    },
+    dependencies = { 'Mofiqul/vscode.nvim' } },
+  { 'kevinhwang91/nvim-bqf', ft = 'qf' },
+  { 'folke/todo-comments.nvim', dependencies = { "nvim-lua/plenary.nvim" }, config = true },
+  { 'glepnir/dashboard-nvim',
+    event = 'VimEnter',
+    opts = {
+      theme = 'doom',
+      config = {
+        week_header = {
+          enable = true,
+        },
+        center = {
+          { icon = '  ',
+            desc = 'Open current directory\'s session       ',
+            key = 's',
+            action = 'SessionManager load_current_dir_session' },
+          { icon = '  ',
+            desc = 'Open lastest session                    ',
+            key = 'l',
+            action = 'SessionManager load_last_session' },
+          { icon = '  ',
+            desc = 'Recently opened sessions                ',
+            key = 'r',
+            action = 'SessionManager load_session' },
+          { icon = '  ',
+            desc = 'Open Personal dotfiles                  ',
+            key = 'd',
+            action = 'cd ' .. os.getenv('HOME') .. '/.config/nvim/ | SessionManager load_current_dir_session' },
+        },
+      },
+    },
+    dependencies = { 'nvim-tree/nvim-web-devicons' } },
+  { 'glepnir/lspsaga.nvim',
+    config = true,
+    event = "BufRead",
+    dependencies = { "nvim-tree/nvim-web-devicons" } },
+  -- Navigation plugins
+  { 'ggandor/lightspeed.nvim', keys = { "s", "S" } },
+  { 'ibhagwan/fzf-lua', cmd = "FzfLua", dependencies = { 'nvim-tree/nvim-web-devicons' } },
+  { 'nvim-tree/nvim-tree.lua',
+    cmd = { "NvimTreeOpen", "NvimTreeToggle" },
+    opts = {
+      disable_netrw = true,
+      hijack_cursor = true,
+      hijack_unnamed_buffer_when_opening = true,
+      sync_root_with_cwd = true,
+      view = {
+        mappings = {
+          list = {
+            { key = "<S-v>", action = "vsplit" },
+            { key = "<S-x>", action = "split" },
+          },
+        },
+      },
+      renderer = {
+        indent_markers = {
+          enable = true,
+        },
+      },
+      diagnostics = {
+        enable = true,
+        show_on_dirs = true,
+      },
+    },
+    dependencies = {
+      'Mofiqul/vscode.nvim'
+    }
+    -- TODO: This is a test
+  },
+  { 'folke/trouble.nvim',
+    cmd = { "Trouble", "TroubleToggle" },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = true },
+  { 'simrat39/symbols-outline.nvim', cmd = { "SymbolsOutline" }, config = true },
 
--- issue explorer
-use {
-  "folke/trouble.nvim",
-  opt = true,
-  cmd = { "Trouble", "TroubleToggle" },
-  requires = "nvim-tree/nvim-web-devicons",
-  config = get_config("trouble")
-}
+  -- Miscellanious plugins
+  { 'lambdalisue/suda.vim' },
+  { 'kazhala/close-buffers.nvim', config = true },
+  { 'numToStr/Comment.nvim', config = true },
+  { 'andweeb/presence.nvim' },
+  { 'Shatur/neovim-session-manager', opts = {
+    autoload_mode = require('session_manager.config').AutoloadMode.Disabled,
+  } },
+  { 'smjonas/inc-rename.nvim', config = true },
+  { 'windwp/nvim-autopairs', opts = {
+    disable_filetype = { "telescopeprompt" },
+    check_ts = true,
+    ts_config = {
+    },
+    map_bs = false,
+    map_cr = false,
+  }, },
+  { 'lewis6991/gitsigns.nvim',
+    dependencies = { "nvim-lua/plenary.nvim" },
+    event = "BufReadPre",
+    config = true }
+}, {
 
--- outline view of files and functions
-use {
-  'simrat39/symbols-outline.nvim',
-  opt = true,
-  cmd = { "SymbolsOutline" },
-  config = get_config("symbolsoutline")
-}
-
------------ Miscellanious plugins ---------------------
--- for editing file which need sudo permissions
-use 'lambdalisue/suda.vim'
-
--- for closing buffers in a sane way
-use {
-  'kazhala/close-buffers.nvim',
-  config = get_config("closebuf")
-}
-
--- for better commenting
-use {
-  'numToStr/Comment.nvim',
-  config = get_config("comment")
-}
-
--- discord presence
-use {
-  "andweeb/presence.nvim",
-  config = get_config("presence")
-}
-
--- for seeing what keys do what
-use {
-  "folke/which-key.nvim",
-  config = get_config("whichkey")
-}
-
--- vscode-esque workspace management
-use {
-  'Shatur/neovim-session-manager',
-  config = get_config("session")
-}
-
--- simple tool which makes renaming things more fun
-use {
-  'smjonas/inc-rename.nvim',
-  config = get_config("increname")
-}
-
--- for working with paired things easier () {} [] "" etc.
-use {
-  'windwp/nvim-autopairs',
-  config = get_config("autopairs")
-}
-
--- github integration
-use {
-  "lewis6991/gitsigns.nvim",
-  requires = { "nvim-lua/plenary.nvim" },
-  event = "BufReadPre",
-  config = get_config("gitsigns")
-}
+})
