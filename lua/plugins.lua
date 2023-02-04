@@ -60,7 +60,17 @@ require("lazy").setup({
   { 'Mofiqul/vscode.nvim',
     opts = {
       italic_comments = true,
-    } },
+    },
+    priority = 1000 },
+  { 'folke/tokyonight.nvim',
+    lazy = true,
+    priority = 1000 },
+  { 'martinsione/darkplus.nvim',
+    lazy = true,
+    priority = 1000 },
+  { 'olimorris/onedarkpro.nvim',
+    lazy = true,
+    priority = 1000 },
   { 'nvim-lualine/lualine.nvim',
     opts = {
       options = {
@@ -121,8 +131,7 @@ require("lazy").setup({
         show_close_icon = false,
         separator_style = "none",
       }
-    },
-    dependencies = { 'Mofiqul/vscode.nvim' } },
+    } },
   { 'kevinhwang91/nvim-bqf', ft = 'qf' },
   { 'folke/todo-comments.nvim', dependencies = { "nvim-lua/plenary.nvim" }, config = true },
   { 'glepnir/dashboard-nvim',
@@ -186,10 +195,6 @@ require("lazy").setup({
         show_on_dirs = true,
       },
     },
-    dependencies = {
-      'Mofiqul/vscode.nvim'
-    }
-    -- TODO: This is a test
   },
   { 'folke/trouble.nvim',
     cmd = { "Trouble", "TroubleToggle" },

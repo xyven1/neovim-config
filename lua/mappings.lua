@@ -31,6 +31,8 @@ map("n", "<Leader>B", function()
   dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
 end, opts)
 
+vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, opts)
+
 -- coq mappings
 map('i', '<esc>', function() return vim.fn.pumvisible() == 1 and "<c-e><esc>" or "<esc>" end, expr_opts)
 map('i', '<c-c', function() return vim.fn.pumvisible() == 1 and "<c-e><c-c>" or "<c-c>" end, expr_opts)
@@ -102,3 +104,72 @@ function EscapePair()
 end
 
 map("i", "<C-l>", EscapePair, opts)
+
+-- LSP saga
+-- LSP finder - Find the symbol's definition
+-- If there is no definition, it will instead be hidden
+-- When you use an action in finder like "open vsplit",
+-- you can use <C-t> to jump back
+map("n", "gh", "<cmd>Lspsaga lsp_finder<CR>")
+
+-- Code action
+map({ "n", "v" }, "<leader>a", "<cmd>Lspsaga code_action<CR>")
+
+-- Rename all occurrences of the hovered word for the entire file
+-- map("n", "gr", "<cmd>Lspsaga rename<CR>")
+
+-- Rename all occurrences of the hovered word for the selected files
+map("n", "gr", "<cmd>Lspsaga rename ++project<CR>")
+
+-- Peek definition
+-- You can edit the file containing the definition in the floating window
+-- It also supports open/vsplit/etc operations, do refer to "definition_action_keys"
+-- It also supports tagstack
+-- Use <C-t> to jump back
+map("n", "gd", "<cmd>Lspsaga peek_definition<CR>")
+
+-- Go to definition
+map("n", "gD", "<cmd>Lspsaga goto_definition<CR>")
+
+-- Show line diagnostics
+-- You can pass argument ++unfocus to
+-- unfocus the show_line_diagnostics floating window
+map("n", "<leader>sl", "<cmd>Lspsaga show_line_diagnostics<CR>")
+
+-- Show cursor diagnostics
+-- Like show_line_diagnostics, it supports passing the ++unfocus argument
+map("n", "<leader>sc", "<cmd>Lspsaga show_cursor_diagnostics<CR>")
+
+-- Show buffer diagnostics
+map("n", "<leader>sb", "<cmd>Lspsaga show_buf_diagnostics<CR>")
+
+-- Diagnostic jump
+-- You can use <C-o> to jump back to your previous location
+map("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>")
+map("n", "]e", "<cmd>Lspsaga diagnostic_jump_next<CR>")
+
+-- Diagnostic jump with filters such as only jumping to an error
+map("n", "[E", function()
+  require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
+end)
+map("n", "]E", function()
+  require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })
+end)
+
+-- Toggle outline
+map("n", "go", "<cmd>Lspsaga outline<CR>")
+
+-- Hover Doc
+-- If there is no hover doc,
+-- there will be a notification stating that
+-- there is no information available.
+-- To disable it just use ":Lspsaga hover_doc ++quiet"
+-- Pressing the key twice will enter the hover window
+map("n", "K", "<cmd>Lspsaga hover_doc<CR>")
+
+-- Call hierarchy
+map("n", "<Leader>ci", "<cmd>Lspsaga incoming_calls<CR>")
+map("n", "<Leader>co", "<cmd>Lspsaga outgoing_calls<CR>")
+
+-- Floating terminal
+map({ "n", "t" }, "<A-d>", "<cmd>Lspsaga term_toggle<CR>")
