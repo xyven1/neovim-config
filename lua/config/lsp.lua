@@ -68,6 +68,16 @@ require("mason-lspconfig").setup_handlers {
       },
     }))
   end,
+  ["nil_ls"] = function()
+    lspconfig.nil_ls.setup(coq.lsp_ensure_capabilities({
+      on_attach = on_attach,
+      settings = {
+        formatting = {
+          command = {"nixpkgs-fmt"},
+        },
+      },
+    }))
+  end,
 }
 
 local notify = vim.notify
