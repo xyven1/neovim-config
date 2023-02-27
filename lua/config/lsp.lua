@@ -72,8 +72,10 @@ require("mason-lspconfig").setup_handlers {
     lspconfig.nil_ls.setup(coq.lsp_ensure_capabilities({
       on_attach = on_attach,
       settings = {
-        formatting = {
-          command = {"nixpkgs-fmt"},
+        ['nil'] = {
+          formatting = {
+            command = { "nixpkgs-fmt" },
+          },
         },
       },
     }))
