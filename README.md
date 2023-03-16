@@ -17,7 +17,7 @@ This is my neovim configuration. It uses recent and maintained plugins with a fo
 
 # asdf dependencies 
 - !neovim (nightly)
-- direnv (fpr avoiding shim slowdowns with asdf)
+- direnv (for avoiding shim slowdowns with asdf)
 - !fzf
 - !python > 3.8.2 for CoQ (could be satisfied by default for distro)
 - gitui (There is no git manager plugin installed, so use git externally using C-z, gitui, and finally fg when you are done with git)
