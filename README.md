@@ -9,8 +9,8 @@ This is my neovim configuration. It uses recent and maintained plugins with a fo
 
 2. Use asdf to install neovim (recommended), or use the following script:  `~/.config/nvim/scripts/nvim.sh` (need to use nightly)
 3. Install the dependencies listed below (ones necessary for basic functionality are marked with !)
-3. Run the command `nvim`, and then `:PackerSync`, then `:PackerCompile`
-4. Restart nvim, and everything should work  (you may see some errors, but do steps 3-4 till you don't)
+3. Run the command `nvim` and let Lazy.nvim do its thing. Then run CoQdeps, and wait for tree sitter to install all its extensions.
+4. Restart nvim, and everything should work.
 
 # External dependencies
 - python3-venv (for coq_nvim)
