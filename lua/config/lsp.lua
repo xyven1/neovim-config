@@ -19,7 +19,7 @@ vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<C
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local function on_attach(_, bufnr)
-  local opts = { noremap = true, silent = true, buffer = bufnr }
+  --[[ local opts = { noremap = true, silent = true, buffer = bufnr }
   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
@@ -34,7 +34,7 @@ local function on_attach(_, bufnr)
   vim.keymap.set('n', '<space>a', vim.lsp.buf.code_action, opts)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
   vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, opts)
-  vim.keymap.set('n', '<leader>rn', ':IncRename ', opts)
+  vim.keymap.set('n', '<leader>rn', ':IncRename ', opts) ]]
 end
 
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
@@ -63,6 +63,18 @@ require("mason-lspconfig").setup_handlers {
         ["rust-analyzer"] = {
           checkOnSave = {
             command = "clippy",
+          },
+        },
+      },
+    }))
+  end,
+  ["nil_ls"] = function()
+    lspconfig.nil_ls.setup(coq.lsp_ensure_capabilities({
+      on_attach = on_attach,
+      settings = {
+        ['nil'] = {
+          formatting = {
+            command = { "nixpkgs-fmt" },
           },
         },
       },

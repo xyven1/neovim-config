@@ -11,10 +11,20 @@ o.tabstop = 2 -- how many columns a tab counts for
 o.termguicolors = true -- use terminal colors
 o.foldmethod = 'expr'
 o.foldexpr = 'nvim_treesitter#foldexpr()'
-o.foldlevelstart=99
+o.foldlevelstart = 99
 o.pumblend = 30
 o.mouse = '' -- disable mouse support
 
+g.loaded_netrw = 1
+g.loaded_netrwPlugin = 1
 g.suda_smart_edit = 1
-g.vscode_style = "dark"
-g.vscode_disable_nvimtree_bg = true
+g.coq_settings = {
+  auto_start = 'shut-up',
+  clients = {
+    -- tree_sitter = { enabled = false },
+    buffers = { enabled = false },
+    paths = { preview_lines = 3 }
+  },
+  display = { icons = { mode = 'short' } },
+  keymap = { recommended = false },
+}
