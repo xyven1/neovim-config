@@ -10,13 +10,16 @@ local dap = require("dap")
 
 require 'mason-nvim-dap'.setup_handlers {
   function(source_name)
-    -- all sources with no handler get passed here
     require('mason-nvim-dap.automatic_setup')(source_name)
   end,
-  lldb = function(source_name)
+  codelldb = function(source_name)
     dap.adapters.lldb = {
-      type = 'executable',
-      command = 'codelldb';
+      type = 'server',
+      port = '${port}',
+      executable = {
+        command = 'codelldb',
+        args = { '--port', '${port}' },
+      },
     }
     dap.configurations.cpp = {
       {
@@ -26,7 +29,7 @@ require 'mason-nvim-dap'.setup_handlers {
         program = function()
           local path = vim.fn.getcwd() .. "/config.txt"
           if vim.fn.filereadable(path) ~= 0 then
-            print("Found config.txt")
+            print("found config.txt")
             local config = vim.fn.readfile(path)
             for _, line in ipairs(config) do
               if line:match("^program") then
@@ -36,7 +39,19 @@ require 'mason-nvim-dap'.setup_handlers {
           end
           return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
         end,
-        cwd = '${workspaceFolder}',
+        cwd = function()
+         local path = vim.fn.getcwd() .. "/config.txt"
+          if vim.fn.filereadable(path) ~= 0 then
+            print("found config.txt")
+            local config = vim.fn.readfile(path)
+            for _, line in ipairs(config) do
+              if line:match("^program") then
+                return line:match("^program%s*=%s*(.+)"):match("(.+)/")
+              end
+            end
+          end
+          return vim.fn.getcwd()
+        end,
         stopOnEntry = false,
         args = function()
           local path = vim.fn.getcwd() .. "/config.txt"
