@@ -43,43 +43,46 @@ for type, icon in pairs(signs) do
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
-require("mason-lspconfig").setup_handlers {
-  function(server_name)
-    lspconfig[server_name].setup(coq.lsp_ensure_capabilities({
-      on_attach = on_attach,
-      settings = {
+local function setup_with_settings(server_name, settings)
+  lspconfig[server_name].setup(coq.lsp_ensure_capabilities({
+    on_attach = on_attach,
+    settings = settings
+  }))
+end
+
+require("mason-lspconfig").setup {
+  handlers = {
+    function(server_name)
+      setup_with_settings(server_name, nil)
+    end,
+    ["lua_ls"] = function()
+      setup_with_settings("lua_ls", {
         Lua = {
           diagnostics = {
-            globals = { 'vim' },
-          },
-        },
-      }
-    }))
-  end,
-  ["rust_analyzer"] = function()
-    lspconfig.rust_analyzer.setup(coq.lsp_ensure_capabilities({
-      on_attach = on_attach,
-      settings = {
+            globals = { "vim" }
+          }
+        }
+      })
+    end,
+    ["rust_analyzer"] = function()
+      setup_with_settings("rust_analyzer", {
         ["rust-analyzer"] = {
           checkOnSave = {
             command = "clippy",
           },
         },
-      },
-    }))
-  end,
-  ["nil_ls"] = function()
-    lspconfig.nil_ls.setup(coq.lsp_ensure_capabilities({
-      on_attach = on_attach,
-      settings = {
+      })
+    end,
+    ["nil_ls"] = function()
+      setup_with_settings("nil_ls", {
         ['nil'] = {
           formatting = {
             command = { "nixpkgs-fmt" },
           },
         },
-      },
-    }))
-  end,
+      })
+    end,
+  }
 }
 
 local notify = vim.notify
