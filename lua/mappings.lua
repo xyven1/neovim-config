@@ -20,7 +20,7 @@ map("n", "<Leader>c", fzf.commands, opts)
 map("n", "<Leader>o", fzf.files, opts)
 map("n", "<Leader>g", fzf.builtin, opts)
 
--- map keys for debuggingk
+-- Map keys for debugging
 local dap = require("dap")
 map("n", "<F5>", dap.continue, opts)
 map("n", "<F10>", dap.step_over, opts)
