@@ -72,6 +72,11 @@ require('lazy').setup({
     'Mofiqul/vscode.nvim',
     opts = {
       italic_comments = true,
+      group_overrides = {
+        DapBreakpoint = { ctermbg = 0, fg = '#bf321d' },
+        DapStopped = { ctermbg = 0, fg = '#ffcc00' },
+        DapStoppedLine = { ctermbg = 0, bg = '#4b4b26' },
+      },
     },
     priority = 1000
   },
@@ -199,7 +204,14 @@ require('lazy').setup({
   },
   {
     'glepnir/lspsaga.nvim',
-    config = true,
+    opts = {
+      lightbulb = {
+        sign = false,
+      },
+      code_action = {
+        extend_gitsigns = true,
+      },
+    },
     event = 'BufRead',
     dependencies = { 'nvim-tree/nvim-web-devicons' }
   },
