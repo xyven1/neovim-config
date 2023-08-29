@@ -44,9 +44,16 @@ for type, icon in pairs(signs) do
 end
 
 local function setup_with_settings(server_name, settings)
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities.textDocument.foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true
+  }
+
   lspconfig[server_name].setup(coq.lsp_ensure_capabilities({
     on_attach = on_attach,
-    settings = settings
+    settings = settings,
+    capabilities = capabilities,
   }))
 end
 

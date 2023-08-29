@@ -73,6 +73,10 @@ map("n", "<Down>", ":resize +1<CR>", opts)
 -- Opening File Explorer
 map("n", "<Leader>t", ":NvimTreeToggle<CR>", opts)
 
+-- Ufo folding
+map("n", "zR", require("ufo").openAllFolds)
+map("n", "zM", require("ufo").closeAllFolds)
+
 -- Close Buffers
 local close = require("close_buffers")
 map("n", "<Leader>xx", function() close.delete({ type = "this" }) end, opts)

@@ -53,6 +53,11 @@ require('lazy').setup({
     config = get_config('lsp'),
     dependencies = 'coq_nvim'
   },
+  {
+    'kevinhwang91/nvim-ufo',
+    config = true,
+    dependencies = { 'kevinhwang91/promise-async' },
+  },
   { 'mfussenegger/nvim-dap',                      config = get_config('dap') },
   { 'theHamsta/nvim-dap-virtual-text',            config = true },
   { 'github/copilot.vim' },
