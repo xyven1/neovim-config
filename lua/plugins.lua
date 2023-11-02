@@ -21,7 +21,7 @@ end
 
 require('lazy').setup({
   -- Performance
-  { 'dstein64/vim-startuptime', cmd = 'StartupTime' },
+  -- { 'dstein64/vim-startuptime', cmd = 'StartupTime' },
   -- Coding productivity
   { 'ms-jpq/coq_nvim' },
   { 'ms-jpq/coq.artifacts' },
@@ -29,7 +29,9 @@ require('lazy').setup({
     'ms-jpq/coq.thirdparty',
     config = function()
       require('coq_3p') {
-        { src = 'copilot', short_name = 'COP', accept_key = '<c-f>' }
+        { src = "nvimlua", short_name = "nLUA", conf_only = true },
+        { src = 'copilot', short_name = 'COP',  accept_key = '<c-f>' },
+        { src = "dap" }
       }
     end
   },
@@ -41,7 +43,7 @@ require('lazy').setup({
     dependencies = { 'williamboman/mason.nvim' }
   },
   {
-    'jayp0521/mason-nvim-dap.nvim',
+    'jay-babu/mason-nvim-dap.nvim',
     opts = {
       automatic_setup = true,
     },
@@ -247,7 +249,7 @@ require('lazy').setup({
   { 'lambdalisue/suda.vim' },
   { 'kazhala/close-buffers.nvim',    config = true },
   { 'numToStr/Comment.nvim',         event = 'VeryLazy',         config = true },
-  { 'andweeb/presence.nvim' },
+  -- { 'andweeb/presence.nvim' },
   {
     'Shatur/neovim-session-manager',
     config = function()
@@ -256,15 +258,12 @@ require('lazy').setup({
       }
     end
   },
-  { 'smjonas/inc-rename.nvim', cmd = 'IncRename', config = true },
+  -- { 'smjonas/inc-rename.nvim', cmd = 'IncRename', config = true },
   {
     'windwp/nvim-autopairs',
-    event = 'VeryLazy',
+    event = 'InsertEnter',
     opts = {
-      disable_filetype = { 'telescopeprompt' },
       check_ts = true,
-      ts_config = {
-      },
       map_bs = false,
       map_cr = false,
     },

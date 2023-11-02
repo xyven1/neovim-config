@@ -35,21 +35,25 @@ vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } e
 
 -- coq mappings
 map('i', '<esc>', function() return vim.fn.pumvisible() == 1 and "<c-e><esc>" or "<esc>" end, expr_opts)
-map('i', '<c-c', function() return vim.fn.pumvisible() == 1 and "<c-e><c-c>" or "<c-c>" end, expr_opts)
+map('i', '<c-c>', function() return vim.fn.pumvisible() == 1 and "<c-e><c-c>" or "<c-c>" end, expr_opts)
 map('i', '<tab>', function() return vim.fn.pumvisible() == 1 and "<c-n>" or "<tab>" end, expr_opts)
 map('i', '<s-tab>', function() return vim.fn.pumvisible() == 1 and "<c-p>" or "<bs>" end, expr_opts)
 
 -- auto pairs
 local npairs = require('nvim-autopairs')
+local function auto_cr()
+  return vim.api.nvim_feedkeys(npairs.autopairs_cr(), "n", false) or ""
+end
+
 map('i', '<cr>', function()
   if vim.fn.pumvisible() ~= 0 then
     if vim.fn.complete_info({ 'selected' }).selected ~= -1 then
       return npairs.esc('<c-y>')
     else
-      return npairs.esc('<c-e>') .. npairs.autopairs_cr()
+      return npairs.esc('<c-e>') .. auto_cr()
     end
   else
-    return npairs.autopairs_cr()
+    return auto_cr()
   end
 end, expr_opts)
 
@@ -86,7 +90,8 @@ map("n", "<Leader>xh", function() close.delete({ type = "hidden" }) end, opts)
 map("n", "<Leader>xa", function() close.delete({ type = "all" }) end, opts)
 map("n", "<Leader>xo", function() close.delete({ type = "other" }) end, opts)
 
-function EscapePair()
+-- Escape pair
+map("i", "<C-l>", function()
   local closers = { ")", "]", "}", ">", "'", "\"", "`", "," }
   local line = vim.api.nvim_get_current_line()
   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -105,9 +110,7 @@ function EscapePair()
   else
     vim.api.nvim_win_set_cursor(0, { row, col + 1 })
   end
-end
-
-map("i", "<C-l>", EscapePair, opts)
+end, opts)
 
 -- LSP saga
 -- LSP finder - Find the symbol's definition
@@ -120,7 +123,8 @@ map("n", "gh", "<cmd>Lspsaga finder<CR>")
 map({ "n", "v" }, "<leader>a", "<cmd>Lspsaga code_action<CR>")
 
 -- Rename all occurrences of the hovered lsp token using lsp and then regex
-map("n", "gr", "<cmd>Lspsaga rename ++project<CR>")
+map("n", "gr", "<cmd>Lspsaga rename<CR>")
+map("n", "gR", "<cmd>Lspsaga rename ++project<CR>")
 
 -- Peek definition
 -- You can edit the file containing the definition in the floating window
