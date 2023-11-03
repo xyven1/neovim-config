@@ -28,5 +28,5 @@ g.coq_settings = {
     paths = { preview_lines = 3 }
   },
   display = { icons = { mode = 'short' } },
-  keymap = { recommended = false },
+  keymap = { recommended = false, jump_to_mark = '<c-n>' },
 }
