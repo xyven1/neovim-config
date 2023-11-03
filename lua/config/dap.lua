@@ -6,14 +6,13 @@ function Split(s, delimiter)
   return result;
 end
 
-local dap = require("dap")
-
 vim.api.nvim_set_hl(0, 'DapBreakpoint', { fg = '#bf321d' })
 vim.fn.sign_define("DapBreakpoint", { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
 vim.fn.sign_define("DapBreakpointCondition", { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
 vim.fn.sign_define("DapBreakpointRejected", { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
 vim.fn.sign_define("DapStopped", { text = '', texthl = 'Dap', linehl = 'DapStoppedLine', numhl = 'DapStoppedLine' })
 
+require('nvim-dap-virtual-text').setup {}
 require 'mason-nvim-dap'.setup {
   handlers = {
     function(config)

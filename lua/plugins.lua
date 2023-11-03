@@ -28,6 +28,7 @@ require('lazy').setup({
     lazy = true
   },
   -- Coding productivity
+  -- Completion
   {
     'ms-jpq/coq_nvim',
     keys = {
@@ -64,6 +65,7 @@ require('lazy').setup({
   { 'ms-jpq/coq.artifacts' },
   {
     'ms-jpq/coq.thirdparty',
+    event = "VeryLazy",
     config = function()
       require('coq_3p') {
         { src = 'copilot', short_name = 'COP', accept_key = '<c-f>' },
@@ -71,6 +73,8 @@ require('lazy').setup({
       }
     end
   },
+  -- Mason
+  { 'williamboman/mason.nvim', cmd = { "Mason" }, opts = {} },
   {
     'williamboman/mason-lspconfig.nvim',
     opts = {
@@ -90,11 +94,14 @@ require('lazy').setup({
     },
     dependencies = { 'williamboman/mason.nvim' }
   },
-  { 'williamboman/mason.nvim', config = true },
+  -- LSP
   {
     'neovim/nvim-lspconfig',
+    event = "VeryLazy",
     config = get_config('lsp'),
-    dependencies = 'coq_nvim'
+    dependencies = { 'ms-jpq/coq_nvim',
+      'folke/neodev.nvim'
+    }
   },
   {
     'kevinhwang91/nvim-ufo',
@@ -106,8 +113,10 @@ require('lazy').setup({
     },
     dependencies = { 'kevinhwang91/promise-async' },
   },
+  -- DAP
   {
     'mfussenegger/nvim-dap',
+    lazy = true,
     config = get_config('dap'),
     keys = {
       {
@@ -140,23 +149,19 @@ require('lazy').setup({
         function() require('dap').set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
         desc = 'Breakpoint with condition'
       },
+    },
+    dependencies = {
+      'theHamsta/nvim-dap-virtual-text',
     }
   },
-  { 'theHamsta/nvim-dap-virtual-text',            config = true },
-  { 'github/copilot.vim' },
+  -- Treesitter
   { 'nvim-treesitter/nvim-treesitter',            config = get_config('treesitter') },
   { 'nvim-treesitter/nvim-treesitter-textobjects' },
   { 'nvim-treesitter/playground',                 cmd = 'TSPlaygroundToggle' },
-  { "folke/neodev.nvim",                          opts = {} },
+  -- AI
+  { 'github/copilot.vim' },
 
   -- UI plugins
-  --[[ {
-    'ray-x/lsp_signature.nvim',
-    opts = {
-      hint_enable = false,
-      toggle_key = '<M-x>' -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'
-    }
-  }, ]]
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
@@ -202,7 +207,6 @@ require('lazy').setup({
   },
   {
     "folke/noice.nvim",
-    event = "VeryLazy",
     opts = {
       lsp = {
         -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
@@ -216,7 +220,7 @@ require('lazy').setup({
         -- view = "cmdline"
       },
       popupmenu = {
-        enabled = false,
+        enabled = true,
       },
       -- you can enable a preset for easier configuration
       presets = {
@@ -224,7 +228,7 @@ require('lazy').setup({
         command_palette = true,       -- position the cmdline and popupmenu together
         long_message_to_split = true, -- long messages will be sent to a split
         inc_rename = false,           -- enables an input dialog for inc-rename.nvim
-        lsp_doc_border = true,       -- add a border to hover docs and signature help
+        lsp_doc_border = true,        -- add a border to hover docs and signature help
       },
     },
     dependencies = {
@@ -234,6 +238,7 @@ require('lazy').setup({
   },
   {
     "rcarriga/nvim-notify",
+    lazy = true,
     keys = {
       {
         '<leader>l',
@@ -245,18 +250,7 @@ require('lazy').setup({
       }
     }
   },
-
-  --[[ {
-    'mrjones2014/legendary.nvim',
-    -- since legendary.nvim handles all your keymaps/commands,
-    -- its recommended to load legendary.nvim before other plugins
-    priority = 10000,
-    lazy = false,
-    config = get_config('legendary'),
-    -- sqlite is only needed if you want to use frecency sorting
-    dependencies = { 'kkharji/sqlite.lua' }
-  }, ]]
-  { 'nvim-tree/nvim-web-devicons', },
+  -- Themes
   {
     'Mofiqul/vscode.nvim',
     opts = {
@@ -271,19 +265,17 @@ require('lazy').setup({
   },
   {
     'folke/tokyonight.nvim',
-    lazy = true,
     priority = 1000
   },
   {
     'martinsione/darkplus.nvim',
-    lazy = true,
     priority = 1000
   },
   {
     'olimorris/onedarkpro.nvim',
-    lazy = true,
     priority = 1000
   },
+  -- Lines
   {
     'nvim-lualine/lualine.nvim',
     opts = {
@@ -316,15 +308,7 @@ require('lazy').setup({
       extensions = {}
     },
     event = 'VimEnter',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-  },
-  { 'arkav/lualine-lsp-progress' },
-  {
-    'rcarriga/nvim-dap-ui',
-    keys = {
-      { '<F4>', function() require('dapui').toggle() end },
-    },
-    config = true
+    dependencies = { 'nvim-tree/nvim-web-devicons', 'arkav/lualine-lsp-progress' },
   },
   {
     'akinsho/bufferline.nvim',
@@ -357,8 +341,7 @@ require('lazy').setup({
       { ']b',      '<cmd>BufferLineMoveNext<cr>',  desc = "Move buffer right" },
     }
   },
-  { 'kevinhwang91/nvim-bqf',     ft = 'qf' },
-  { 'folke/todo-comments.nvim',  dependencies = { 'nvim-lua/plenary.nvim' }, config = true },
+  -- Dashboard
   {
     'glepnir/dashboard-nvim',
     event = 'VimEnter',
@@ -398,9 +381,14 @@ require('lazy').setup({
     },
     dependencies = { 'nvim-tree/nvim-web-devicons' }
   },
+  -- LSP UI
   {
     'glepnir/lspsaga.nvim',
     opts = {
+      implement = {
+        enable = true,
+        lang = { 'rust' }
+      },
       lightbulb = {
         sign = false,
       },
@@ -409,7 +397,10 @@ require('lazy').setup({
       },
     },
     keys = {
-      { 'gh',         "<cmd>Lspsaga finder<cr>",                          desc = 'Find all occurences' },
+      { 'ga',         "<cmd>Lspsaga finder<cr>",                          desc = 'Open symbol finder' },
+      { 'ghi',        "<cmd>Lspsaga finder imp<cr>",                      desc = 'Find all implementations' },
+      { 'ghr',        "<cmd>Lspsaga finder ref<cr>",                      desc = 'Find all references' },
+      { 'ghd',        "<cmd>Lspsaga finder def<cr>",                      desc = 'Find all definitions' },
       { 'gr',         "<cmd>Lspsaga rename<cr>",                          desc = 'Rename symbol' },
       { 'gR',         "<cmd>Lspsaga rename ++project<cr>",                desc = 'Rename symbol (project)' },
       { 'gd',         "<cmd>Lspsaga peek_definition<cr>",                 desc = 'Peek definition' },
@@ -454,27 +445,42 @@ require('lazy').setup({
     event = 'BufRead',
     dependencies = { 'nvim-tree/nvim-web-devicons' }
   },
+  --[[ {
+    'ray-x/lsp_signature.nvim',
+    opts = {
+      hint_enable = false,
+      toggle_key = '<M-x>' -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'
+    }
+  }, ]]
+  -- DAP UI
+  {
+    'rcarriga/nvim-dap-ui',
+    keys = {
+      { '<F4>', function() require('dapui').toggle() end },
+    },
+    opts = {}
+  },
   -- Navigation plugins
   { 'ggandor/lightspeed.nvim',       keys = { 's', 'S' } },
   {
     'ibhagwan/fzf-lua',
     cmd = { 'FzfLua' },
     keys = {
-      { '<leader>o',  function() require('fzf-lua').files() end,     desc = 'Open file' },
-      { '<leader>h',  function() require('fzf-lua').live_grep() end, desc = 'Search in all files (project)' },
-      { '<leader>p',  function() require('fzf-lua').keymaps() end,   desc = 'Browse keymaps' },
-      { '<leader>ed', function() require('fzf-lua').dap_commands() end,  desc = 'Search debug commands' },
-      { '<leader>eb', function() require('fzf-lua').builtin() end,  desc = 'Select fzf search' },
-      { '<leader>ec', function() require('fzf-lua').commands() end,  desc = 'Search commands' },
-      { '<leader>es', function() require('fzf-lua').lsp_workspace_symbols() end,  desc = 'Search workspace symbols' },
-      { '<leader>et', function() require('fzf-lua').buffers() end,  desc = 'Search buffers' },
-      { '<leader>er', function() require('fzf-lua').resume() end,  desc = 'Resume last search' },
-      { '<leader>ehc', function() require('fzf-lua').command_history() end,  desc = 'Search command history' },
-      { '<leader>ehs', function() require('fzf-lua').search_history() end,  desc = 'Search search history' },
-      { '<leader>egh', function() require('fzf-lua').git_stash() end,  desc = 'Search git status' },
-      { '<leader>egs', function() require('fzf-lua').git_status() end,  desc = 'Search git status' },
-      { '<leader>egc', function() require('fzf-lua').git_commits() end,  desc = 'Search git commits' },
-      { '<leader>egb', function() require('fzf-lua').git_branches() end,  desc = 'Search git branches' },
+      { '<leader>o',   function() require('fzf-lua').files() end,                 desc = 'Open file' },
+      { '<leader>h',   function() require('fzf-lua').live_grep() end,             desc = 'Search in all files (project)' },
+      { '<leader>p',   function() require('fzf-lua').keymaps() end,               desc = 'Browse keymaps' },
+      { '<leader>ed',  function() require('fzf-lua').dap_commands() end,          desc = 'Search debug commands' },
+      { '<leader>eb',  function() require('fzf-lua').builtin() end,               desc = 'Select fzf search' },
+      { '<leader>ec',  function() require('fzf-lua').commands() end,              desc = 'Search commands' },
+      { '<leader>es',  function() require('fzf-lua').lsp_workspace_symbols() end, desc = 'Search workspace symbols' },
+      { '<leader>et',  function() require('fzf-lua').buffers() end,               desc = 'Search buffers' },
+      { '<leader>er',  function() require('fzf-lua').resume() end,                desc = 'Resume last search' },
+      { '<leader>ehc', function() require('fzf-lua').command_history() end,       desc = 'Search command history' },
+      { '<leader>ehs', function() require('fzf-lua').search_history() end,        desc = 'Search search history' },
+      { '<leader>egh', function() require('fzf-lua').git_stash() end,             desc = 'Search git status' },
+      { '<leader>egs', function() require('fzf-lua').git_status() end,            desc = 'Search git status' },
+      { '<leader>egc', function() require('fzf-lua').git_commits() end,           desc = 'Search git commits' },
+      { '<leader>egb', function() require('fzf-lua').git_branches() end,          desc = 'Search git branches' },
     },
     dependencies = { 'nvim-tree/nvim-web-devicons' }
   },
@@ -491,11 +497,14 @@ require('lazy').setup({
     'folke/trouble.nvim',
     cmd = { 'Trouble', 'TroubleToggle' },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = true
+    opts = {},
   },
-  { 'simrat39/symbols-outline.nvim', cmd = { 'SymbolsOutline' }, config = true },
+  { 'simrat39/symbols-outline.nvim', cmd = { 'SymbolsOutline' }, opts = {} },
 
-  -- Miscellanious plugins
+  -- Augmentations
+  { 'kevinhwang91/nvim-bqf',     ft = 'qf' },
+  { 'numToStr/Comment.nvim', opts = {} },
+  { 'folke/todo-comments.nvim',  event = "BufEnter", dependencies = { 'nvim-lua/plenary.nvim' }, opts = {} },
   {
     'kylechui/nvim-surround',
     version = '*', -- Use for stability; omit to use `main` branch for the latest features
@@ -545,8 +554,6 @@ require('lazy').setup({
       },
     }
   },
-  { 'numToStr/Comment.nvim', event = 'VeryLazy', config = true },
-  -- { 'andweeb/presence.nvim' },
   {
     'Shatur/neovim-session-manager',
     config = function()
@@ -631,6 +638,6 @@ require('lazy').setup({
     'lewis6991/gitsigns.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
     event = 'VeryLazy',
-    config = true
+    opts = {}
   }
 })

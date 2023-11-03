@@ -1,5 +1,8 @@
 require "nvim-treesitter.configs".setup {
   ensure_installed = "all",
+  sync_install = false,
+  auto_install = true,
+  modules = {},
   ignore_install = {}, -- List of parsers to ignore installing
   highlight = {
     enable = true, -- false will disable the whole extension
@@ -23,24 +26,24 @@ require "nvim-treesitter.configs".setup {
       lookahead = true,
       keymaps = {
         -- You can use the capture groups defined in textobjects.scm
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-        ["al"] = "@loop.outer",
-        ["il"] = "@loop.inner",
-        ["ib"] = "@block.inner",
-        ["ab"] = "@block.outer",
-        ["ir"] = "@parameter.inner",
-        ["ar"] = "@parameter.outer"
+        ["af"] = { query = "@function.outer", desc = "Select around function"},
+        ["if"] = { query = "@function.inner", desc = "Select inside function"},
+        ["ac"] = { query = "@class.outer", desc = "Select around class"},
+        ["ic"] = { query = "@class.inner", desc = "Select inside class"},
+        ["al"] = { query = "@loop.outer", desc = "Select around loop"},
+        ["il"] = { query = "@loop.inner", desc = "Select inside loop"},
+        ["ib"] = { query = "@block.inner", desc = "Select inside block"},
+        ["ab"] = { query = "@block.outer", desc = "Select around block"},
+        ["ir"] = { query = "@parameter.inner", desc = "Select inside parameter"},
+        ["ar"] = { query = "@parameter.outer", desc = "Select around parameter"},
       }
     },
     lsp_interop = {
       enable = true,
       border = 'none',
       peek_definition_code = {
-        ["<leader>df"] = "@function.outer",
-        ["<leader>dF"] = "@class.outer",
+        -- ["<leader>df"] = "@function.outer",
+        -- ["<leader>dF"] = "@class.outer",
       },
     },
   },

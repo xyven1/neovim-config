@@ -14,7 +14,6 @@ for type, icon in pairs(signs) do
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
-require('neodev').setup {}
 local function setup_with_settings(server_name, settings)
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities.textDocument.foldingRange = {
@@ -23,7 +22,6 @@ local function setup_with_settings(server_name, settings)
   }
 
   lspconfig[server_name].setup(coq.lsp_ensure_capabilities({
-    on_attach = on_attach,
     settings = settings,
     capabilities = capabilities,
   }))
@@ -35,6 +33,7 @@ require("mason-lspconfig").setup {
       setup_with_settings(server_name, nil)
     end,
     ["lua_ls"] = function()
+      require('neodev').setup {}
       setup_with_settings("lua_ls", {
         Lua = {
           diagnostics = {
@@ -64,11 +63,11 @@ require("mason-lspconfig").setup {
   }
 }
 
-local notify = vim.notify
-vim.notify = function(msg, ...)
-  if msg:match("warning: multiple different client offset_encodings") then
-    return
-  end
-
-  notify(msg, ...)
-end
+-- local notify = vim.notify
+-- vim.notify = function(msg, ...)
+--   if msg:match("warning: multiple different client offset_encodings") then
+--     return
+--   end
+--
+--   notify(msg, ...)
+-- end
