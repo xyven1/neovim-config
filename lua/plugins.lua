@@ -199,7 +199,6 @@ require('lazy').setup({
                 "IndentBlanklineContextChar",
               }
             }
-            require('ibl').
             require('rainbow-delimiters').disable(0)
           else
             vim.g.rainbow = true
