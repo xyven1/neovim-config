@@ -1,5 +1,5 @@
 require "nvim-treesitter.configs".setup {
-  ensure_installed = "all",
+  ensure_installed = {},
   sync_install = false,
   auto_install = true,
   modules = {},
@@ -7,6 +7,9 @@ require "nvim-treesitter.configs".setup {
   highlight = {
     enable = true, -- false will disable the whole extension
     disable = {} -- list of language that will be disabled
+  },
+  context_commentstring = {
+    enable = true,
   },
   incremental_selection = {
     enable = true,

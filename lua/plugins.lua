@@ -89,6 +89,7 @@ require('lazy').setup({
   },
   {
     'jay-babu/mason-nvim-dap.nvim',
+    event = "BufEnter",
     opts = {
       automatic_setup = true,
     },
@@ -155,11 +156,109 @@ require('lazy').setup({
     }
   },
   -- Treesitter
-  { 'nvim-treesitter/nvim-treesitter',            config = get_config('treesitter') },
-  { 'nvim-treesitter/nvim-treesitter-textobjects' },
-  { 'nvim-treesitter/playground',                 cmd = 'TSPlaygroundToggle' },
+  {
+    'nvim-treesitter/nvim-treesitter',
+    config = get_config('treesitter'),
+    dependencies = {
+      'JoosepAlviste/nvim-ts-context-commentstring',
+      'nvim-treesitter/nvim-treesitter-textobjects'
+    },
+  },
+  -- Indent
+  { 'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle' },
+  {
+    'hiphish/rainbow-delimiters.nvim',
+    config = function()
+      local rainbow = require 'rainbow-delimiters'
+      require('rainbow-delimiters.setup').setup({
+        strategy = {
+          [''] = rainbow.strategy['global']
+        },
+        highlight = {
+          "BracketHighlighting0",
+          "BracketHighlighting1",
+          "BracketHighlighting2",
+        }
+      })
+      vim.g.rainbow = false
+      vim.api.nvim_create_autocmd('BufEnter', {
+        callback = function() if vim.g.rainbow then rainbow.enable(0) else rainbow.disable(0) end end
+      })
+    end,
+    keys = {
+      {
+        '<leader>[',
+        function()
+          local scope = {}
+          if vim.g.rainbow then
+            vim.g.rainbow = false
+            scope = {
+              show_start = false,
+              show_end = false,
+              highlight = {
+                "IndentBlanklineContextChar",
+              }
+            }
+            require('ibl').
+            require('rainbow-delimiters').disable(0)
+          else
+            vim.g.rainbow = true
+            scope = {
+              show_start = true,
+              show_end = true,
+              highlight = {
+                "BracketHighlighting0",
+                "BracketHighlighting1",
+                "BracketHighlighting2",
+              }
+            }
+            require('rainbow-delimiters').enable(0)
+          end
+          require('ibl').update({ scope = scope })
+        end,
+        desc = "Toggle rainbow delimiters"
+      }
+    },
+    dependencies = {
+      'lukas-reineke/indent-blankline.nvim',
+    }
+  },
+  {
+    'lukas-reineke/indent-blankline.nvim',
+    event = "BufEnter",
+    opts = {
+      indent = {
+        char = "▏",
+        highlight = {
+          "IndentBlanklineChar",
+        }
+      },
+      exclude = {
+        filetypes = { "dashboard" },
+      },
+      scope = {
+        show_start = false,
+        show_end = false,
+        injected_languages = true,
+        highlight = {
+          "IndentBlanklineContextChar"
+        },
+      }
+    },
+    config = function(_, opts)
+      local hooks = require "ibl.hooks"
+      require("ibl").setup(opts)
+      hooks.register(hooks.type.SCOPE_HIGHLIGHT, function(tick, bufnr, scope, scope_index)
+        if vim.g.rainbow then
+          return hooks.builtin.scope_highlight_from_extmark(tick, bufnr, scope, scope_index)
+        else
+          return 0
+        end
+      end)
+    end
+  },
   -- AI
-  { 'github/copilot.vim' },
+  { 'github/copilot.vim',         event = "VeryLazy" },
 
   -- UI plugins
   {
@@ -191,8 +290,8 @@ require('lazy').setup({
       { '<leader><leader>l', function() require('smart-splits').swap_buf_right() end,    desc = 'Swap buffer right' },
     }
   },
-  { 'tzachar/highlight-undo.nvim', opts = {}, event = "BufEnter" },
-  {
+  { 'tzachar/highlight-undo.nvim', opts = {},          event = "BufEnter" },
+  --[[ {
     'echasnovski/mini.indentscope',
     event = { "BufReadPre", "BufNewFile" },
     opts = {
@@ -204,9 +303,10 @@ require('lazy').setup({
       vim.api.nvim_set_hl(0, "MiniIndentscopeSymbol", { link = "NonText" });
       require("mini.indentscope").setup(opts)
     end
-  },
+  }, ]]
   {
     "folke/noice.nvim",
+    lazy = false,
     opts = {
       lsp = {
         -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
@@ -217,7 +317,7 @@ require('lazy').setup({
         },
       },
       cmdline = {
-        -- view = "cmdline"
+        view = "cmdline"
       },
       popupmenu = {
         enabled = true,
@@ -225,7 +325,7 @@ require('lazy').setup({
       -- you can enable a preset for easier configuration
       presets = {
         -- bottom_search = true,         -- use a classic bottom cmdline for search
-        command_palette = true,       -- position the cmdline and popupmenu together
+        -- command_palette = true,       -- position the cmdline and popupmenu together
         long_message_to_split = true, -- long messages will be sent to a split
         inc_rename = false,           -- enables an input dialog for inc-rename.nvim
         lsp_doc_border = true,        -- add a border to hover docs and signature help
@@ -233,34 +333,54 @@ require('lazy').setup({
     },
     dependencies = {
       "MunifTanjim/nui.nvim",
-      "rcarriga/nvim-notify",
+    },
+    keys = {
+      { '<leader>l', '<cmd>NoiceDismiss<cr>', desc = 'Clear notifications' }
     }
   },
   {
     "rcarriga/nvim-notify",
-    lazy = true,
+    opts = {
+      top_down = false,
+    }
+  },
+  {
+    'norcalli/nvim-colorizer.lua',
+    config = function()
+      require 'colorizer'.setup({
+        '*',
+        css = { css = true, },
+        javascript = { css_fn = true },
+        html = { css_fn = true },
+      }, { names = false, RRGGBBAA = true })
+    end,
     keys = {
-      {
-        '<leader>l',
-        function()
-          require('notify').dismiss({ pending = false, silent = true })
-          vim.cmd.redraw()
-        end,
-        desc = 'Clear notifications'
-      }
+      { '<leader>c', '<cmd>ColorizerToggle<cr>', desc = 'Toggle colorizer' }
     }
   },
   -- Themes
   {
     'Mofiqul/vscode.nvim',
-    opts = {
-      italic_comments = true,
-      group_overrides = {
-        DapBreakpoint = { ctermbg = 0, fg = '#bf321d' },
-        DapStopped = { ctermbg = 0, fg = '#ffcc00' },
-        DapStoppedLine = { ctermbg = 0, bg = '#4b4b26' },
-      },
-    },
+    config = function()
+      local c = require('vscode.colors').get_colors()
+      require('vscode').setup({
+        transparent = true,
+        italic_comments = true,
+        disable_nvimtree_bg = true,
+        group_overrides = {
+          DapBreakpoint = { ctermbg = 0, fg = '#bf321d' },
+          DapStopped = { ctermbg = 0, fg = '#ffcc00' },
+          DapStoppedLine = { ctermbg = 0, bg = '#4b4b26' },
+          DiagnosticUnnecessary = { link = 'NonText' },
+          DiffviewDiffDeleteDim = { link = 'NonText' },
+          NotifyBackground = { ctermbg = 0, bg = '#000000' },
+          BracketHighlighting0 = { fg = '#ffd700' },
+          BracketHighlighting1 = { fg = '#da70d6' },
+          BracketHighlighting2 = { fg = '#179fff' },
+        },
+      })
+      require('vscode').load()
+    end,
     priority = 1000
   },
   {
@@ -268,11 +388,13 @@ require('lazy').setup({
     priority = 1000
   },
   {
-    'martinsione/darkplus.nvim',
-    priority = 1000
-  },
-  {
     'olimorris/onedarkpro.nvim',
+    opts = {
+      options = {
+        -- transparency = true,
+        -- highlight_inactive_windows = true
+      },
+    },
     priority = 1000
   },
   -- Lines
@@ -292,9 +414,9 @@ require('lazy').setup({
         lualine_a = { 'mode' },
         lualine_b = { 'branch', 'diff', 'diagnostics' },
         lualine_c = { 'filename', 'lsp_progress' },
-        lualine_x = { 'encoding', 'fileformat', 'filetype' },
-        lualine_y = { 'progress' },
-        lualine_z = { 'location' }
+        lualine_x = { 'overseer', },
+        lualine_y = { 'encoding', 'fileformat', 'filetype' },
+        lualine_z = { 'progress', 'location' }
       },
       inactive_sections = {
         lualine_a = {},
@@ -365,7 +487,7 @@ require('lazy').setup({
             action = 'SessionManager load_last_session'
           },
           {
-            icon = '  ',
+            icon = '󰈢  ',
             desc = 'Recently opened sessions                ',
             key = 'r',
             action = 'SessionManager load_session'
@@ -461,7 +583,7 @@ require('lazy').setup({
     opts = {}
   },
   -- Navigation plugins
-  { 'ggandor/lightspeed.nvim',       keys = { 's', 'S' } },
+  { 'ggandor/lightspeed.nvim',     keys = { 's', 'S' } },
   {
     'ibhagwan/fzf-lua',
     cmd = { 'FzfLua' },
@@ -494,6 +616,15 @@ require('lazy').setup({
     config = get_config('tree'),
   },
   {
+    'stevearc/oil.nvim',
+    keys = {
+      { '-', '<cmd>Oil<cr>', desc = "Open parent directory" }
+    },
+    opts = {},
+    cmd = { 'Oil' },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
+  {
     'folke/trouble.nvim',
     cmd = { 'Trouble', 'TroubleToggle' },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -502,15 +633,16 @@ require('lazy').setup({
   { 'simrat39/symbols-outline.nvim', cmd = { 'SymbolsOutline' }, opts = {} },
 
   -- Augmentations
-  { 'kevinhwang91/nvim-bqf',     ft = 'qf' },
-  { 'numToStr/Comment.nvim', opts = {} },
-  { 'folke/todo-comments.nvim',  event = "BufEnter", dependencies = { 'nvim-lua/plenary.nvim' }, opts = {} },
+  { 'kevinhwang91/nvim-bqf',         ft = 'qf' },
+  { 'numToStr/Comment.nvim',         event = "BufEnter",         opts = {} },
+  { 'folke/todo-comments.nvim',      event = "BufEnter",         dependencies = { 'nvim-lua/plenary.nvim' }, opts = {} },
   {
     'kylechui/nvim-surround',
     version = '*', -- Use for stability; omit to use `main` branch for the latest features
     event = 'VeryLazy',
     config = true
   },
+
   { 'lambdalisue/suda.vim' },
   {
     'kazhala/close-buffers.nvim',
@@ -634,10 +766,49 @@ require('lazy').setup({
       },
     }
   },
+  -- Git
   {
     'lewis6991/gitsigns.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
     event = 'VeryLazy',
     opts = {}
-  }
+  },
+  {
+    'tpope/vim-fugitive',
+    event = 'VeryLazy',
+    opts = {},
+    config = function()
+    end
+  },
+  {
+    'sindrets/diffview.nvim',
+    dependencies = {
+      'nvim-tree/nvim-web-devicons'
+    },
+    opts = {
+      enhanced_diff_hl = true,
+    },
+    cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewFileHistory' },
+    keys = {
+      { '<leader>dd', '<cmd>DiffviewOpen<cr>',    desc = 'Open diff view' },
+      { '<leader>dc', '<cmd>DiffviewClose<cr>',   desc = 'Close diff view' },
+      { '<leader>dh', '<cmd>DiffviewFileHistory', desc = 'Git file history' },
+    }
+  },
+  -- Compilation
+  { -- This plugin
+    "Zeioth/compiler.nvim",
+    cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
+    dependencies = { "stevearc/overseer.nvim" },
+    opts = {},
+  },
+  { -- The task runner we use
+    "stevearc/overseer.nvim",
+    event = 'VeryLazy',
+    keys = {
+      { '<leader>`', '<cmd>OverseerToggle<cr>', desc = 'Toggle tasks view' },
+      { '<leader>r', '<cmd>OverseerRun<cr>',    desc = 'Run task' },
+    },
+    opts = {},
+  },
 })

@@ -30,3 +30,4 @@ g.coq_settings = {
   display = { icons = { mode = 'short' } },
   keymap = { recommended = false, jump_to_mark = '<c-n>' },
 }
+vim.opt.fillchars:append { diff = "╱" }
