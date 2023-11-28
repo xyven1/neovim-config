@@ -74,7 +74,9 @@ require('lazy').setup({
     end
   },
   -- Mason
-  { 'williamboman/mason.nvim', cmd = { "Mason" }, opts = {} },
+  { 'williamboman/mason.nvim', cmd = { "Mason" }, opts = {
+    PATH = 'append',
+  } },
   {
     'williamboman/mason-lspconfig.nvim',
     opts = {
