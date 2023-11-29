@@ -74,9 +74,13 @@ require('lazy').setup({
     end
   },
   -- Mason
-  { 'williamboman/mason.nvim', cmd = { "Mason" }, opts = {
-    PATH = 'append',
-  } },
+  {
+    'williamboman/mason.nvim',
+    cmd = { "Mason" },
+    opts = {
+      PATH = 'append',
+    }
+  },
   {
     'williamboman/mason-lspconfig.nvim',
     opts = {
@@ -259,7 +263,7 @@ require('lazy').setup({
     end
   },
   -- AI
-  { 'github/copilot.vim',         event = "VeryLazy" },
+  { 'github/copilot.vim',          event = "VeryLazy" },
 
   -- UI plugins
   {
@@ -291,7 +295,7 @@ require('lazy').setup({
       { '<leader><leader>l', function() require('smart-splits').swap_buf_right() end,    desc = 'Swap buffer right' },
     }
   },
-  { 'tzachar/highlight-undo.nvim', opts = {},          event = "BufEnter" },
+  { 'tzachar/highlight-undo.nvim', opts = {},         event = "BufEnter" },
   --[[ {
     'echasnovski/mini.indentscope',
     event = { "BufReadPre", "BufNewFile" },
@@ -325,7 +329,7 @@ require('lazy').setup({
       },
       -- you can enable a preset for easier configuration
       presets = {
-        -- bottom_search = true,         -- use a classic bottom cmdline for search
+        bottom_search = true,         -- use a classic bottom cmdline for search
         -- command_palette = true,       -- position the cmdline and popupmenu together
         long_message_to_split = true, -- long messages will be sent to a split
         inc_rename = false,           -- enables an input dialog for inc-rename.nvim
@@ -401,35 +405,45 @@ require('lazy').setup({
   -- Lines
   {
     'nvim-lualine/lualine.nvim',
-    opts = {
-      options = {
-        icons_enabled = true,
-        theme = 'auto',
-        component_separators = { left = '', right = '' },
-        section_separators = { left = '', right = '' },
-        disabled_filetypes = {},
-        always_divide_middle = true,
-        globalstatus = true,
-      },
-      sections = {
-        lualine_a = { 'mode' },
-        lualine_b = { 'branch', 'diff', 'diagnostics' },
-        lualine_c = { 'filename', 'lsp_progress' },
-        lualine_x = { 'overseer', },
-        lualine_y = { 'encoding', 'fileformat', 'filetype' },
-        lualine_z = { 'progress', 'location' }
-      },
-      inactive_sections = {
-        lualine_a = {},
-        lualine_b = {},
-        lualine_c = { 'filename' },
-        lualine_x = { 'location' },
-        lualine_y = {},
-        lualine_z = {}
-      },
-      tabline = {},
-      extensions = {}
-    },
+    config = function ()
+      vim.opt.showmode = false
+      require('lualine').setup {
+        options = {
+          icons_enabled = true,
+          theme = 'auto',
+          component_separators = { left = '', right = '' },
+          section_separators = { left = '', right = '' },
+          disabled_filetypes = {},
+          always_divide_middle = true,
+          globalstatus = true,
+        },
+        sections = {
+          lualine_a = { 'mode',
+          },
+          lualine_b = { 'branch', 'diff', 'diagnostics' },
+          lualine_c = { 'filename', 'lsp_progress' },
+          lualine_x = { 'overseer',
+            {
+              require("noice").api.statusline.mode.get,
+              cond = require("noice").api.statusline.mode.has,
+              color = { fg = "#ff9e64" },
+            }
+          },
+          lualine_y = { 'encoding', 'fileformat', 'filetype' },
+          lualine_z = { 'progress', 'location' }
+        },
+        inactive_sections = {
+          lualine_a = {},
+          lualine_b = {},
+          lualine_c = { 'filename' },
+          lualine_x = {},
+          lualine_y = {},
+          lualine_z = { 'location'}
+        },
+        tabline = {},
+        extensions = {}
+      }
+    end,
     event = 'VimEnter',
     dependencies = { 'nvim-tree/nvim-web-devicons', 'arkav/lualine-lsp-progress' },
   },
@@ -584,7 +598,7 @@ require('lazy').setup({
     opts = {}
   },
   -- Navigation plugins
-  { 'ggandor/lightspeed.nvim',     keys = { 's', 'S' } },
+  { 'ggandor/lightspeed.nvim',       keys = { 's', 'S' } },
   {
     'ibhagwan/fzf-lua',
     cmd = { 'FzfLua' },
