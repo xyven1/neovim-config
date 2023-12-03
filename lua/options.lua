@@ -27,7 +27,17 @@ g.coq_settings = {
     buffers = { enabled = false },
     paths = { preview_lines = 3 }
   },
-  display = { icons = { mode = 'short' } },
-  keymap = { recommended = false, jump_to_mark = '<c-n>' },
+  display = {
+    icons = { mode = 'short' },
+    ghost_text = {
+      context = { " ⟨ ", " ⟩" },
+    },
+  },
+  keymap = {
+    recommended = false,
+    jump_to_mark = '<c-n>',
+    pre_select = true
+  },
 }
+
 vim.opt.fillchars:append { diff = "╱" }
