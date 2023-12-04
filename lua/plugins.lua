@@ -294,19 +294,6 @@ require('lazy').setup(
       }
     },
     { 'tzachar/highlight-undo.nvim', opts = {},         event = "BufEnter" },
-    --[[ {
-    'echasnovski/mini.indentscope',
-    event = { "BufReadPre", "BufNewFile" },
-    opts = {
-      draw = { delay = 0, animation = function() return 0 end },
-      options = { border = "top", try_as_border = true },
-      symbol = "▏",
-    },
-    config = function(_, opts)
-      vim.api.nvim_set_hl(0, "MiniIndentscopeSymbol", { link = "NonText" });
-      require("mini.indentscope").setup(opts)
-    end
-  }, ]]
     {
       "folke/noice.nvim",
       lazy = false,
@@ -551,7 +538,18 @@ require('lazy').setup(
         { '[e',         "<cmd>Lspsaga diagnostic_jump_prev<cr>",            desc = 'Jump to previous diagnostic' },
         { ']e',         "<cmd>Lspsaga diagnostic_jump_next<cr>",            desc = 'Jump to next diagnostic' },
         { 'go',         "<cmd>Lspsaga outline<cr>",                         desc = 'Show outline' },
-        { 'K',          "<cmd>Lspsaga hover_doc<cr>",                       desc = 'Show symbol information' },
+        {
+          'K',
+          function()
+            if require('dap').session() then
+              require("dapui").eval()
+            else
+              require("lspsaga.hover"):render_hover_doc()
+            end
+          end,
+          desc = "Show symbol information",
+          mode = { 'n', 'v' }
+        },
         {
           '[E',
           function()
@@ -709,7 +707,6 @@ require('lazy').setup(
         }
       end
     },
-    -- { 'smjonas/inc-rename.nvim', cmd = 'IncRename', config = true },
     {
       'windwp/nvim-autopairs',
       event = 'InsertEnter',
