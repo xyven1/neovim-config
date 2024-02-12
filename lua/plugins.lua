@@ -87,7 +87,13 @@ require('lazy').setup(
       },
       keys = {
         { '<leader>f', function() vim.lsp.buf.format({ async = true }) end, desc = "Format buffer" },
-        { '<leader>i', function() vim.lsp.inlay_hint(0, nil) end,           desc = "Toggle inlay hints" },
+        {
+          '<leader>i',
+          function()
+            vim.lsp.inlay_hint.enable(nil, not vim.lsp.inlay_hint.is_enabled(nil))
+          end,
+          desc = "Toggle inlay hints"
+        },
       },
       dependencies = { 'williamboman/mason.nvim' }
     },
