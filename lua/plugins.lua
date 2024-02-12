@@ -444,7 +444,7 @@ require('lazy').setup(
     },
     {
       'akinsho/bufferline.nvim',
-      event = 'BufRead',
+      event = 'VimEnter',
       opts = {
         options = {
           diagnostics = 'nvim_lsp',
