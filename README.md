@@ -15,7 +15,7 @@ This is my neovim configuration. It uses recent and maintained plugins with a fo
 # External dependencies
 - python3-venv (for coq_nvim)
 
-# asdf dependencies 
+# asdf dependencies
 - !neovim (nightly)
 - direnv (for avoiding shim slowdowns with asdf)
 - !fzf
