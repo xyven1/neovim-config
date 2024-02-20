@@ -12,25 +12,27 @@ return {
     event = "VeryLazy",
     opts = {
       servers = {
-        ["rust-analyzer"] = {
-          checkOnSave = {
-            command = "clippy",
-          },
-        },
-        ["nil"] = {
-          formatting = {
-            command = { "alejandra" },
-          },
-        },
-        ["lua_ls"] = function()
-          require('neodev').setup {}
-          return {
-            Lua = {
-              diagnostics = {
-                globals = { "vim" }
-              }
+        rust_analyzer = {
+          settings = {
+            ['rust-analyzer'] = {
+              checkOnSave = {
+                command = 'clippy',
+              },
             }
           }
+        },
+        nil_ls = {
+          settings = {
+            ['nil'] = {
+              formatting = {
+                command = { 'alejandra' },
+              },
+            }
+          }
+        },
+        lua_ls = function()
+          require('neodev').setup {}
+          return {}
         end,
       }
     },
@@ -57,7 +59,7 @@ return {
         function(server_name)
           local config = opts.servers[server_name] or {}
           if type(config) == "function" then
-            config = config()
+            config = config() or {}
           end
           config.capabilities = vim.lsp.protocol.make_client_capabilities()
           config.capabilities.textDocument.foldingRange = {
