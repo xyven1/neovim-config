@@ -5,6 +5,9 @@ return {
       'JoosepAlviste/nvim-ts-context-commentstring',
       'nvim-treesitter/nvim-treesitter-textobjects'
     },
+    config = function(_, opts)
+      require('nvim-treesitter.configs').setup(opts)
+    end,
     opts = {
       ensure_installed = {},
       sync_install = false,

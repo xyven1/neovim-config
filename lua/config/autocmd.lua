@@ -2,11 +2,11 @@
 local trim = vim.api.nvim_create_augroup('TrimWhiteSpace', { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = trim,
-  command = [[:%s/\s\+$//e]]
-})
-
--- Auto format on save
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*.go",
-  callback = function() vim.lsp.buf.format { async = false } end,
+  callback = function()
+    local view = vim.fn.winsaveview()
+    if view then
+      vim.api.nvim_command [[%s/\s\+$//e]]
+      vim.fn.winrestview(view)
+    end
+  end
 })

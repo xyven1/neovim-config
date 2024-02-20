@@ -1,41 +1,40 @@
 return {
   {
-    'williamboman/mason.nvim',
-    cmd = { "Mason" },
-    opts = {
-      PATH = 'append',
-    }
-  },
-  {
-    'williamboman/mason-lspconfig.nvim',
-    dependencies = { 'williamboman/mason.nvim' },
-    opts = {
-      ensure_installed = {},
-      inlay_hints = { enabled = true }
-    },
-    keys = {
-      { '<leader>f', function() vim.lsp.buf.format({ async = true }) end, desc = "Format buffer" },
-      {
-        '<leader>i',
-        function()
-          vim.lsp.inlay_hint.enable(nil, not vim.lsp.inlay_hint.is_enabled(nil))
-        end,
-        desc = "Toggle inlay hints"
-      },
-    },
-  },
-  {
     'neovim/nvim-lspconfig',
     dependencies = {
       'ms-jpq/coq_nvim',
-      'folke/neodev.nvim',
+      {
+        'folke/neodev.nvim',
+        lazy = true
+      },
       'williamboman/mason-lspconfig.nvim',
     },
     event = "VeryLazy",
-    config = function()
-      local lspconfig = require('lspconfig')
-      local coq = require('coq')
-
+    opts = {
+      servers = {
+        ["rust-analyzer"] = {
+          checkOnSave = {
+            command = "clippy",
+          },
+        },
+        ["nil"] = {
+          formatting = {
+            command = { "alejandra" },
+          },
+        },
+        ["lua_ls"] = function()
+          require('neodev').setup {}
+          return {
+            Lua = {
+              diagnostics = {
+                globals = { "vim" }
+              }
+            }
+          }
+        end,
+      }
+    },
+    init = function()
       vim.diagnostic.config({
         virtual_text = {
           source = 'ifmany',
@@ -48,55 +47,98 @@ return {
         local hl = "DiagnosticSign" .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
       end
+    end,
+    config = function(_, opts)
+      local lspconfig = require('lspconfig')
+      local coq = require('coq')
+      local mason_lspconfig = require('mason-lspconfig')
 
-      local function setup_with_settings(server_name, settings)
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
-        capabilities.textDocument.foldingRange = {
-          dynamicRegistration = false,
-          lineFoldingOnly = true
-        }
-
-        lspconfig[server_name].setup(coq.lsp_ensure_capabilities({
-          settings = settings,
-          capabilities = capabilities,
-        }))
-      end
-      require("mason-lspconfig").setup {
-        handlers = {
-          function(server_name)
-            setup_with_settings(server_name, nil)
-          end,
-          ["lua_ls"] = function()
-            require('neodev').setup {}
-            setup_with_settings("lua_ls", {
-              Lua = {
-                diagnostics = {
-                  globals = { "vim" }
-                }
-              }
-            })
-          end,
-          ["rust_analyzer"] = function()
-            setup_with_settings("rust_analyzer", {
-              ["rust-analyzer"] = {
-                checkOnSave = {
-                  command = "clippy",
-                },
-              },
-            })
-          end,
-          ["nil_ls"] = function()
-            setup_with_settings("nil_ls", {
-              ['nil'] = {
-                formatting = {
-                  command = { "nixpkgs-fmt" },
-                },
-              },
-            })
-          end,
-        }
+      mason_lspconfig.setup_handlers {
+        function(server_name)
+          local config = opts.servers[server_name] or {}
+          if type(config) == "function" then
+            config = config()
+          end
+          config.capabilities = vim.lsp.protocol.make_client_capabilities()
+          config.capabilities.textDocument.foldingRange = {
+            dynamicRegistration = false,
+            lineFoldingOnly = true
+          }
+          config = coq.lsp_ensure_capabilities(config)
+          lspconfig[server_name].setup(config)
+        end,
       }
     end,
+    keys = {
+      {
+        '<leader>i',
+        function()
+          vim.lsp.inlay_hint.enable(nil, not vim.lsp.inlay_hint.is_enabled(nil))
+        end,
+        desc = "Toggle inlay hints"
+      },
+    },
+  },
+  {
+    'xyven1/formatter.nvim',
+    branch = 'patch-1',
+    cmd = { "Format", "FormatWrite", "FormatLock", "FormatWriteLock" },
+    opts = {},
+    init = function()
+      vim.F.format_buf = function()
+      end
+    end,
+    config = function(_, opts)
+      vim.api.nvim_create_augroup("__formatter__", { clear = true })
+      vim.api.nvim_create_autocmd("BufWritePost", {
+        group = "__formatter__",
+        pattern = "*.go",
+        callback = function()
+          local format = require('formatter.format').format
+          if not format('', '', 1, vim.fn.line("$"), { write = true }) then
+            vim.lsp.buf.format({ async = false })
+            vim.api.nvim_command "update"
+          end
+        end
+      })
+      require("formatter").setup(vim.tbl_deep_extend("force", opts, {
+        filetype = {
+          python = {
+            require("formatter.filetypes.python").isort,
+            require("formatter.filetypes.python").black,
+          },
+        }
+      }))
+    end,
+    keys = {
+      {
+        '<leader>f',
+        function()
+          local line1
+          local line2
+          if vim.fn.visualmode() == "V" then
+            line1 = vim.fn.line("'<")
+            line2 = vim.fn.line("'>")
+          else
+            line1 = 1
+            line2 = vim.fn.line("$")
+          end
+          local write = vim.bo.modified == false
+          if not require('formatter.format').format('', '', line1, line2, { write }) then
+            -- vim.notify("Formatter.nvim not setup for this language, trying lsp...", vim.log.levels.WARN)
+            local view = vim.fn.winsaveview()
+            vim.lsp.buf.format({ async = false })
+            if view then
+              vim.fn.winrestview(view)
+            end
+            if write then
+              vim.api.nvim_command "update"
+            end
+          end
+        end,
+        desc = "Format buffer"
+      },
+    }
   },
   {
     'kevinhwang91/nvim-ufo',

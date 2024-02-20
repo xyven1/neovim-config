@@ -6,8 +6,7 @@ return {
       vim.o.timeout = true
       vim.o.timeoutlen = 300
     end,
-    opts = {
-    }
+    opts = {}
   },
   {
     'mrjones2014/smart-splits.nvim',
@@ -28,7 +27,11 @@ return {
       { '<leader><leader>l', function() require('smart-splits').swap_buf_right() end,    desc = 'Swap buffer right' },
     }
   },
-  { 'tzachar/highlight-undo.nvim', opts = {},          event = "BufEnter" },
+  {
+    'tzachar/highlight-undo.nvim',
+    event = "BufEnter",
+    opts = {},
+  },
   {
     'norcalli/nvim-colorizer.lua',
     config = function()
@@ -43,16 +46,27 @@ return {
       { '<leader>c', '<cmd>ColorizerToggle<cr>', desc = 'Toggle colorizer' }
     }
   },
-  { 'kevinhwang91/nvim-bqf',       ft = 'qf' },
-  { 'numToStr/Comment.nvim',       event = "BufEnter", opts = {} },
-  { 'folke/todo-comments.nvim',    event = "BufEnter", dependencies = { 'nvim-lua/plenary.nvim' }, opts = {} },
+  {
+    'kevinhwang91/nvim-bqf',
+    ft = 'qf'
+  },
+  {
+    'numToStr/Comment.nvim',
+    event = "BufEnter",
+    opts = {}
+  },
+  {
+    'folke/todo-comments.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    event = "BufEnter",
+    opts = {}
+  },
   {
     'kylechui/nvim-surround',
     version = '*', -- Use for stability; omit to use `main` branch for the latest features
     event = 'VeryLazy',
     opts = {}
   },
-
   { 'lambdalisue/suda.vim' },
   {
     'kazhala/close-buffers.nvim',
