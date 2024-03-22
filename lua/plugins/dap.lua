@@ -1,6 +1,15 @@
 return {
   {
+    'theHamsta/nvim-dap-virtual-text',
+    lazy = true,
+    opts = { enabled = false }
+  },
+  {
     'mfussenegger/nvim-dap',
+    dependencies = {
+      'theHamsta/nvim-dap-virtual-text',
+      'jay-babu/mason-nvim-dap.nvim',
+    },
     init = function()
       vim.api.nvim_set_hl(0, 'DapBreakpoint', { fg = '#bf321d' })
       vim.fn.sign_define("DapBreakpoint", { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
@@ -8,9 +17,6 @@ return {
       vim.fn.sign_define("DapBreakpointRejected", { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
       vim.fn.sign_define("DapStopped", { text = '', texthl = 'Dap', linehl = 'DapStoppedLine', numhl = 'DapStoppedLine' })
     end,
-    dependencies = {
-      'theHamsta/nvim-dap-virtual-text',
-    },
     lazy = true,
     keys = {
       {
