@@ -39,7 +39,7 @@ return {
     init = function()
       vim.diagnostic.config({
         virtual_text = {
-          source = 'ifmany',
+          source = "if_many",
         },
         severity_sort = true,
       })
@@ -55,27 +55,28 @@ return {
       local coq = require('coq')
       local mason_lspconfig = require('mason-lspconfig')
 
-      mason_lspconfig.setup_handlers {
-        function(server_name)
-          local config = opts.servers[server_name] or {}
-          if type(config) == "function" then
-            config = config() or {}
-          end
-          config.capabilities = vim.lsp.protocol.make_client_capabilities()
-          config.capabilities.textDocument.foldingRange = {
-            dynamicRegistration = false,
-            lineFoldingOnly = true
-          }
-          config = coq.lsp_ensure_capabilities(config)
-          lspconfig[server_name].setup(config)
-        end,
-      }
+      local setup_server = function(server_name)
+        local config = opts.servers[server_name] or {}
+        if type(config) == "function" then
+          config = config() or {}
+        end
+        config.capabilities = vim.lsp.protocol.make_client_capabilities()
+        config.capabilities.textDocument.foldingRange = {
+          dynamicRegistration = false,
+          lineFoldingOnly = true
+        }
+        config = coq.lsp_ensure_capabilities(config)
+        lspconfig[server_name].setup(config)
+      end
+      mason_lspconfig.setup_handlers { setup_server }
+
+      setup_server "nil_ls"
     end,
     keys = {
       {
         '<leader>i',
         function()
-          vim.lsp.inlay_hint.enable(nil, not vim.lsp.inlay_hint.is_enabled(nil))
+          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
         end,
         desc = "Toggle inlay hints"
       },

@@ -49,18 +49,21 @@ return {
     opts = {
       options = {
         diagnostics = 'nvim_lsp',
-        -- diagnostics_indicator = function(count, level, diagnostics_dict, context)
-        --   local s = ''
-        --   local level_str = {
-        --     error = ' ', -- warning = ' ', info = ' ', hint = ' ',
-        --   }
-        --   for e, n in pairs(diagnostics_dict) do
-        --     if n > 0 and level_str[e] ~= nil then
-        --       s = s .. n .. level_str[e]
-        --     end
-        --   end
-        --   return s
-        -- end,
+        diagnostics_indicator = function(count, level, diagnostics_dict, context)
+          local icon = level:match("error") and " " or
+              level:match("warning") and " "
+          return icon and icon .. count or ''
+          --   local s = ''
+          --   local level_str = {
+          --     error = ' ', warning = ' ', info = ' ', hint = ' ',
+          --   }
+          --   for e, n in pairs(diagnostics_dict) do
+          --     if n > 0 and level_str[e] ~= nil then
+          --       s = s .. level_str[e] .. n
+          --     end
+          --   end
+          --   return s
+        end,
         offsets = { { filetype = 'NvimTree', text = 'File Explorer', text_align = 'left' } },
         show_buffer_close_icons = false,
         show_close_icon = false,
