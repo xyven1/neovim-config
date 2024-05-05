@@ -1,10 +1,5 @@
 return {
   {
-    'theHamsta/nvim-dap-virtual-text',
-    lazy = true,
-    opts = { enabled = false }
-  },
-  {
     'mfussenegger/nvim-dap',
     dependencies = {
       'theHamsta/nvim-dap-virtual-text',
@@ -48,6 +43,20 @@ return {
         '<leader>B',
         function() require('dap').set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
         desc = 'Breakpoint with condition'
+      },
+    },
+  },
+  {
+    'theHamsta/nvim-dap-virtual-text',
+    lazy = true,
+    opts = { enabled = false },
+    keys = {
+      {
+        '<leader>v',
+        function()
+          require('nvim-dap-virtual-text').toggle()
+        end,
+        desc = "Toggle dap virtual text"
       },
     },
   },
