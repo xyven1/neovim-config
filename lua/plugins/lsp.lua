@@ -76,70 +76,31 @@ return {
       {
         '<leader>i',
         function()
-          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
         end,
         desc = "Toggle inlay hints"
       },
     },
   },
   {
-    'xyven1/formatter.nvim',
-    branch = 'patch-1',
-    cmd = { "Format", "FormatWrite", "FormatLock", "FormatWriteLock" },
-    opts = {},
-    init = function()
-      vim.F.format_buf = function()
-      end
-    end,
-    config = function(_, opts)
-      vim.api.nvim_create_augroup("__formatter__", { clear = true })
-      vim.api.nvim_create_autocmd("BufWritePost", {
-        group = "__formatter__",
-        pattern = "*.go",
-        callback = function()
-          local format = require('formatter.format').format
-          if not format('', '', 1, vim.fn.line("$"), { write = true }) then
-            vim.lsp.buf.format({ async = false })
-            vim.api.nvim_command "update"
-          end
-        end
-      })
-      require("formatter").setup(vim.tbl_deep_extend("force", opts, {
-        filetype = {
-          python = {
-            require("formatter.filetypes.python").isort,
-            require("formatter.filetypes.python").black,
-          },
-        }
-      }))
-    end,
+    'stevearc/conform.nvim',
+    cmd = { 'ConformInfo' },
+    opts = {
+      formatters_by_ft = {
+        python = { 'isort', 'black' },
+      }
+    },
     keys = {
       {
         '<leader>f',
         function()
-          local line1
-          local line2
-          if vim.fn.visualmode() == "V" then
-            line1 = vim.fn.line("'<")
-            line2 = vim.fn.line("'>")
-          else
-            line1 = 1
-            line2 = vim.fn.line("$")
-          end
-          local write = vim.bo.modified == false
-          if not require('formatter.format').format('', '', line1, line2, { write }) then
-            -- vim.notify("Formatter.nvim not setup for this language, trying lsp...", vim.log.levels.WARN)
-            local view = vim.fn.winsaveview()
-            vim.lsp.buf.format({ async = false })
-            if view then
-              vim.fn.winrestview(view)
-            end
-            if write then
-              vim.api.nvim_command "update"
-            end
-          end
+          require('conform').format({
+            async = true,
+            lsp_fallback = true,
+          })
         end,
-        desc = "Format buffer"
+        desc = "Format buffer",
+        mode = { 'n', 'v' }
       },
     }
   },
