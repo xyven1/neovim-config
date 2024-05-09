@@ -31,6 +31,7 @@ return {
   },
   {
     'folke/tokyonight.nvim',
+    opts = {},
     priority = 1000
   },
   {
@@ -41,6 +42,26 @@ return {
         -- highlight_inactive_windows = true
       },
     },
+    priority = 1000
+  },
+  {
+    'navarasu/onedark.nvim',
+    opts = {},
+    priority = 999
+  },
+  {
+    'rebelot/kanagawa.nvim',
+    opts = {},
+    priority = 1000
+  },
+  {
+    'sainnhe/gruvbox-material',
+    opts = {},
+    init = function()
+      vim.g.gruvbox_material_background = 'medium'
+      vim.g.gruvbox_material_foreground = 'original'
+      vim.g.gruvbox_material_enable_italic = 1
+    end,
     priority = 1000
   },
 }
