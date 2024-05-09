@@ -28,7 +28,7 @@ return {
     keys = {
       { '<leader>dd', '<cmd>DiffviewOpen<cr>',    desc = 'Open diff view' },
       { '<leader>dc', '<cmd>DiffviewClose<cr>',   desc = 'Close diff view' },
-      { '<leader>dh', '<cmd>DiffviewFileHistory', desc = 'Git file history' },
+      { '<leader>dh', '<cmd>DiffviewFileHistory<cr>', desc = 'Git file history' },
     }
   },
 }

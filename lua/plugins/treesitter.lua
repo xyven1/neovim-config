@@ -28,32 +28,56 @@ return {
         }
       },
       indent = { enable = true },
-      autopairs = { { enable = true } },
       textobjects = {
         select = {
           enable = true,
-          -- Automatically jump forward to textobj, similar to targets.vim
           lookahead = true,
           keymaps = {
-            -- You can use the capture groups defined in textobjects.scm
             ["af"] = { query = "@function.outer", desc = "Select around function" },
             ["if"] = { query = "@function.inner", desc = "Select inside function" },
-            ["ac"] = { query = "@class.outer", desc = "Select around class" },
-            ["ic"] = { query = "@class.inner", desc = "Select inside class" },
             ["al"] = { query = "@loop.outer", desc = "Select around loop" },
             ["il"] = { query = "@loop.inner", desc = "Select inside loop" },
             ["ib"] = { query = "@block.inner", desc = "Select inside block" },
             ["ab"] = { query = "@block.outer", desc = "Select around block" },
             ["ir"] = { query = "@parameter.inner", desc = "Select inside parameter" },
             ["ar"] = { query = "@parameter.outer", desc = "Select around parameter" },
+            ["ic"] = { query = "@call.inner", desc = "Select inside call" },
+            ["ac"] = { query = "@call.outer", desc = "Select around call" },
+            ["aC"] = { query = "@class.outer", desc = "Select around class" },
+            ["iC"] = { query = "@class.inner", desc = "Select inside class" },
+            ["id"] = { query = "@conditional.inner", desc = "Select inside conditional" },
+            ["ad"] = { query = "@conditional.outer", desc = "Select around conditional" },
           }
         },
-        lsp_interop = {
+        move = {
           enable = true,
-          border = 'none',
-          peek_definition_code = {
-            -- ["<leader>df"] = "@function.outer",
-            -- ["<leader>dF"] = "@class.outer",
+          set_jumps = true, -- whether to set jumps in the jumplist
+          goto_next_start = {
+            ["]m"] = "@function.outer",
+            ["]]"] = "@class.outer",
+          },
+          goto_next_end = {
+            ["]M"] = "@function.outer",
+            ["]["] = "@class.outer",
+          },
+          goto_previous_start = {
+            ["[m"] = "@function.outer",
+            ["[["] = "@class.outer",
+          },
+          goto_previous_end = {
+            ["[M"] = "@function.outer",
+            ["[]"] = "@class.outer",
+          },
+        },
+        swap = {
+          enable = true,
+          swap_next = {
+            ["g>r"] = { query = "@parameter.inner", desc = "Swap with next parameter" },
+            ["g>f"] = { query = "@function.outer", desc = "Swap with next function" },
+          },
+          swap_previous = {
+            ["g<r"] = { query = "@parameter.inner", desc = "Swap with previous parameter" },
+            ["g<f"] = { query = "@function.outer", desc = "Swap with previous function" },
           },
         },
       },
