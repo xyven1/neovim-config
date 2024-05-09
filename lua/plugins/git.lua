@@ -3,7 +3,11 @@ return {
     'lewis6991/gitsigns.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
     event = 'VeryLazy',
-    opts = {}
+    opts = {},
+    keys = {
+      { '[h', function() require('gitsigns').prev_hunk() end,  desc = 'Previous hunk' },
+      { ']h', function() require('gitsigns').next_hunk() end,  desc = 'Next hunk' },
+    }
   },
   {
     'tpope/vim-fugitive',

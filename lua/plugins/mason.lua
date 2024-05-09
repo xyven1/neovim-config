@@ -2,9 +2,14 @@ return {
   {
     'williamboman/mason.nvim',
     cmd = { "Mason" },
-    opts = {
-      PATH = 'append',
-    }
+    config = function(opts)
+      local distro = vim.fn.system('cat /etc/os-release | grep "^ID=" | cut -d "=" -f 2 | tr -d "\n"')
+      if distro == "nixos" then
+        opts.PATH = "skip"
+      end
+      require('mason').setup(opts)
+    end,
+    opts = {}
   },
   {
     'williamboman/mason-lspconfig.nvim',
