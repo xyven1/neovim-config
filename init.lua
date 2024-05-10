@@ -5,6 +5,7 @@ require("config/keymaps")
 -- Plugin management via Lazy
 require("config/lazy")
 -- Set colorscheme
+vim.cmd [[set background=dark]]
 vim.cmd [[colorscheme vscode]]
 -- Vim autocommands/autogroups
 require("config/autocmd")
