@@ -1,13 +1,3 @@
-local function opts_with_desc(desc)
-  return {
-    noremap = true,
-    silent = true,
-    desc = desc
-  }
-end
-vim.keymap.set('n', '[t', '<cmd>tabprevious<cr>', opts_with_desc('Previous tab'))
-vim.keymap.set('n', ']t', '<cmd>tabnext<cr>', opts_with_desc('Next tab'))
-
 return {
   {
     'ggandor/leap.nvim',
