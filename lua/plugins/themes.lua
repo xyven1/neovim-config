@@ -1,3 +1,11 @@
+vim.keymap.set('n', '<leader>m', function()
+  vim.o.background = vim.o.background == 'dark' and 'light' or 'dark'
+end, {
+  noremap = true,
+  silent = true,
+  desc = 'Toggle light/dark mode'
+})
+
 return {
   {
     'Mofiqul/vscode.nvim',
@@ -45,7 +53,7 @@ return {
     priority = 1000
   },
   {
-    'navarasu/onedark.nvim',
+    'xyven1/onedark.nvim',
     opts = {},
     priority = 999
   },
