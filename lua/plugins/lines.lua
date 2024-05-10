@@ -17,7 +17,7 @@ return {
           lualine_a = { 'mode',
           },
           lualine_b = { 'branch', 'diff', 'diagnostics' },
-          lualine_c = { 'filename', 'lsp_progress' },
+          lualine_c = { 'lsp_progress' },
           lualine_x = { 'overseer',
             {
               require("noice").api.statusline.mode.get,
@@ -25,13 +25,13 @@ return {
               color = { fg = "#ff9e64" },
             }
           },
-          lualine_y = { 'encoding', 'fileformat', 'filetype' },
+          lualine_y = { 'encoding', 'fileformat', },
           lualine_z = { 'progress', 'location' }
         },
         inactive_sections = {
           lualine_a = {},
           lualine_b = {},
-          lualine_c = { 'filename' },
+          lualine_c = { },
           lualine_x = {},
           lualine_y = {},
           lualine_z = { 'location' }
