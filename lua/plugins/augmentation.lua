@@ -82,44 +82,24 @@ return {
   {
     'kazhala/close-buffers.nvim',
     opts = {},
-    keys = {
-      {
-        '<leader>xx',
-        function() require('close_buffers').delete({ type = 'this' }) end,
-        desc =
-        'Close current buffer'
-      },
-      {
-        '<leader>xf',
-        function() require('close_buffers').delete({ type = 'this', force = true }) end,
-        desc =
-        'Force close current buffer'
-      },
-      {
-        '<leader>xn',
-        function() require('close_buffers').delete({ type = 'nameless' }) end,
-        desc =
-        'Close nameless buffers'
-      },
-      {
-        '<leader>xh',
-        function() require('close_buffers').delete({ type = 'hidden' }) end,
-        desc =
-        'Close hidden buffers'
-      },
-      {
-        '<leader>xa',
-        function() require('close_buffers').delete({ type = 'all' }) end,
-        desc =
-        'Close all buffers'
-      },
-      {
-        '<leader>xo',
-        function() require('close_buffers').delete({ type = 'other' }) end,
-        desc =
-        'Close other buffers'
-      },
-    }
+    config = function(_opts)
+      local delete = function(o) return function() require('close_buffers').delete(o) end end
+      local wk = require('which-key')
+      wk.register({
+        x = {
+          name = 'Close',
+          x = { delete({ type = 'this' }), 'Close current buffer' },
+          f = { delete({ type = 'this', force = true }), 'Force close current buffer' },
+          n = { delete({ type = 'nameless' }), 'Close nameless buffers' },
+          h = { delete({ type = 'hidden' }), 'Close hidden buffers' },
+          a = { delete({ type = 'all' }), 'Close all buffers' },
+          o = { delete({ type = 'other' }), 'Close other buffers' },
+          t = { "<cmd>tabclose<cr>", 'Close tab' },
+        }
+      }, {
+        prefix = '<leader>',
+      })
+    end
   },
   {
     'Shatur/neovim-session-manager',

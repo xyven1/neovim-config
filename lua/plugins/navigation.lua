@@ -13,48 +13,93 @@ return {
     'ggandor/leap.nvim',
     dependencies = { 'tpope/vim-repeat' },
     init = function()
-      require 'leap'.create_default_mappings()
-      require('leap').opts.special_keys.prev_target = '<bs>'
-      require('leap').opts.special_keys.prev_group = '<bs>'
+      local leap = require('leap')
+      leap.create_default_mappings()
+      leap.opts.special_keys.prev_target = '<bs>'
+      leap.opts.special_keys.prev_group = '<bs>'
       require('leap.user').set_repeat_keys('<cr>', '<bs>')
-      -- Hide the (real) cursor when leaping, and restore it afterwards.
-      vim.api.nvim_create_autocmd('User', {
-        pattern = 'LeapEnter',
-        callback = function()
-          vim.cmd.hi('Cursor', 'blend=100')
-          vim.opt.guicursor:append { 'a:Cursor/lCursor' }
-        end,
-      })
-      vim.api.nvim_create_autocmd('User', {
-        pattern = 'LeapLeave',
-        callback = function()
-          vim.cmd.hi('Cursor', 'blend=0')
-          vim.opt.guicursor:remove { 'a:Cursor/lCursor' }
-        end,
-      })
     end,
   },
   {
     'ibhagwan/fzf-lua',
     cmd = { 'FzfLua' },
-    keys = {
-      { '<leader>o',   function() require('fzf-lua').files() end,                 desc = 'Open file' },
-      { '<leader>h',   function() require('fzf-lua').live_grep() end,             desc = 'Search in all files (project)' },
-      { '<leader>p',   function() require('fzf-lua').keymaps() end,               desc = 'Browse keymaps' },
-      { '<leader>ed',  function() require('fzf-lua').dap_commands() end,          desc = 'Search debug commands' },
-      { '<leader>eb',  function() require('fzf-lua').builtin() end,               desc = 'Select fzf search' },
-      { '<leader>ec',  function() require('fzf-lua').commands() end,              desc = 'Search commands' },
-      { '<leader>es',  function() require('fzf-lua').lsp_workspace_symbols() end, desc = 'Search workspace symbols' },
-      { '<leader>et',  function() require('fzf-lua').buffers() end,               desc = 'Search buffers' },
-      { '<leader>er',  function() require('fzf-lua').resume() end,                desc = 'Resume last search' },
-      { '<leader>ehc', function() require('fzf-lua').command_history() end,       desc = 'Search command history' },
-      { '<leader>ehs', function() require('fzf-lua').search_history() end,        desc = 'Search search history' },
-      { '<leader>egh', function() require('fzf-lua').git_stash() end,             desc = 'Search git status' },
-      { '<leader>egs', function() require('fzf-lua').git_status() end,            desc = 'Search git status' },
-      { '<leader>egc', function() require('fzf-lua').git_commits() end,           desc = 'Search git commits' },
-      { '<leader>egb', function() require('fzf-lua').git_branches() end,          desc = 'Search git branches' },
-    },
-    dependencies = { 'nvim-tree/nvim-web-devicons' }
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    lazy = false,
+    config = function()
+      local fzf = require('fzf-lua')
+      local wk = require('which-key')
+      wk.register({
+        f = { fzf.grep_visual, 'Search current selection' },
+      }, {
+        mode = 'v',
+      })
+      wk.register({
+        o = { fzf.files, 'Open file' },
+        h = { fzf.live_grep, 'Search in all files (project)' },
+        p = { fzf.commands, 'Browse commands' },
+        ['\\'] = { fzf.buffers, 'Browse buffers' },
+        ['"'] = { fzf.registers, 'Search registers' },
+        e = {
+          name = 'FZF',
+          b = { fzf.builtin, 'Select fzf search' },
+          c = { fzf.colorschemes, 'Search colorschemes' },
+          d = {
+            name = 'DAP',
+            b = { fzf.dap_breakpoints, 'Search breakpoints' },
+            c = { fzf.dap_commands, 'Search debug commands' },
+            f = { fzf.dap_frames, 'Search frames' },
+            s = { fzf.dap_configurations, 'Search configurations' },
+            v = { fzf.dap_variables, 'Search variables' },
+          },
+          g = {
+            name = 'Git',
+            b = { fzf.git_branches, 'Search git branches' },
+            c = { fzf.git_commits, 'Search git commits' },
+            C = { fzf.git_bcommits, 'Search git commits (buffer)' },
+            f = { fzf.git_files, 'Search git files' },
+            h = { fzf.git_stash, 'Search git stash' },
+            s = { fzf.git_status, 'Search git status' },
+            t = { fzf.git_tags, 'Search git tags' },
+          },
+          h = {
+            name = 'History',
+            c = { fzf.command_history, 'Search command history' },
+            s = { fzf.search_history, 'Search search history' },
+          },
+          j = { fzf.jumps, 'Search jumps' },
+          k = { fzf.keymaps, 'Browse keymaps' },
+          l = {
+            name = 'LSP',
+            a = { fzf.lsp_code_actions, 'Search code actions' },
+            D = { fzf.lsp_declarations, 'Search declaration' },
+            d = { fzf.lsp_definitions, 'Search definitions' },
+            e = { fzf.lsp_document_diagnostics, 'Search diagnostics (document)' },
+            s = { fzf.lsp_document_symbols, 'Search symbols (document)' },
+            f = { fzf.lsp_finder, 'Search sybmol with LSP' },
+            i = { fzf.lsp_implementations, 'Search implementations' },
+            I = { fzf.lsp_incoming_calls, 'Search incoming calls' },
+            O = { fzf.lsp_outgoing_calls, 'Search outgoing calls' },
+            r = { fzf.lsp_references, 'Search references' },
+            t = { fzf.lsp_typedefs, 'Search type definitions' },
+            E = { fzf.lsp_workspace_diagnostics, 'Search diagnostics (workspace)' },
+            S = { fzf.lsp_workspace_symbols, 'Search symbols (workspace)' },
+          },
+          p = { fzf.loclist, 'Search loclist' },
+          P = { fzf.loclist_stack, 'Search loclist stack' },
+          o = { fzf.oldfiles, 'Search old files' },
+          q = { fzf.quickfix, 'Search quickfix' },
+          Q = { fzf.quickfix_stack, 'Search quickfix stack' },
+          r = { fzf.resume, 'Resume last search' },
+          s = { fzf.spell_suggest, 'Search spell suggestions' },
+          t = { fzf.tags, 'Search tags' },
+          T = { fzf.tagstack, 'Search tagstack' },
+          w = { fzf.grep_cword, 'Search word under cursor' },
+          W = { fzf.grep_cWORD, 'Search WORD under cursor' },
+        }
+      }, {
+        prefix = '<leader>',
+      })
+    end
   },
   {
     'nvim-tree/nvim-tree.lua',
