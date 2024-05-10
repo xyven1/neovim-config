@@ -25,8 +25,14 @@ return {
     cmd = { 'FzfLua' },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     lazy = false,
-    config = function()
+    opts = {
+      colorschemes = {
+        ignore_patterns = { "^vim$" }
+      },
+    },
+    config = function(_, opts)
       local fzf = require('fzf-lua')
+      fzf.setup(opts or {})
       local wk = require('which-key')
       wk.register({
         f = { fzf.grep_visual, 'Search current selection' },
@@ -108,6 +114,10 @@ return {
       { '<leader>t', '<cmd>NvimTreeToggle<cr>', desc = "Toggle file explorer" }
     },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
+    init = function()
+      vim.g.loaded_netrw = 1
+      vim.g.loaded_netrwPlugin = 1
+    end,
     opts = {
       disable_netrw = true,
       hijack_cursor = true,

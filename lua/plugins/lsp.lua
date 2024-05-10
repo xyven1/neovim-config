@@ -105,6 +105,12 @@ return {
     'kevinhwang91/nvim-ufo',
     dependencies = { 'kevinhwang91/promise-async' },
     event = "BufEnter",
+    init = function()
+      vim.o.foldcolumn = '1'
+      vim.o.foldlevel = 99
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+    end,
     opts = {},
     keys = {
       { 'zR', function() require('ufo').openAllFolds() end,  desc = 'Open all folds' },
@@ -118,6 +124,27 @@ return {
       'ms-jpq/coq.artifacts',
       'ms-jpq/coq.thirdparty',
     },
+    init = function()
+      vim.g.coq_settings = {
+        auto_start = 'shut-up',
+        clients = {
+          -- tree_sitter = { enabled = false },
+          buffers = { enabled = false },
+          paths = { preview_lines = 3 }
+        },
+        display = {
+          icons = { mode = 'short' },
+          ghost_text = {
+            context = { " ⟨ ", " ⟩" },
+          },
+        },
+        keymap = {
+          recommended = false,
+          jump_to_mark = '<c-n>',
+          pre_select = true
+        },
+      }
+    end,
     keys = {
       {
         '<esc>',
