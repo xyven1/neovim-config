@@ -3,7 +3,6 @@ return {
     'mfussenegger/nvim-dap',
     dependencies = {
       'theHamsta/nvim-dap-virtual-text',
-      'jay-babu/mason-nvim-dap.nvim',
     },
     init = function()
       vim.api.nvim_set_hl(0, 'DapBreakpoint', { fg = '#bf321d' })

@@ -3,10 +3,7 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
       'ms-jpq/coq_nvim',
-      {
-        'folke/neodev.nvim',
-        lazy = true
-      },
+      { 'folke/neodev.nvim', lazy = true },
       'williamboman/mason-lspconfig.nvim',
     },
     event = "VeryLazy",
