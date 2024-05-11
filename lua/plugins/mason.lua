@@ -1,7 +1,7 @@
 return {
   {
     'williamboman/mason.nvim',
-    cmd = { "Mason" },
+    event = "VeryLazy",
     config = function(opts)
       local distro = vim.fn.system('cat /etc/os-release | grep "^ID=" | cut -d "=" -f 2 | tr -d "\n"')
       if distro == "nixos" then
@@ -13,6 +13,7 @@ return {
   },
   {
     'williamboman/mason-lspconfig.nvim',
+    lazy = true,
     dependencies = { 'williamboman/mason.nvim' },
     opts = {
       ensure_installed = {},
@@ -21,8 +22,8 @@ return {
   },
   {
     'jay-babu/mason-nvim-dap.nvim',
+    event = "VeryLazy",
     dependencies = { 'williamboman/mason.nvim' },
-    event = "BufEnter",
     opts = {},
     config = function(_, opts)
       local mdap = require('mason-nvim-dap')

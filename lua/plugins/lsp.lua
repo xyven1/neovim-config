@@ -4,7 +4,6 @@ return {
     dependencies = {
       'ms-jpq/coq_nvim',
       { 'folke/neodev.nvim', lazy = true },
-      'williamboman/mason-lspconfig.nvim',
     },
     event = "VeryLazy",
     opts = {
@@ -85,6 +84,7 @@ return {
     opts = {
       formatters_by_ft = {
         python = { 'isort', 'black' },
+        cpp = { 'astyle' },
       }
     },
     keys = {
@@ -106,7 +106,6 @@ return {
     dependencies = { 'kevinhwang91/promise-async' },
     event = "BufEnter",
     init = function()
-      vim.o.foldcolumn = '1'
       vim.o.foldlevel = 99
       vim.o.foldlevelstart = 99
       vim.o.foldenable = true
