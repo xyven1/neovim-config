@@ -11,7 +11,6 @@ return {
       vim.fn.sign_define("DapBreakpointRejected", { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
       vim.fn.sign_define("DapStopped", { text = '', texthl = 'Dap', linehl = 'DapStoppedLine', numhl = 'DapStoppedLine' })
     end,
-    lazy = true,
     keys = {
       {
         '<f5>',
@@ -47,7 +46,6 @@ return {
   },
   {
     'theHamsta/nvim-dap-virtual-text',
-    lazy = true,
     opts = { enabled = false },
     keys = {
       {

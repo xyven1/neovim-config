@@ -1,6 +1,9 @@
 return {
+  { 'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle' },
   {
     'nvim-treesitter/nvim-treesitter',
+    version = false,
+    event = { "LazyFile", "VeryLazy" },
     dependencies = {
       'JoosepAlviste/nvim-ts-context-commentstring',
       'nvim-treesitter/nvim-treesitter-textobjects'
@@ -53,22 +56,22 @@ return {
           enable = true,
           set_jumps = true, -- whether to set jumps in the jumplist
           goto_next_start = {
-            ["]m"] = "@function.outer",
+            ["]f"] = "@function.outer",
             ["]]"] = "@class.outer",
             ["]r"] = "@parameter.inner",
           },
           goto_next_end = {
-            ["]M"] = "@function.outer",
+            ["]F"] = "@function.outer",
             ["]["] = "@class.outer",
             ["]R"] = "@parameter.inner",
           },
           goto_previous_start = {
-            ["[m"] = "@function.outer",
+            ["[f"] = "@function.outer",
             ["[["] = "@class.outer",
             ["[r"] = "@parameter.inner",
           },
           goto_previous_end = {
-            ["[M"] = "@function.outer",
+            ["[F"] = "@function.outer",
             ["[]"] = "@class.outer",
             ["[R"] = "@parameter.inner",
           },

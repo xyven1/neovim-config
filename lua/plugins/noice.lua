@@ -1,7 +1,7 @@
 return {
   {
     "folke/noice.nvim",
-    lazy = false,
+    event = "VeryLazy",
     opts = {
       lsp = {
         -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
@@ -14,9 +14,9 @@ return {
       cmdline = {
         view = "cmdline"
       },
-      popupmenu = {
-        enabled = false,
-      },
+      -- popupmenu = {
+      --   enabled = false,
+      -- },
       -- you can enable a preset for easier configuration
       presets = {
         bottom_search = true,         -- use a classic bottom cmdline for search
@@ -28,15 +28,10 @@ return {
     },
     dependencies = {
       "MunifTanjim/nui.nvim",
+      { "rcarriga/nvim-notify", opts = { top_down = false, } },
     },
     keys = {
-      { '<leader>l', '<cmd>NoiceDismiss<cr>', desc = 'Clear notifications' }
-    }
-  },
-  {
-    "rcarriga/nvim-notify",
-    opts = {
-      top_down = false,
+      { '\\', '<cmd>NoiceDismiss<cr>', desc = 'Clear notifications' }
     }
   },
 }

@@ -11,10 +11,10 @@ return {
   {
     "direnv/direnv.vim",
     lazy = false,
+    priority = 1,
   },
   {
     'mrjones2014/smart-splits.nvim',
-    lazy = false,
     opts = {},
     keys = {
       { '<A-h>',             function() require('smart-splits').resize_left() end,       desc = 'Resize left' },
@@ -33,7 +33,7 @@ return {
   },
   {
     'tzachar/highlight-undo.nvim',
-    event = "BufEnter",
+    event = "LazyFile",
     opts = {},
   },
   {
@@ -55,27 +55,52 @@ return {
     ft = 'qf'
   },
   {
-    'numToStr/Comment.nvim',
-    dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring' },
-    lazy = false,
+    'monaqa/dial.nvim',
+    keys = {
+      { '<C-a>',  function() require("dial.map").manipulate("increment", "normal") end,  desc = 'Increment' },
+      { '<C-x>',  function() require("dial.map").manipulate("decrement", "normal") end,  desc = 'Decrement' },
+      { 'g<C-a>', function() require("dial.map").manipulate("increment", "gnormal") end, desc = 'Increment (gnormal)' },
+      { 'g<C-x>', function() require("dial.map").manipulate("decrement", "gnormal") end, desc = 'Decrement (gnormal)' },
+      { '<C-a>',  function() require("dial.map").manipulate("increment", "visual") end,  desc = 'Increment (visual)',  mode = { 'v' } },
+      { '<C-x>',  function() require("dial.map").manipulate("decrement", "visual") end,  desc = 'Decrement (visual)',  mode = { 'v' } },
+      { 'g<C-a>', function() require("dial.map").manipulate("increment", "gvisual") end, desc = 'Increment (gvisual)', mode = { 'v' } },
+      { 'g<C-x>', function() require("dial.map").manipulate("decrement", "gvisual") end, desc = 'Decrement (gvisual)', mode = { 'v' } },
+    }
+  },
+  {
+    "toppair/peek.nvim",
+    cmd = "PeekOpen",
+    build = "deno -- task --quiet build:fast",
     config = function()
-      require('Comment').setup()
-      vim.g.skip_ts_context_commentstring_module = true
-      return {
-        pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+      require("peek").setup()
+      vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+      vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+    end,
+  },
+  {
+    'numToStr/Comment.nvim',
+    dependencies = {
+      'JoosepAlviste/nvim-ts-context-commentstring',
+      opts = {
+        enable_autocmd = false,
       }
+    },
+    keys = { "gb", "gc" },
+    config = function()
+      require('Comment').setup({
+        pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+      })
     end,
   },
   {
     'folke/todo-comments.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
-    event = "BufEnter",
+    event = "LazyFile",
     opts = {}
   },
   {
     'kylechui/nvim-surround',
-    version = '*', -- Use for stability; omit to use `main` branch for the latest features
-    event = 'VeryLazy',
+    event = 'LazyFile',
     opts = {}
   },
   {
@@ -86,8 +111,8 @@ return {
   },
   {
     'kazhala/close-buffers.nvim',
-    opts = {},
-    config = function(_opts)
+    keys = { '<leader>x' },
+    config = function()
       local delete = function(o) return function() require('close_buffers').delete(o) end end
       local wk = require('which-key')
       wk.register({
@@ -108,6 +133,10 @@ return {
   },
   {
     'Shatur/neovim-session-manager',
+    cmd = { 'SessionManager' },
+    keys = {
+      { '<leader>w', '<cmd>SessionManager load_session<cr>', desc = 'Load session' },
+    },
     config = function()
       require 'session_manager'.setup {
         autoload_mode = require('session_manager.config').AutoloadMode.Disabled,

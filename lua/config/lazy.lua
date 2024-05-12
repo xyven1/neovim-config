@@ -11,6 +11,10 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.runtimepath:prepend(lazypath)
 
+require('config.lazyfile').setup()
 require('lazy').setup("plugins", {
   -- lockfile = "/home/xyven/code/neovim-config/lazy-lock.json",
+  defaults = {
+    lazy = true
+  }
 })

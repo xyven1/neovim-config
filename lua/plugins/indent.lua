@@ -1,5 +1,4 @@
 return {
-  { 'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle' },
   {
     'hiphish/rainbow-delimiters.nvim',
     dependencies = {
@@ -58,7 +57,7 @@ return {
   },
   {
     'lukas-reineke/indent-blankline.nvim',
-    event = "BufEnter",
+    event = "LazyFile",
     opts = {
       indent = {
         char = "▏",

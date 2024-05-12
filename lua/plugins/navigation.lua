@@ -12,17 +12,37 @@ return {
   },
   {
     'ibhagwan/fzf-lua',
-    cmd = { 'FzfLua' },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
-    lazy = false,
+    event = 'VeryLazy',
+    cmd = { 'FzfLua' },
     opts = {
       colorschemes = {
         ignore_patterns = { "^vim$" }
       },
     },
+    keys = {
+      { 'f', mode = { 'n', 'v' } },
+      'F',
+      '<leader>o',
+      '<leader>O',
+      '<leader>p',
+      '<leader>"',
+      '<leader>e',
+      '<leader>l',
+    },
     config = function(_, opts)
       local fzf = require('fzf-lua')
       fzf.setup(opts or {})
+      fzf.register_ui_select(function(_, items)
+        local min_h, max_h = 0.15, 0.70
+        local h = (#items + 4) / vim.o.lines
+        if h < min_h then
+          h = min_h
+        elseif h > max_h then
+          h = max_h
+        end
+        return { winopts = { height = h, width = 0.60, row = 0.40 } }
+      end)
       local wk = require('which-key')
       wk.register({
         f = { fzf.grep_visual, 'Search current selection' },
@@ -30,14 +50,17 @@ return {
         mode = 'v',
       })
       wk.register({
+        f = { fzf.live_grep_resume, 'Search in all files' },
+        F = { fzf.live_grep, 'Search in all files' },
+      })
+      wk.register({
         o = { fzf.files, 'Open file' },
-        h = { fzf.live_grep, 'Search in all files (project)' },
+        O = { fzf.git_files, 'Search git files' },
         p = { fzf.commands, 'Browse commands' },
-        ['\\'] = { fzf.buffers, 'Browse buffers' },
         ['"'] = { fzf.registers, 'Search registers' },
         e = {
           name = 'FZF',
-          b = { fzf.builtin, 'Select fzf search' },
+          b = { fzf.buffers, 'Browse buffers' },
           c = { fzf.colorschemes, 'Search colorschemes' },
           d = {
             name = 'DAP',
@@ -47,12 +70,12 @@ return {
             s = { fzf.dap_configurations, 'Search configurations' },
             v = { fzf.dap_variables, 'Search variables' },
           },
+          e = { fzf.builtin, 'Select fzf search' },
           g = {
             name = 'Git',
             b = { fzf.git_branches, 'Search git branches' },
             c = { fzf.git_commits, 'Search git commits' },
             C = { fzf.git_bcommits, 'Search git commits (buffer)' },
-            f = { fzf.git_files, 'Search git files' },
             h = { fzf.git_stash, 'Search git stash' },
             s = { fzf.git_status, 'Search git status' },
             t = { fzf.git_tags, 'Search git tags' },
@@ -64,22 +87,6 @@ return {
           },
           j = { fzf.jumps, 'Search jumps' },
           k = { fzf.keymaps, 'Browse keymaps' },
-          l = {
-            name = 'LSP',
-            a = { fzf.lsp_code_actions, 'Search code actions' },
-            D = { fzf.lsp_declarations, 'Search declaration' },
-            d = { fzf.lsp_definitions, 'Search definitions' },
-            e = { fzf.lsp_document_diagnostics, 'Search diagnostics (document)' },
-            s = { fzf.lsp_document_symbols, 'Search symbols (document)' },
-            f = { fzf.lsp_finder, 'Search sybmol with LSP' },
-            i = { fzf.lsp_implementations, 'Search implementations' },
-            I = { fzf.lsp_incoming_calls, 'Search incoming calls' },
-            O = { fzf.lsp_outgoing_calls, 'Search outgoing calls' },
-            r = { fzf.lsp_references, 'Search references' },
-            t = { fzf.lsp_typedefs, 'Search type definitions' },
-            E = { fzf.lsp_workspace_diagnostics, 'Search diagnostics (workspace)' },
-            S = { fzf.lsp_workspace_symbols, 'Search symbols (workspace)' },
-          },
           p = { fzf.loclist, 'Search loclist' },
           P = { fzf.loclist_stack, 'Search loclist stack' },
           o = { fzf.oldfiles, 'Search old files' },
@@ -91,7 +98,23 @@ return {
           T = { fzf.tagstack, 'Search tagstack' },
           w = { fzf.grep_cword, 'Search word under cursor' },
           W = { fzf.grep_cWORD, 'Search WORD under cursor' },
-        }
+        },
+        l = {
+          name = 'LSP',
+          a = { fzf.lsp_code_actions, 'Search code actions' },
+          D = { fzf.lsp_declarations, 'Search declaration' },
+          d = { fzf.lsp_definitions, 'Search definitions' },
+          e = { fzf.lsp_document_diagnostics, 'Search diagnostics (document)' },
+          s = { fzf.lsp_document_symbols, 'Search symbols (document)' },
+          f = { fzf.lsp_finder, 'Search sybmol with LSP' },
+          i = { fzf.lsp_implementations, 'Search implementations' },
+          I = { fzf.lsp_incoming_calls, 'Search incoming calls' },
+          O = { fzf.lsp_outgoing_calls, 'Search outgoing calls' },
+          r = { fzf.lsp_references, 'Search references' },
+          t = { fzf.lsp_typedefs, 'Search type definitions' },
+          E = { fzf.lsp_workspace_diagnostics, 'Search diagnostics (workspace)' },
+          S = { fzf.lsp_workspace_symbols, 'Search symbols (workspace)' },
+        },
       }, {
         prefix = '<leader>',
       })

@@ -17,15 +17,6 @@ return {
             }
           }
         },
-        nil_ls = {
-          settings = {
-            ['nil'] = {
-              formatting = {
-                command = { 'alejandra' },
-              },
-            }
-          }
-        },
         lua_ls = function()
           require('neodev').setup {}
           return {}
@@ -83,6 +74,7 @@ return {
     cmd = { 'ConformInfo' },
     opts = {
       formatters_by_ft = {
+        nix = { 'alejandra' },
         python = { 'isort', 'black' },
         cpp = { 'astyle' },
       }
@@ -104,7 +96,7 @@ return {
   {
     'kevinhwang91/nvim-ufo',
     dependencies = { 'kevinhwang91/promise-async' },
-    event = "BufEnter",
+    event = "BufRead",
     init = function()
       vim.o.foldlevel = 99
       vim.o.foldlevelstart = 99
@@ -180,7 +172,6 @@ return {
     dependencies = {
       'github/copilot.vim',
     },
-    event = "VeryLazy",
     config = function()
       require('coq_3p') {
         { src = 'copilot', short_name = 'COP', accept_key = '<c-f>' },
@@ -192,7 +183,7 @@ return {
   {
     'glepnir/lspsaga.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
-    event = 'BufRead',
+    event = 'LazyFile',
     opts = {
       implement = {
         enable = true,

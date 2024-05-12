@@ -1,6 +1,6 @@
 return {
   {
-    'glepnir/dashboard-nvim',
+    'nvimdev/dashboard-nvim',
     event = 'VimEnter',
     opts = {
       theme = 'doom',
@@ -26,12 +26,6 @@ return {
             desc = 'Recently opened sessions                ',
             key = 'r',
             action = 'SessionManager load_session'
-          },
-          {
-            icon = '  ',
-            desc = 'Open Personal dotfiles                  ',
-            key = 'd',
-            action = 'cd ' .. os.getenv('HOME') .. '/.config/nvim/ | SessionManager load_current_dir_session'
           },
         },
       },

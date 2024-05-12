@@ -40,12 +40,12 @@ return {
         extensions = {}
       }
     end,
-    event = 'VimEnter',
+    event = 'VeryLazy',
     dependencies = { 'nvim-tree/nvim-web-devicons', 'arkav/lualine-lsp-progress' },
   },
   {
     'akinsho/bufferline.nvim',
-    event = 'VimEnter',
+    event = 'VeryLazy',
     opts = {
       options = {
         diagnostics = 'nvim_lsp',
