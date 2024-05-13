@@ -71,8 +71,11 @@ return {
     "toppair/peek.nvim",
     cmd = "PeekOpen",
     build = "deno -- task --quiet build:fast",
-    config = function()
-      require("peek").setup()
+    opts = {
+      app = "browser",
+    },
+    config = function(_, opts)
+      require("peek").setup(opts)
       vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
       vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
     end,
@@ -214,4 +217,15 @@ return {
       },
     }
   },
+  {
+    'RRethy/vim-illuminate',
+    event = 'LazyFile',
+    keys = {
+      { '<leader>I', function() require('illuminate').toggle() end, desc = 'Toggle hover illumination' }
+    },
+    opts = {},
+    config = function(_, opts)
+      require('illuminate').configure(opts)
+    end
+  }
 }
