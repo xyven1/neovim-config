@@ -61,7 +61,7 @@ return {
     end,
     keys = {
       {
-        '<leader>i',
+        '<leader>h',
         function()
           vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
         end,
@@ -211,8 +211,8 @@ return {
       { '<leader>sc', "<cmd>Lspsaga show_cursor_diagnostics<cr>",         desc = 'Show cursor diagnostics' },
       { '<leader>sb', "<cmd>Lspsaga show_buf_diagnostics<cr>",            desc = 'Show buffer diagnostics' },
       { '<leader>sw', "<cmd>TroubleToggle<cr>",                           desc = 'Show workspace diagnostics' },
-      { '[e',         "<cmd>Lspsaga diagnostic_jump_prev<cr>",            desc = 'Jump to previous diagnostic' },
-      { ']e',         "<cmd>Lspsaga diagnostic_jump_next<cr>",            desc = 'Jump to next diagnostic' },
+      { '[d',         "<cmd>Lspsaga diagnostic_jump_prev<cr>",            desc = 'Jump to previous diagnostic' },
+      { ']d',         "<cmd>Lspsaga diagnostic_jump_next<cr>",            desc = 'Jump to next diagnostic' },
       { 'go',         "<cmd>Lspsaga outline<cr>",                         desc = 'Show outline' },
       {
         'K',
@@ -227,18 +227,32 @@ return {
         mode = { 'n', 'v' }
       },
       {
-        '[E',
+        '[e',
         function()
           require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
         end,
         desc = 'Jump to previous error'
       },
       {
-        ']E',
+        ']e',
         function()
           require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })
         end,
         desc = 'Jump to next error'
+      },
+      {
+        '[w',
+        function()
+          require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.WARN })
+        end,
+        desc = 'Jump to previous warning'
+      },
+      {
+        ']w',
+        function()
+          require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.WARN })
+        end,
+        desc = 'Jump to next warning'
       },
       {
         '<A-d>',

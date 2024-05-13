@@ -1,17 +1,14 @@
 return {
   {
-    "folke/which-key.nvim",
-    event = "VeryLazy",
-    init = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
-    end,
-    opts = {}
-  },
-  {
     "direnv/direnv.vim",
     lazy = false,
     priority = 1,
+  },
+  {
+    'lambdalisue/suda.vim',
+    init = function()
+      vim.g.suda_smart_edit = 1
+    end
   },
   {
     'mrjones2014/smart-splits.nvim',
@@ -30,29 +27,6 @@ return {
       { '<leader><leader>k', function() require('smart-splits').swap_buf_up() end,       desc = 'Swap buffer up' },
       { '<leader><leader>l', function() require('smart-splits').swap_buf_right() end,    desc = 'Swap buffer right' },
     }
-  },
-  {
-    'tzachar/highlight-undo.nvim',
-    event = "LazyFile",
-    opts = {},
-  },
-  {
-    'norcalli/nvim-colorizer.lua',
-    config = function()
-      require 'colorizer'.setup({
-        '*',
-        css = { css = true, },
-        javascript = { css_fn = true },
-        html = { css_fn = true },
-      }, { names = false, RRGGBBAA = true })
-    end,
-    keys = {
-      { '<leader>c', '<cmd>ColorizerToggle<cr>', desc = 'Toggle colorizer' }
-    }
-  },
-  {
-    'kevinhwang91/nvim-bqf',
-    ft = 'qf'
   },
   {
     'monaqa/dial.nvim',
@@ -99,7 +73,7 @@ return {
     'folke/todo-comments.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
     event = "LazyFile",
-    opts = {}
+    opts = {},
   },
   {
     'kylechui/nvim-surround',
@@ -107,26 +81,32 @@ return {
     opts = {}
   },
   {
-    'lambdalisue/suda.vim',
-    init = function()
-      vim.g.suda_smart_edit = 1
-    end
-  },
-  {
     'kazhala/close-buffers.nvim',
     keys = { '<leader>x' },
     config = function()
-      local delete = function(o) return function() require('close_buffers').delete(o) end end
+      local cb = require('close_buffers')
       local wk = require('which-key')
       wk.register({
         x = {
           name = 'Close',
-          x = { delete({ type = 'this' }), 'Close current buffer' },
-          f = { delete({ type = 'this', force = true }), 'Force close current buffer' },
-          n = { delete({ type = 'nameless' }), 'Close nameless buffers' },
-          h = { delete({ type = 'hidden' }), 'Close hidden buffers' },
-          a = { delete({ type = 'all' }), 'Close all buffers' },
-          o = { delete({ type = 'other' }), 'Close other buffers' },
+          x = { function()
+            if vim.bo.modified then
+              local choice = vim.fn.confirm("Save changes to %q?", "&Yes\n&No\n&Cancel")
+              if choice == 1 then
+                vim.cmd.write()
+                cb.delete({ type = 'this' })
+              elseif choice == 2 then
+                cb.delete({ type = 'this', force = true })
+              end
+            else
+              cb.delete({ type = 'this' })
+            end
+          end, 'Close current buffer' },
+          f = { function() cb.delete({ type = 'this', force = true }) end, 'Force close current buffer' },
+          n = { function() cb.delete({ type = 'nameless' }) end, 'Close nameless buffers' },
+          h = { function() cb.delete({ type = 'hidden' }) end, 'Close hidden buffers' },
+          a = { function() cb.delete({ type = 'all' }) end, 'Close all buffers' },
+          o = { function() cb.delete({ type = 'other' }) end, 'Close other buffers' },
           t = { "<cmd>tabclose<cr>", 'Close tab' },
         }
       }, {
@@ -217,15 +197,4 @@ return {
       },
     }
   },
-  {
-    'RRethy/vim-illuminate',
-    event = 'LazyFile',
-    keys = {
-      { '<leader>I', function() require('illuminate').toggle() end, desc = 'Toggle hover illumination' }
-    },
-    opts = {},
-    config = function(_, opts)
-      require('illuminate').configure(opts)
-    end
-  }
 }

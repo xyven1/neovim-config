@@ -1,14 +1,16 @@
 -- Set Vim options
-vim.o.expandtab = true      -- convert tabs to spaces
-vim.o.ignorecase = true     -- ignore case in search patterns
-vim.o.number = true         -- show line numbers
-vim.o.relativenumber = true -- show relative line numbers
-vim.o.shiftwidth = 2        -- the number of spaces inserted for each indentation
-vim.o.smartindent = true    -- make indenting smarter again
-vim.o.tabstop = 2           -- how many columns a tab counts for
-vim.o.termguicolors = true  -- use terminal colors
-vim.o.pumblend = 30         -- popup menu transparency
-vim.o.mouse = ''            -- disable mouse support
+vim.opt.expandtab = true      -- convert tabs to spaces
+vim.opt.ignorecase = true     -- ignore case in search patterns
+vim.opt.number = true         -- show line numbers
+vim.opt.relativenumber = true -- show relative line numbers
+vim.opt.shiftwidth = 2        -- the number of spaces inserted for each indentation
+vim.opt.smartindent = true    -- make indenting smarter again
+vim.opt.tabstop = 2           -- how many columns a tab counts for
+vim.opt.termguicolors = true  -- use terminal colors
+vim.opt.pumblend = 30         -- popup menu transparency
+vim.opt.mouse = ''            -- disable mouse support
+vim.opt.scrolloff = 4
+vim.opt.confirm = true
 vim.g.mapleader = " "
 
 -- neovide settings

@@ -19,7 +19,10 @@ return {
       ignore_install = {}, -- List of parsers to ignore installing
       highlight = {
         enable = true,     -- false will disable the whole extension
-        disable = {}       -- list of language that will be disabled
+        is_supported = function()
+          return vim.api.nvim_buf_line_count(0) < 10000
+        end,
+        disable = {} -- list of language that will be disabled
       },
       incremental_selection = {
         enable = true,
@@ -90,4 +93,9 @@ return {
       },
     },
   },
+  {
+    'windwp/nvim-ts-autotag',
+    event = "LazyFile",
+    opts = {}
+  }
 }
