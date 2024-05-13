@@ -52,5 +52,5 @@ map("n", "]q", vim.cmd.cnext, { desc = "Next Quickfix" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
 
-map("n", "<leader>\\", "<cmd>nohlsearch", { desc = "Clear highlights" })
+map("n", "<leader>\\", "<cmd>nohlsearch<cr>", { desc = "Clear highlights" })
 
