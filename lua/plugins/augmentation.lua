@@ -62,7 +62,7 @@ return {
         enable_autocmd = false,
       }
     },
-    keys = { "gb", "gc" },
+    keys = { "gb", mode = { "n", "v" }, { "gc", mode = { "n", "v" } } },
     config = function()
       require('Comment').setup({
         pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
