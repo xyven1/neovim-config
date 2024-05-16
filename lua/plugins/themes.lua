@@ -1,4 +1,4 @@
-return {
+local themes = {
   {
     'Mofiqul/vscode.nvim',
     opts = {
@@ -20,12 +20,10 @@ return {
         -- Pmenu = { ctermbg = 0, bg = 'NONE' },
       },
     },
-    priority = 1000
   },
   {
     'folke/tokyonight.nvim',
     opts = {},
-    priority = 1000
   },
   {
     'olimorris/onedarkpro.nvim',
@@ -35,17 +33,14 @@ return {
         -- highlight_inactive_windows = true
       },
     },
-    priority = 1000
   },
   {
     'xyven1/onedark.nvim',
     opts = {},
-    priority = 1000
   },
   {
     'rebelot/kanagawa.nvim',
     opts = {},
-    priority = 1000
   },
   {
     'sainnhe/gruvbox-material',
@@ -55,6 +50,10 @@ return {
       vim.g.gruvbox_material_foreground = 'original'
       vim.g.gruvbox_material_enable_italic = 1
     end,
-    priority = 1000
   },
 }
+for _, theme in ipairs(themes) do
+  theme.event = "VeryLazy"
+end
+
+return themes
