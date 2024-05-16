@@ -10,3 +10,11 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     end
   end
 })
+-- autocmd TerminalOpen * setlocal nonumber
+vim.api.nvim_create_autocmd('TermOpen', {
+  pattern = "*",
+  callback = function()
+    vim.api.nvim_set_option_value("number", false, { scope = "local" })
+    vim.api.nvim_set_option_value("relativenumber", false, { scope = "local" })
+  end
+})
