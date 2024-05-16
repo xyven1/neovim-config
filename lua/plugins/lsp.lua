@@ -131,8 +131,6 @@ return {
         },
         keymap = {
           recommended = false,
-          jump_to_mark = '<c-n>',
-          pre_select = true
         },
       }
     end,
