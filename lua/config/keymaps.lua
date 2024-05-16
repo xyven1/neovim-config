@@ -19,8 +19,14 @@ map({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = t
 map("v", "<", "<gv")
 map("v", ">", ">gv")
 
--- paste over currently selected text without yanking it
+-- better paste
+map("n", "<C-S-v>", "\"+gP", opts("Paste from system clipboard"))
+map("n", "<C-S-c>", "\"+y", opts("Copy to system clipboard"))
+map("v", "<C-S-v>", "\"+gP", opts("Paste from system clipboard"))
 map("v", "p", "\"_dP", opts("Paste over currently selected text without yanking it"))
+map("v", "<C-S-c>", "\"+y", opts("Copy to system clipboard"))
+
+-- toggles
 map('n', '<leader>m', function()
   vim.o.background = vim.o.background == 'dark' and 'light' or 'dark'
 end, opts('Toggle light/dark mode'))
@@ -49,8 +55,15 @@ map('t', '<C-l>', '<cmd>wincmd l<cr>', opts('Go to the right window'))
 map("n", "[q", vim.cmd.cprev, { desc = "Previous Quickfix" })
 map("n", "]q", vim.cmd.cnext, { desc = "Next Quickfix" })
 
-map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
 
-map("n", "<leader>\\", "<cmd>nohlsearch<cr>", { desc = "Clear highlights" })
-
+map("n", "<leader>\\", function()
+  vim.cmd("nohlsearch")
+  local inactive_floating_wins = vim.fn.filter(vim.api.nvim_list_wins(), function(k, v)
+    return vim.api.nvim_win_get_config(v).relative ~= ""
+      and v ~= vim.api.nvim_get_current_win()
+  end)
+  for _, w in ipairs(inactive_floating_wins) do
+    pcall(vim.api.nvim_win_close, w, false)
+  end
+end, { desc = "Clear screen" })

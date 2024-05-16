@@ -14,6 +14,20 @@ return {
     event = 'VeryLazy',
   },
   {
+    'aspeddro/gitui.nvim',
+    cmd = { 'Gitui' },
+    opts = {
+      window = {
+        options = {
+          width = 100,
+          height = 100,
+          border = 'none'
+        }
+      }
+    },
+    keys = { { '<leader>g', '<cmd>Gitui<cr>', desc = 'Open gitui in floating window' } }
+  },
+  {
     'sindrets/diffview.nvim',
     dependencies = {
       'nvim-tree/nvim-web-devicons'

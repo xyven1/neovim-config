@@ -23,7 +23,7 @@ return {
         end,
       }
     },
-    init = function()
+    config = function(_, opts)
       vim.diagnostic.config({
         virtual_text = {
           source = "if_many",
@@ -36,8 +36,6 @@ return {
         local hl = "DiagnosticSign" .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
       end
-    end,
-    config = function(_, opts)
       local lspconfig = require('lspconfig')
       local coq = require('coq')
       local mason_lspconfig = require('mason-lspconfig')
@@ -55,8 +53,7 @@ return {
         config = coq.lsp_ensure_capabilities(config)
         lspconfig[server_name].setup(config)
       end
-      mason_lspconfig.setup_handlers { setup_server }
-
+      mason_lspconfig.setup_handlers({ setup_server })
       setup_server "nil_ls"
     end,
     keys = {

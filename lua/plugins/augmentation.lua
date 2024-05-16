@@ -116,6 +116,9 @@ return {
   },
   {
     'Shatur/neovim-session-manager',
+    dependencies = {
+      'ibhagwan/fzf-lua', -- for fzf's ui select
+    },
     cmd = { 'SessionManager' },
     keys = {
       { '<leader>w', '<cmd>SessionManager load_session<cr>', desc = 'Load session' },
