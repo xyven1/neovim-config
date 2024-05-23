@@ -5,10 +5,12 @@ return {
     priority = 1,
   },
   {
-    'lambdalisue/suda.vim',
+    'lambdalisue/vim-suda',
+    lazy = false,
     init = function()
       vim.g.suda_smart_edit = 1
-    end
+    end,
+    priority = 1,
   },
   {
     'mrjones2014/smart-splits.nvim',
