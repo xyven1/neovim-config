@@ -128,6 +128,7 @@ return {
         },
         keymap = {
           recommended = false,
+          jump_to_mark = "<c-m>",
         },
       }
     end,
