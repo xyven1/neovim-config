@@ -14,4 +14,10 @@ return {
       { '<leader>r', '<cmd>OverseerRun<cr>',    desc = 'Run task' },
     },
   },
+  {
+    "andythigpen/nvim-coverage",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    event = 'LazyFile',
+    opts = {},
+  }
 }

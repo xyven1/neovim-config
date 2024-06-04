@@ -202,4 +202,20 @@ return {
       },
     }
   },
+  {
+    'danymat/neogen',
+    config = true,
+    cmd = { "Neogen" },
+    keys = {
+      { '<leader>ng', function() require('neogen').generate() end, desc = 'Generate function docs' },
+    }
+  },
+  {
+    'nvim-pack/nvim-spectre',
+    cmd = { 'Spectre' },
+    opts = { open_cmd = 'noswapfile vnew' },
+    keys = {
+      { '<leader>nr', function() require('spectre').open() end, desc = 'Replace in Files (Spectre)' },
+    }
+  }
 }

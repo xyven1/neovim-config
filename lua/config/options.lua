@@ -11,6 +11,7 @@ vim.opt.pumblend = 30         -- popup menu transparency
 vim.opt.mouse = ''            -- disable mouse support
 vim.opt.scrolloff = 4
 vim.opt.confirm = true
+vim.opt.laststatus = 3
 vim.g.mapleader = " "
 
 -- neovide settings
