@@ -23,7 +23,7 @@ return {
     end,
     keys = {
       {
-        '<leader>[',
+        '<leader>ur',
         function()
           local scope = {}
           if vim.g.rainbow then

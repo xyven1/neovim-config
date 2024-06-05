@@ -63,7 +63,7 @@ return {
       }, { names = false, RRGGBBAA = true })
     end,
     keys = {
-      { '<leader>c', '<cmd>ColorizerToggle<cr>', desc = 'Toggle colorizer' }
+      { '<leader>uc', '<cmd>ColorizerToggle<cr>', desc = 'Toggle colorizer' }
     }
   },
   {
