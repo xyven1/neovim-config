@@ -96,19 +96,19 @@ return {
             icon = '  ',
             desc = 'Open current directory\'s session       ',
             key = 's',
-            action = 'SessionManager load_current_dir_session'
+            action = 'Resession load_dir'
           },
           {
             icon = '  ',
             desc = 'Open lastest session                    ',
             key = 'l',
-            action = 'SessionManager load_last_session'
+            action = 'Resession load_latest'
           },
           {
             icon = '󰈢  ',
             desc = 'Recently opened sessions                ',
             key = 'r',
-            action = 'SessionManager load_session'
+            action = 'Resession load'
           },
         },
       },
