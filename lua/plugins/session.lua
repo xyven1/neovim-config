@@ -2,7 +2,7 @@ local function get_session_name()
   local files = require("resession.files")
   local name = vim.fn.getcwd()
   local branch = vim.trim(vim.fn.system("git branch --show-current"))
-  if vim.v.shell_error == 0 then
+  if vim.v.shell_error == 0 and branch ~= "" then
     name = name .. "~~" .. branch
   end
   return name:gsub(files.sep, "_"):gsub(":", "_")
@@ -40,12 +40,9 @@ local function get_all_sessions()
   return all_sessions
 end
 
-local function load_any_session()
-  local resession = require("resession")
+local function action_on_any_session(kind, prompt, func)
   local util = require("resession.util")
-
   local all_sessions = get_all_sessions()
-
   if vim.tbl_isempty(all_sessions) then
     vim.notify("No saved sessions", vim.log.levels.WARN)
     return
@@ -69,17 +66,31 @@ local function load_any_session()
   end
 
   vim.ui.select(all_sessions, {
-    kind = "resession_load",
-    prompt = "Load session> ",
+    kind = kind,
+    prompt = prompt,
     format_item = format_item,
   }, function(selected)
     if selected then
-      resession.load(selected.name, {
-        dir = selected.dir,
-        reset = "auto",
-        attach = true,
-      })
+      func(selected)
     end
+  end)
+end
+
+local function load_any_session()
+  local resession = require("resession")
+  action_on_any_session("resession_load", "Load Session> ", function(selected)
+    resession.load(selected.name, {
+      dir = selected.dir,
+      reset = "auto",
+      attach = true,
+    })
+  end)
+end
+
+local function delete_any_session()
+  local resession = require("resession")
+  action_on_any_session("resession_delete", "Delete Session> ", function(selected)
+    resession.delete(selected.name, { dir = selected.dir })
   end)
 end
 
@@ -94,7 +105,6 @@ end
 local function load_latest_session()
   local resession = require("resession")
   local all_sessions = get_all_sessions()
-
   if vim.tbl_isempty(all_sessions) then
     vim.notify("No saved sessions", vim.log.levels.WARN)
     return
@@ -123,25 +133,34 @@ local functions = {
   load = {
     func = load_any_session,
     desc = "Load session",
+    key = 'w',
   },
   load_dir = {
     func = load_current_dir_session,
     desc = "Load session in current directory",
+    key = 'c',
   },
   load_latest = {
     func = load_latest_session,
     desc = "Load latest session",
+    key = 'l',
   },
   save = {
     func = save_curr_sess,
     desc = "Save session",
+    key = 's',
+  },
+  delete = {
+    func = delete_any_session,
+    desc = "Delete session",
+    key = 'd',
   },
 }
 
 return {
   {
     'stevearc/resession.nvim',
-    event = 'VimLeavePre',
+    event = { 'VeryLazy', 'VimLeavePre' },
     cmd = 'Resession',
     keys = { '<leader>w' },
     opts = {
@@ -185,17 +204,17 @@ return {
         desc = 'Resession command'
       })
 
-      local resession = require('resession')
       local wk = require('which-key')
+      local keys = {}
+      for _, v in pairs(functions) do
+        keys[v.key] = { v.func, v.desc }
+      end
+      keys.name = 'Session'
       wk.register({
-        w = {
-          name = 'Session',
-          w = { load_any_session, 'Load session' },
-          l = { load_latest_session, 'Load latest session' },
-          d = { resession.delete, 'Delete session' },
-          s = { resession.save, 'Save session' },
-        },
+        w = keys,
       }, { prefix = '<leader>' })
+
+      local resession = require('resession')
       resession.setup(opts)
       resession.add_hook("pre_load", save_curr_sess)
     end,

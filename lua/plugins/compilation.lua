@@ -41,7 +41,7 @@ return {
           },
           q = { '<cmd>OverseerQuickAction<cr>', 'Run task action on most recent task' },
           r = { '<cmd>OverseerQuickAction restart<cr>', 'Restart latest task' },
-          s = { '<cmd>OverseerQuickAction ensure<cr>', 'Start latest task' },
+          s = { '<cmd>OverseerQuickAction start<cr>', 'Start latest task' },
           t = { '<cmd>OverseerRun<cr>', 'Run task' },
           x = { '<cmd>OverseerQuickAction stop<cr>', 'Stop latest task' },
         }

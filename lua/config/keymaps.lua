@@ -27,7 +27,7 @@ map("v", "p", "\"_dP", opts("Paste over currently selected text without yanking 
 map("v", "<C-S-c>", "\"+y", opts("Copy to system clipboard"))
 
 -- toggles
-map('n', '<leader>m', function()
+map('n', '<leader>um', function()
   vim.o.background = vim.o.background == 'dark' and 'light' or 'dark'
 end, opts('Toggle light/dark mode'))
 

@@ -113,7 +113,7 @@ return {
           r = { fzf.lsp_references, 'Search references' },
           t = { fzf.lsp_typedefs, 'Search type definitions' },
           E = { fzf.lsp_workspace_diagnostics, 'Search diagnostics (workspace)' },
-          S = { fzf.lsp_workspace_symbols, 'Search symbols (workspace)' },
+          S = { fzf.lsp_live_workspace_symbols, 'Search symbols (workspace)' },
         },
       }, {
         prefix = '<leader>',

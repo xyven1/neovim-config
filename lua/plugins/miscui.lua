@@ -70,7 +70,7 @@ return {
     'RRethy/vim-illuminate',
     event = 'LazyFile',
     keys = {
-      { '<leader>i', function() require('illuminate').toggle() end, desc = 'Toggle hover illumination' }
+      { '<leader>ui', function() require('illuminate').toggle() end, desc = 'Toggle hover illumination' }
     },
     opts = {
       large_file_cutoff = 4000,
