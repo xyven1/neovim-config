@@ -1,4 +1,5 @@
 -- Set Vim options
+vim.opt.exrc = true           -- enable reading of .vimrc
 vim.opt.expandtab = true      -- convert tabs to spaces
 vim.opt.ignorecase = true     -- ignore case in search patterns
 vim.opt.number = true         -- show line numbers

@@ -4,9 +4,7 @@ return {
     event = "VeryLazy",
     config = function(opts)
       local distro = vim.fn.system('cat /etc/os-release | grep "^ID=" | cut -d "=" -f 2 | tr -d "\n"')
-      if distro == "nixos" then
-        opts.PATH = "skip"
-      end
+      opts.PATH = distro == "nixos" and "skip" or "append"
       require('mason').setup(opts)
     end,
     opts = {}
