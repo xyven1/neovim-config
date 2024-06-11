@@ -148,6 +148,10 @@ local function detach()
   require('resession').detach()
 end
 
+local function info()
+  require('resession').get_current_session_info()
+end
+
 local function load_current_dir_session()
   local resession = require("resession")
   local session_name = get_session_name()
@@ -191,6 +195,11 @@ local functions = {
     func = detach,
     desc = "Detach from current session",
     key = 'u',
+  },
+  info = {
+    func = info,
+    desc = "Session info",
+    key = 'i',
   }
 }
 
@@ -265,8 +274,9 @@ return {
         branches = {
           actions = {
             ["default"] = function(selected, opts)
+              local is_remote = selected[1]:match("[^ ]+"):find("^remotes/")
               require("fzf-lua.actions").git_switch(selected, opts)
-              if selected[1]:find("^remotes/") then
+              if is_remote then
                 detach()
                 close_everything()
               else
