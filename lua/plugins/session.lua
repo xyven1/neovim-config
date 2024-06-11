@@ -119,6 +119,8 @@ local function save_curr_sess()
     resession.save(info.name, { dir = info.dir, notify = false })
   elseif not vim.list_contains(resession.list({ dir = DIRSESSION }), session_name) then
     resession.save(session_name, { dir = DIRSESSION, notify = false })
+  else
+    resession.save("scratch", { notify = false })
   end
 end
 
