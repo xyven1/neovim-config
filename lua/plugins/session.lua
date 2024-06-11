@@ -94,13 +94,6 @@ local function delete_any_session()
   end)
 end
 
-local function load_current_dir_session()
-  local resession = require("resession")
-  local session_name = get_session_name()
-  if vim.list_contains(resession.list({ dir = DIRSESSION }), session_name) then
-    resession.load(session_name, { dir = DIRSESSION, reset = "auto", attach = true })
-  end
-end
 
 local function load_latest_session()
   local resession = require("resession")
@@ -129,6 +122,43 @@ local function save_curr_sess()
   end
 end
 
+local function close_everything()
+  local is_floating_win = vim.api.nvim_win_get_config(0).relative ~= ""
+  if is_floating_win then
+    -- Go to the first window, which will not be floating
+    vim.cmd.wincmd({ args = { "w" }, count = 1 })
+  end
+
+  local scratch = vim.api.nvim_create_buf(false, true)
+  vim.bo[scratch].bufhidden = "wipe"
+  vim.api.nvim_win_set_buf(0, scratch)
+  vim.bo[scratch].buftype = ""
+  for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.bo[bufnr].buflisted then
+      vim.api.nvim_buf_delete(bufnr, { force = true })
+    end
+  end
+  vim.cmd.tabonly({ mods = { emsg_silent = true } })
+  vim.cmd.only({ mods = { emsg_silent = true } })
+end
+
+local function detach()
+  require('resession').detach()
+end
+
+local function load_current_dir_session()
+  local resession = require("resession")
+  local session_name = get_session_name()
+  if vim.list_contains(resession.list({ dir = DIRSESSION }), session_name) then
+    resession.load(session_name, { dir = DIRSESSION, reset = "auto", attach = true })
+  else
+    save_curr_sess()
+    detach()
+    close_everything()
+  end
+end
+
+
 local functions = {
   load = {
     func = load_any_session,
@@ -155,6 +185,11 @@ local functions = {
     desc = "Delete session",
     key = 'd',
   },
+  detach = {
+    func = detach,
+    desc = "Detach from current session",
+    key = 'u',
+  }
 }
 
 return {
@@ -162,7 +197,9 @@ return {
     'stevearc/resession.nvim',
     event = { 'VeryLazy', 'VimLeavePre' },
     cmd = 'Resession',
-    keys = { '<leader>w' },
+    keys = {
+      '<leader>w',
+    },
     opts = {
       extensions = { overseer = {} }
     },
@@ -218,5 +255,25 @@ return {
       resession.setup(opts)
       resession.add_hook("pre_load", save_curr_sess)
     end,
+  },
+  {
+    'ibhagwan/fzf-lua',
+    opts = {
+      git = {
+        branches = {
+          actions = {
+            ["default"] = function(selected, opts)
+              require("fzf-lua.actions").git_switch(selected, opts)
+              if selected[1]:find("^remotes/") then
+                detach()
+                close_everything()
+              else
+                load_current_dir_session()
+              end
+            end,
+          },
+        },
+      },
+    }
   }
 }

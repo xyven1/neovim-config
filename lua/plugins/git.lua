@@ -6,6 +6,13 @@ return {
     opts = function()
       local gitsigns = require('gitsigns')
       local wk = require('which-key')
+      local confirm = function(message, callback)
+        return function()
+          if vim.fn.confirm(message, '&Yes\n&Cancel', 1) == 1 then
+            callback()
+          end
+        end
+      end
       wk.register({
         h = {
           name = 'Hunk',
@@ -13,7 +20,7 @@ return {
           r = { gitsigns.reset_hunk, 'Reset hunk' },
           S = { gitsigns.stage_buffer, 'Stage buffer' },
           u = { gitsigns.undo_stage_hunk, 'Undo stage hunk' },
-          R = { gitsigns.reset_buffer, 'Reset buffer' },
+          R = { confirm("Are you sure you want to reset the buffer?", gitsigns.reset_buffer), 'Reset buffer' },
           p = { gitsigns.preview_hunk, 'Preview hunk' },
           b = { function() gitsigns.blame_line { full = true } end, 'Blame line' },
           d = { gitsigns.diffthis, 'Diff this' },
