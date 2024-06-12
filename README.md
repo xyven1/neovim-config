@@ -6,13 +6,29 @@
 
 This is my neovim configuration. It uses recent and maintained plugins with a focus on performance and a complete developer experience. Load times in around 30ms on an 8 core laptop.
 
+Some nice features include:
+- Robust and automatic session management *per branch* in directories, as well as the ability to create custom sessions.
+- Popular and functional colorschemes preinstalled
+- Modern ui with Noice, nvim-notify, and others
+- Almost entirely lazy loaded
+- Searchable (`<space>ek`), well documented, and thorough keymappings
+- LSP, DAP, and linting, all completely language agnostic
+- Treesitter textobject bindings that will become staples of your workflow
+
 ## Install Steps
 
-1. First clone this repo into ~/.config/ with the a command like the following:
+1. First clone this repo into `~/.config/` with the a command like the following:
 
-`git clone https://github.com/Xyven1/neovim-config.git ~/.config/nvim`
+`git clone https://github.com/xyven1/neovim-config.git ~/.config/nvim`
 
-2. Install neovim **nightly** from your package manager, or use the following script:  `~/.config/nvim/scripts/nvim.sh`
+or if you already have a config
+
+`git clone https://github.com/xyven1/neovim-config.git ~/.config/xyven1/neovim-config`
+
+Note: if you use the second option run neovim with `NVIM_APPNAME=xyven1/neovim-config/`
+
+
+2. Install neovim **>=v0.10.0** from your package manager, or use the following script:  `~/.config/nvim/scripts/nvim.sh`
 4. Install the dependencies listed below (ones necessary for basic functionality are marked with !)
 3. Run the command `nvim` and let Lazy.nvim do its thing, then run `:COQdeps` to install the dependecies for `coq_nvim`
 4. Restart nvim, and everything should work.
@@ -41,6 +57,7 @@ This is my neovim configuration. It uses recent and maintained plugins with a fo
 
 + [JoosepAlviste/nvim-ts-context-commentstring](https://dotfyle.com/plugins/JoosepAlviste/nvim-ts-context-commentstring)
 + [numToStr/Comment.nvim](https://dotfyle.com/plugins/numToStr/Comment.nvim)
++ [danymat/neogen](https://dotfyle.com/plugins/danymat/neogen)
 + [folke/todo-comments.nvim](https://dotfyle.com/plugins/folke/todo-comments.nvim)
 ### completion
 
@@ -58,6 +75,7 @@ This is my neovim configuration. It uses recent and maintained plugins with a fo
 + [folke/trouble.nvim](https://dotfyle.com/plugins/folke/trouble.nvim)
 ### editing-support
 
++ [tzachar/highlight-undo.nvim](https://dotfyle.com/plugins/tzachar/highlight-undo.nvim)
 + [windwp/nvim-autopairs](https://dotfyle.com/plugins/windwp/nvim-autopairs)
 + [windwp/nvim-ts-autotag](https://dotfyle.com/plugins/windwp/nvim-ts-autotag)
 + [monaqa/dial.nvim](https://dotfyle.com/plugins/monaqa/dial.nvim)
@@ -70,9 +88,11 @@ This is my neovim configuration. It uses recent and maintained plugins with a fo
 + [stevearc/conform.nvim](https://dotfyle.com/plugins/stevearc/conform.nvim)
 ### fuzzy-finder
 
++ [nvim-telescope/telescope.nvim](https://dotfyle.com/plugins/nvim-telescope/telescope.nvim)
 + [ibhagwan/fzf-lua](https://dotfyle.com/plugins/ibhagwan/fzf-lua)
 ### git
 
++ [kdheepak/lazygit.nvim](https://dotfyle.com/plugins/kdheepak/lazygit.nvim)
 + [lewis6991/gitsigns.nvim](https://dotfyle.com/plugins/lewis6991/gitsigns.nvim)
 + [sindrets/diffview.nvim](https://dotfyle.com/plugins/sindrets/diffview.nvim)
 ### github
@@ -112,9 +132,9 @@ This is my neovim configuration. It uses recent and maintained plugins with a fo
 ### quickfix
 
 + [kevinhwang91/nvim-bqf](https://dotfyle.com/plugins/kevinhwang91/nvim-bqf)
-### session
+### search
 
-+ [Shatur/neovim-session-manager](https://dotfyle.com/plugins/Shatur/neovim-session-manager)
++ [nvim-pack/nvim-spectre](https://dotfyle.com/plugins/nvim-pack/nvim-spectre)
 ### split-and-window
 
 + [mrjones2014/smart-splits.nvim](https://dotfyle.com/plugins/mrjones2014/smart-splits.nvim)
@@ -132,6 +152,9 @@ This is my neovim configuration. It uses recent and maintained plugins with a fo
 ### tabline
 
 + [akinsho/bufferline.nvim](https://dotfyle.com/plugins/akinsho/bufferline.nvim)
+### test
+
++ [andythigpen/nvim-coverage](https://dotfyle.com/plugins/andythigpen/nvim-coverage)
 ### utility
 
 + [rcarriga/nvim-notify](https://dotfyle.com/plugins/rcarriga/nvim-notify)
