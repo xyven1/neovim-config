@@ -14,6 +14,7 @@ return {
   },
   {
     'mrjones2014/smart-splits.nvim',
+    lazy = false,
     opts = {},
     keys = {
       { '<A-h>',             function() require('smart-splits').resize_left() end,       desc = 'Resize left' },
