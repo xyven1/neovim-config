@@ -160,6 +160,12 @@ return {
     cmd = { 'Trouble', 'TroubleToggle' },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {},
+    config = function(_, opts)
+      require('trouble').setup(opts or {})
+      local config = require("fzf-lua.config")
+      local actions = require("trouble.sources.fzf").actions
+      config.defaults.actions.files["ctrl-t"] = actions.open
+    end,
   },
   { 'simrat39/symbols-outline.nvim', cmd = { 'SymbolsOutline' }, opts = {} },
 }
