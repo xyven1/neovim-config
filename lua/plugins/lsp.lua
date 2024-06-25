@@ -210,18 +210,9 @@ return {
       { '[d',         "<cmd>Lspsaga diagnostic_jump_prev<cr>",            desc = 'Jump to previous diagnostic' },
       { ']d',         "<cmd>Lspsaga diagnostic_jump_next<cr>",            desc = 'Jump to next diagnostic' },
       { 'go',         "<cmd>Lspsaga outline<cr>",                         desc = 'Show outline' },
-      {
-        'K',
-        function()
-          if require('dap').session() then
-            require("dapui").eval()
-          else
-            require("lspsaga.hover"):render_hover_doc()
-          end
-        end,
-        desc = "Show symbol information",
-        mode = { 'n', 'v' }
-      },
+      { 'K',          "<cmd>Lspsaga hover_doc<cr>",                       desc = "Show symbol information",    mode = { 'n', 'v' } },
+      { '<leader>a',  "<cmd>Lspsaga code_action<cr>",                     desc = 'Show code actions',          mode = { 'n', 'v' } },
+      { '<A-d>',      "<cmd>Lspsaga term_toggle<cr>",                     desc = 'Toggle floating terminal',   mode = { 'n', 't' } },
       {
         '[e',
         function()
@@ -249,18 +240,6 @@ return {
           require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.WARN })
         end,
         desc = 'Jump to next warning'
-      },
-      {
-        '<A-d>',
-        "<cmd>Lspsaga term_toggle<cr>",
-        desc = 'Toggle floating terminal',
-        mode = { 'n', 't' }
-      },
-      {
-        '<leader>a',
-        "<cmd>Lspsaga code_action<cr>",
-        desc = 'Show code actions',
-        mode = { 'n', 'v' }
       },
     },
   },

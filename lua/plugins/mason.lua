@@ -21,12 +21,10 @@ return {
     'jay-babu/mason-nvim-dap.nvim',
     event = "VeryLazy",
     dependencies = { 'williamboman/mason.nvim' },
-    opts = {},
-    config = function(_, opts)
-      local mdap = require('mason-nvim-dap')
-      mdap.setup(vim.tbl_deep_extend("force", opts, {
-        handlers = { mdap.default_setup }
-      }))
+    opts = function(_, opts)
+      opts.handlers = opts.handlers or {}
+      table.insert(opts.handlers, 0, require('mason-nvim-dap').default_setup)
+      return opts
     end,
   },
 }
