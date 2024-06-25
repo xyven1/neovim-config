@@ -1,4 +1,4 @@
-local themes = {
+return {
   {
     'Mofiqul/vscode.nvim',
     opts = {
@@ -52,8 +52,3 @@ local themes = {
     end,
   },
 }
-for _, theme in ipairs(themes) do
-  theme.event = "VeryLazy"
-end
-
-return themes
