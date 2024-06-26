@@ -24,6 +24,7 @@ end
 return {
   {
     'nvim-lualine/lualine.nvim',
+    event = 'VeryLazy',
     dependencies = { 'nvim-tree/nvim-web-devicons', 'arkav/lualine-lsp-progress' },
     opts = function()
       -- vim.opt.showmode = false
@@ -59,7 +60,6 @@ return {
         },
       }
     end,
-    event = 'VeryLazy',
   },
   {
     'akinsho/bufferline.nvim',
