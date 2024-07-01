@@ -25,30 +25,22 @@ return {
     },
   },
   {
-    "jonboh/nvim-dap-rr",
-    dependencies = { "nvim-dap", "telescope.nvim", },
-    opts = {
-      mappings = {}
-    }
-  },
-  {
     'jay-babu/mason-nvim-dap.nvim',
-    opts = function(_, opts)
-      opts.handlers = opts.handlers or {}
-      opts.handlers.cppdbg = function(config)
-        local dap_rr = require("nvim-dap-rr")
-        table.insert(config.configurations, dap_rr.get_config({
-          name = "rr",
-          stopAtEntry = false,
-        }))
-        table.insert(config.configurations, dap_rr.get_rust_config({
-          name = "rr (rust)",
-          stopAtEntry = false,
-        }))
-        require('mason-nvim-dap').default_setup(config)
-      end
-      return opts
-    end
+    opts = {
+      handlers = {
+        codelldb = function(config)
+          table.insert(config.configurations, {
+            name = "Replay",
+            type = "lldb",
+            request = "custom",
+            targetCreateCommands = { "target create ${workspaceFolder}/build/debuggee" },
+            processCreateCommands = { "gdb-remote 127.0.0.1:50505" },
+            reverseDebugging = true
+          })
+          require('mason-nvim-dap').default_setup(config)
+        end
+      }
+    }
   },
   {
     'theHamsta/nvim-dap-virtual-text',
