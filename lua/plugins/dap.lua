@@ -5,11 +5,10 @@ return {
       'theHamsta/nvim-dap-virtual-text',
     },
     init = function()
-      vim.api.nvim_set_hl(0, 'DapBreakpoint', { fg = '#bf321d' })
       vim.fn.sign_define("DapBreakpoint", { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
       vim.fn.sign_define("DapBreakpointCondition", { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
       vim.fn.sign_define("DapBreakpointRejected", { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
-      vim.fn.sign_define("DapStopped", { text = '', texthl = 'Dap', linehl = 'DapStoppedLine', numhl = 'DapStoppedLine' })
+      vim.fn.sign_define("DapStopped", { text = '', texthl = '', linehl = 'DapStoppedLine', numhl = 'DapBreakpoint' })
     end,
     keys = {
       { '<f5>',      function() require('dap').continue() end,          desc = 'Continue' },
@@ -31,7 +30,7 @@ return {
         codelldb = function(config)
           table.insert(config.configurations, {
             name = "Replay",
-            type = "lldb",
+            type = "codelldb",
             request = "custom",
             targetCreateCommands = { "target create ${workspaceFolder}/build/debuggee" },
             processCreateCommands = { "gdb-remote 127.0.0.1:50505" },
@@ -47,7 +46,7 @@ return {
     opts = { enabled = false },
     keys = {
       {
-        '<leader>v',
+        '<leader>uv',
         function()
           require('nvim-dap-virtual-text').toggle()
         end,

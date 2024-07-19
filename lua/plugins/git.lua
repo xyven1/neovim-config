@@ -1,44 +1,32 @@
+local function gitsigns(cmd) return function() require('gitsigns')[cmd]() end end
+local confirm = function(message, callback)
+  return function()
+    if vim.fn.confirm(message, '&Yes\n&Cancel', 1) == 1 then
+      callback()
+    end
+  end
+end
 return {
   {
     'lewis6991/gitsigns.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
     event = 'LazyFile',
-    opts = function()
-      local gitsigns = require('gitsigns')
-      local wk = require('which-key')
-      local confirm = function(message, callback)
-        return function()
-          if vim.fn.confirm(message, '&Yes\n&Cancel', 1) == 1 then
-            callback()
-          end
-        end
-      end
-      wk.register({
-        h = {
-          name = 'Hunk',
-          s = { gitsigns.stage_hunk, 'Stage hunk' },
-          r = { gitsigns.reset_hunk, 'Reset hunk' },
-          S = { gitsigns.stage_buffer, 'Stage buffer' },
-          u = { gitsigns.undo_stage_hunk, 'Undo stage hunk' },
-          R = { confirm("Are you sure you want to reset the buffer?", gitsigns.reset_buffer), 'Reset buffer' },
-          p = { gitsigns.preview_hunk, 'Preview hunk' },
-          b = { function() gitsigns.blame_line { full = true } end, 'Blame line' },
-          d = { gitsigns.diffthis, 'Diff this' },
-          D = { function() gitsigns.diffthis('~') end, 'Diff this (cached)' },
-        }
-      }, { prefix = '<leader>' })
-      wk.register({
-        h = {
-          name = 'Hunk',
-          s = { function() gitsigns.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end, 'Stage hunk' },
-          r = { function() gitsigns.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end, 'Reset hunk' },
-        }
-      }, { prefix = '<leader>', mode = 'v' })
-    end,
+    opts = {},
     keys = {
-      { '[h',        function() require('gitsigns').prev_hunk() end, 'Previous hunk' },
-      { ']h',        function() require('gitsigns').next_hunk() end, 'Next hunk' },
-      { '<leader>h', modes = { 'n', 'v' } }
+      { '[h',         gitsigns 'prev_hunk',                                                                desc = 'Previous hunk' },
+      { ']h',         gitsigns 'next_hunk',                                                                desc = 'Next hunk' },
+      { '<leader>h',  group = "Git Hunk" },
+      { '<leader>hs', gitsigns 'stage_hunk',                                                               desc = 'Stage hunk' },
+      { '<leader>hr', gitsigns 'reset_hunk',                                                               desc = 'Reset hunk' },
+      { '<leader>hS', gitsigns 'stage_buffer',                                                             desc = 'Stage buffer' },
+      { '<leader>hu', gitsigns 'undo_stage_hunk',                                                          desc = 'Undo stage hunk' },
+      { '<leader>hR', confirm("Are you sure you want to reset the buffer?", gitsigns 'reset_buffer'),      desc = 'Reset buffer' },
+      { '<leader>hp', gitsigns 'preview_hunk',                                                             desc = 'Preview hunk' },
+      { '<leader>hb', function() require 'gitsigns'.blame_line({ full = true }) end,                       desc = 'Blame line' },
+      { '<leader>hd', gitsigns 'diffthis',                                                                 desc = 'Diff this' },
+      { '<leader>hD', function() require 'gitsigns'.diffthis('~') end,                                     desc = 'Diff this (cached)' },
+      { '<leader>hs', function() require 'gitsigns'.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end, desc = 'Stage hunk',        mode = 'v' },
+      { '<leader>hr', function() require 'gitsigns'.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end, desc = 'Reset hunk',        mode = 'v' },
     }
   },
   {

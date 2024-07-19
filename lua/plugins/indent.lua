@@ -89,4 +89,9 @@ return {
       end)
     end
   },
+  {
+    'NMAC427/guess-indent.nvim',
+    event = "LazyFile",
+    opts = {}
+  }
 }

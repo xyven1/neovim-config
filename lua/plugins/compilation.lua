@@ -14,57 +14,45 @@ return {
   {
     "stevearc/overseer.nvim",
     event = 'VeryLazy',
-    opts = function()
-      local wk = require('which-key')
-      wk.register({
-        ['`'] = { '<cmd>OverseerToggle<cr>', 'Toggle tasks view' },
-        r = {
-          name = "Tasks",
-          a = { '<cmd>OverseerTaskAction<cr>', 'Run task action' },
-          b = {
-            name = "Task bundles",
-            l = { '<cmd>OverseerLoadBundle<cr>', 'Load task bundle' },
-            s = { '<cmd>OverseerSaveBundle<cr>', 'Save tasks to bundle' },
-          },
-          c = { '<cmd>OverseerRunCmd<cr>', 'Run command' },
-          d = { '<cmd>OverseerQuickAction dispose<cr>', 'Delete latest task' },
-          e = { '<cmd>OverseerQuickAction edit<cr>', 'Edit latest task' },
-          f = { '<cmd>OverseerQuickAction open float<cr>', 'Open last task (float)' },
-          i = { '<cmd>OverseerInfo<cr>', 'Overseer info' },
-          n = { '<cmd>OverseerBuild<cr>', 'Create new task' },
-          o = {
-            name = "Open last task",
-            o = { '<cmd>OverseerQuickAction open<cr>', 'Open last task (window)' },
-            s = { '<cmd>OverseerQuickAction open split<cr>', 'Open last task (split)' },
-            t = { '<cmd>OverseerQuickAction open tab<cr>', 'Open last task (tab)' },
-            v = { '<cmd>OverseerQuickAction open vsplit<cr>', 'Open last task (vsplit)' },
-          },
-          q = { '<cmd>OverseerQuickAction<cr>', 'Run task action on most recent task' },
-          r = { '<cmd>OverseerQuickAction restart<cr>', 'Restart latest task' },
-          s = { '<cmd>OverseerQuickAction start<cr>', 'Start latest task' },
-          t = { '<cmd>OverseerRun<cr>', 'Run task' },
-          x = { '<cmd>OverseerQuickAction stop<cr>', 'Stop latest task' },
+    opts = {
+      task_list = {
+        bindings = {
+          ["]"] = "IncreaseDetail",
+          ["["] = "DecreaseDetail",
+          ["<C-]>"] = "IncreaseAllDetail",
+          ["<C-[>"] = "DecreaseAllDetail",
+          ["K"] = "ScrollOutputUp",
+          ["J"] = "ScrollOutputDown",
         }
-      }, {
-        prefix = '<leader>',
-      })
-      return {
-        task_list = {
-          bindings = {
-            ["]"] = "IncreaseDetail",
-            ["["] = "DecreaseDetail",
-            ["<C-]>"] = "IncreaseAllDetail",
-            ["<C-[>"] = "DecreaseAllDetail",
-            ["K"] = "ScrollOutputUp",
-            ["J"] = "ScrollOutputDown",
-          }
-        },
-        bundles = {
-          autostart_on_load = false
-        }
+      },
+      bundles = {
+        autostart_on_load = false
       }
-    end,
-    keys = { '<leader>`', '<leader>r' },
+    },
+    keys = {
+      { "<leader>`",   "<cmd>OverseerToggle<cr>",                  desc = "Toggle tasks view" },
+      { "<leader>r",   group = "Tasks" },
+      { "<leader>ra",  "<cmd>OverseerTaskAction<cr>",              desc = "Run task action" },
+      { "<leader>rb",  group = "Task bundles" },
+      { "<leader>rbl", "<cmd>OverseerLoadBundle<cr>",              desc = "Load task bundle" },
+      { "<leader>rbs", "<cmd>OverseerSaveBundle<cr>",              desc = "Save tasks to bundle" },
+      { "<leader>rc",  "<cmd>OverseerRunCmd<cr>",                  desc = "Run command" },
+      { "<leader>rd",  "<cmd>OverseerQuickAction dispose<cr>",     desc = "Delete latest task" },
+      { "<leader>re",  "<cmd>OverseerQuickAction edit<cr>",        desc = "Edit latest task" },
+      { "<leader>rf",  "<cmd>OverseerQuickAction open float<cr>",  desc = "Open last task (float)" },
+      { "<leader>ri",  "<cmd>OverseerInfo<cr>",                    desc = "Overseer info" },
+      { "<leader>rn",  "<cmd>OverseerBuild<cr>",                   desc = "Create new task" },
+      { "<leader>ro",  group = "Open last task" },
+      { "<leader>roo", "<cmd>OverseerQuickAction open<cr>",        desc = "Open last task (window)" },
+      { "<leader>ros", "<cmd>OverseerQuickAction open split<cr>",  desc = "Open last task (split)" },
+      { "<leader>rot", "<cmd>OverseerQuickAction open tab<cr>",    desc = "Open last task (tab)" },
+      { "<leader>rov", "<cmd>OverseerQuickAction open vsplit<cr>", desc = "Open last task (vsplit)" },
+      { "<leader>rq",  "<cmd>OverseerQuickAction<cr>",             desc = "Run task action on most recent task" },
+      { "<leader>rr",  "<cmd>OverseerQuickAction restart<cr>",     desc = "Restart latest task" },
+      { "<leader>rs",  "<cmd>OverseerQuickAction start<cr>",       desc = "Start latest task" },
+      { "<leader>rt",  "<cmd>OverseerRun<cr>",                     desc = "Run task" },
+      { "<leader>rx",  "<cmd>OverseerQuickAction stop<cr>",        desc = "Stop latest task" },
+    }
   },
   {
     "andythigpen/nvim-coverage",

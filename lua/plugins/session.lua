@@ -208,9 +208,15 @@ return {
     'stevearc/resession.nvim',
     event = { 'VeryLazy', 'VimLeavePre' },
     cmd = 'Resession',
-    keys = {
-      '<leader>w',
-    },
+    keys = function()
+      local keys = {
+        { '<leader>w', group = 'Session' },
+      }
+      for _, v in pairs(functions) do
+        table.insert(keys, { '<leader>w' .. v.key, v.func, desc = v.desc })
+      end
+      return keys
+    end,
     opts = {
       extensions = { overseer = {} }
     },
@@ -251,16 +257,6 @@ return {
         end,
         desc = 'Resession command'
       })
-
-      local wk = require('which-key')
-      local keys = {}
-      for _, v in pairs(functions) do
-        keys[v.key] = { v.func, v.desc }
-      end
-      keys.name = 'Session'
-      wk.register({
-        w = keys,
-      }, { prefix = '<leader>' })
 
       local resession = require('resession')
       resession.setup(opts)
