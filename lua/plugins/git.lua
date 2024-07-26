@@ -45,19 +45,13 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
-    config = function()
-      local wk = require("which-key")
-      wk.register({
-        g = {
-          name = "Git",
-          g = { "<cmd>LazyGit<cr>", "Open LazyGit" },
-          f = { "<cmd>LazyGitFilter<cr>", "LazyGit: Browse commits" },
-          c = { "<cmd>LazyGitCurrentFile<cr>", "Open LazyGit for current file" },
-          C = { "<cmd>LazyGitFilterCurrentFile<cr>", "LazyGit: Browse commits for current file" },
-        },
-      }, { prefix = "<leader>" })
-    end,
-    keys = { '<leader>g' }
+    keys = {
+      { '<leader>g',  group = "Git" },
+      { '<leader>gg', '<cmd>LazyGit<cr>',                  desc = 'Open LazyGit' },
+      { '<leader>gf', '<cmd>LazyGitFilter<cr>',            desc = 'LazyGit: Browse commits' },
+      { '<leader>gc', '<cmd>LazyGitCurrentFile<cr>',       desc = 'Open LazyGit for current file' },
+      { '<leader>gC', '<cmd>LazyGitFilterCurrentFile<cr>', desc = 'LazyGit: Browse commits for current file' },
+    }
   },
   {
     'sindrets/diffview.nvim',
@@ -69,6 +63,7 @@ return {
     },
     cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewFileHistory' },
     keys = {
+      { '<leader>d',  group = "Diff" },
       { '<leader>dd', '<cmd>DiffviewOpen<cr>',          desc = 'Open diff view' },
       { '<leader>dc', '<cmd>DiffviewClose<cr>',         desc = 'Close diff view' },
       { '<leader>dh', '<cmd>DiffviewFileHistory %<cr>', desc = 'Git file history' },

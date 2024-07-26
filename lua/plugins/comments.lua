@@ -7,12 +7,12 @@ return {
         enable_autocmd = false,
       }
     },
-    keys = { "gb", mode = { "n", "v" }, { "gc", mode = { "n", "v" } } },
-    config = function()
-      require('Comment').setup({
+    keys = { { "gb", mode = { "n", "v" } }, { "gc", mode = { "n", "v" } } },
+    opts = function()
+      return {
         pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
-      })
-    end,
+      }
+    end
   },
   {
     'folke/todo-comments.nvim',

@@ -15,7 +15,6 @@ return {
   {
     'ibhagwan/fzf-lua',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
-    event = 'VeryLazy',
     cmd = { 'FzfLua' },
     opts = {
       colorschemes = {
@@ -79,9 +78,11 @@ return {
       { '<leader>lt',  fzf 'lsp_typedefs',               desc = "Search type definitions" },
     },
     config = function(_, opts)
-      local fzf = require('fzf-lua')
-      fzf.setup(opts or {})
-      fzf.register_ui_select(function(_, items)
+      local config = require("fzf-lua.config")
+      config.defaults.actions.files["ctrl-t"] = require("trouble.sources.fzf").actions.open
+      local fzf_lua = require('fzf-lua')
+      fzf_lua.setup(opts or {})
+      fzf_lua.register_ui_select(function(_, items)
         local min_h, max_h = 0.15, 0.70
         local h = (#items + 4) / vim.o.lines
         if h < min_h then
@@ -133,12 +134,6 @@ return {
     cmd = { 'Trouble', 'TroubleToggle' },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {},
-    config = function(_, opts)
-      require('trouble').setup(opts or {})
-      local config = require("fzf-lua.config")
-      local actions = require("trouble.sources.fzf").actions
-      config.defaults.actions.files["ctrl-t"] = actions.open
-    end,
   },
   { 'simrat39/symbols-outline.nvim', cmd = { 'SymbolsOutline' }, opts = {} },
 }

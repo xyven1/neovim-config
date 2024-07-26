@@ -244,6 +244,14 @@ return {
     },
   },
   {
+    "ray-x/lsp_signature.nvim",
+    event = "VeryLazy",
+    opts = {
+      hint_enable = false,
+      toggle_key = '<C-k'
+    },
+  },
+  {
     'mfussenegger/nvim-lint',
     event = "LazyFile",
     opts = {
