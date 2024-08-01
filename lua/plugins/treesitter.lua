@@ -5,7 +5,6 @@ return {
     version = false,
     event = { "LazyFile", "VeryLazy" },
     dependencies = {
-      'JoosepAlviste/nvim-ts-context-commentstring',
       'nvim-treesitter/nvim-treesitter-textobjects'
     },
     config = function(_, opts)

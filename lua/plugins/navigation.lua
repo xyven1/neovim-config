@@ -77,6 +77,12 @@ return {
       { '<leader>lS',  fzf 'lsp_live_workspace_symbols', desc = "Search symbols (workspace)" },
       { '<leader>lt',  fzf 'lsp_typedefs',               desc = "Search type definitions" },
     },
+    init = function()
+      vim.ui.select = function(...)
+        require('fzf-lua')
+        vim.ui.select(...)
+      end
+    end,
     config = function(_, opts)
       local config = require("fzf-lua.config")
       config.defaults.actions.files["ctrl-t"] = require("trouble.sources.fzf").actions.open

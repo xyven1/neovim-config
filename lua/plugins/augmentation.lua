@@ -59,37 +59,35 @@ return {
   },
   {
     'kazhala/close-buffers.nvim',
-    keys = { '<leader>x' },
-    config = function()
-      local cb = require('close_buffers')
-      local wk = require('which-key')
-      wk.register({
-        x = {
-          name = 'Close',
-          x = { function()
-            if vim.bo.modified then
-              local choice = vim.fn.confirm("Save changes to %q?", "&Yes\n&No\n&Cancel")
-              if choice == 1 then
-                vim.cmd.write()
-                cb.delete({ type = 'this' })
-              elseif choice == 2 then
-                cb.delete({ type = 'this', force = true })
-              end
-            else
+    keys = {
+      { '<leader>x',  group = "Close" },
+      {
+        '<leader>xx',
+        function()
+          local cb = require('close_buffers')
+          if vim.bo.modified then
+            local choice = vim.fn.confirm("Save changes to %q?", "&Yes\n&No\n&Cancel")
+            if choice == 1 then
+              vim.cmd.write()
               cb.delete({ type = 'this' })
+            elseif choice == 2 then
+              cb.delete({ type = 'this', force = true })
             end
-          end, 'Close current buffer' },
-          f = { function() cb.delete({ type = 'this', force = true }) end, 'Force close current buffer' },
-          n = { function() cb.delete({ type = 'nameless' }) end, 'Close nameless buffers' },
-          h = { function() cb.delete({ type = 'hidden' }) end, 'Close hidden buffers' },
-          a = { function() cb.delete({ type = 'all' }) end, 'Close all buffers' },
-          o = { function() cb.delete({ type = 'other' }) end, 'Close other buffers' },
-          t = { "<cmd>tabclose<cr>", 'Close tab' },
-        }
-      }, {
-        prefix = '<leader>',
-      })
-    end
+          else
+            cb.delete({ type = 'this' })
+          end
+        end,
+        desc = 'Close current buffer'
+      },
+      { '<leader>xf', function() require('close_buffers').delete({ type = 'this', force = true }) end, desc = 'Force close current buffer' },
+      { '<leader>xn', function() require('close_buffers').delete({ type = 'nameless' }) end,           desc = 'Close nameless buffers' },
+      { '<leader>xh', function() require('close_buffers').delete({ type = 'hidden' }) end,             desc = 'Close hidden buffers' },
+      { '<leader>xa', function() require('close_buffers').delete({ type = 'all' }) end,                desc = 'Close all buffers' },
+      { '<leader>xo', function() require('close_buffers').delete({ type = 'other' }) end,              desc = 'Close other buffers' },
+      { '<leader>xt', "<cmd>tabclose<cr>",                                                             desc = 'Close tab' },
+
+    },
+    opts = {}
   },
   {
     'danymat/neogen',

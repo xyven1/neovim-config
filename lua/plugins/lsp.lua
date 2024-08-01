@@ -21,6 +21,9 @@ return {
           require('neodev').setup {}
           return {}
         end,
+        clangd = {
+          capabilities = { offsetEncoding = { "utf-16" } }
+        }
       }
     },
     config = function(_, opts)

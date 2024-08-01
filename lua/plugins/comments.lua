@@ -1,11 +1,9 @@
 return {
   {
     'numToStr/Comment.nvim',
+    event = 'LazyFile',
     dependencies = {
-      'JoosepAlviste/nvim-ts-context-commentstring',
-      opts = {
-        enable_autocmd = false,
-      }
+      { 'JoosepAlviste/nvim-ts-context-commentstring', opts = { enable_autocmd = false } }
     },
     keys = { { "gb", mode = { "n", "v" } }, { "gc", mode = { "n", "v" } } },
     opts = function()
