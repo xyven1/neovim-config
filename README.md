@@ -48,17 +48,17 @@ Note: if you use the second option run neovim with `NVIM_APPNAME=xyven1/neovim-c
 + [Zeioth/compiler.nvim](https://dotfyle.com/plugins/Zeioth/compiler.nvim)
 ### colorscheme
 
-+ [sainnhe/gruvbox-material](https://dotfyle.com/plugins/sainnhe/gruvbox-material)
 + [rebelot/kanagawa.nvim](https://dotfyle.com/plugins/rebelot/kanagawa.nvim)
 + [folke/tokyonight.nvim](https://dotfyle.com/plugins/folke/tokyonight.nvim)
 + [Mofiqul/vscode.nvim](https://dotfyle.com/plugins/Mofiqul/vscode.nvim)
 + [olimorris/onedarkpro.nvim](https://dotfyle.com/plugins/olimorris/onedarkpro.nvim)
++ [sainnhe/gruvbox-material](https://dotfyle.com/plugins/sainnhe/gruvbox-material)
 ### comment
 
 + [JoosepAlviste/nvim-ts-context-commentstring](https://dotfyle.com/plugins/JoosepAlviste/nvim-ts-context-commentstring)
++ [folke/todo-comments.nvim](https://dotfyle.com/plugins/folke/todo-comments.nvim)
 + [numToStr/Comment.nvim](https://dotfyle.com/plugins/numToStr/Comment.nvim)
 + [danymat/neogen](https://dotfyle.com/plugins/danymat/neogen)
-+ [folke/todo-comments.nvim](https://dotfyle.com/plugins/folke/todo-comments.nvim)
 ### completion
 
 + [ms-jpq/coq_nvim](https://dotfyle.com/plugins/ms-jpq/coq_nvim)
@@ -75,10 +75,10 @@ Note: if you use the second option run neovim with `NVIM_APPNAME=xyven1/neovim-c
 + [folke/trouble.nvim](https://dotfyle.com/plugins/folke/trouble.nvim)
 ### editing-support
 
++ [monaqa/dial.nvim](https://dotfyle.com/plugins/monaqa/dial.nvim)
 + [tzachar/highlight-undo.nvim](https://dotfyle.com/plugins/tzachar/highlight-undo.nvim)
 + [windwp/nvim-autopairs](https://dotfyle.com/plugins/windwp/nvim-autopairs)
 + [windwp/nvim-ts-autotag](https://dotfyle.com/plugins/windwp/nvim-ts-autotag)
-+ [monaqa/dial.nvim](https://dotfyle.com/plugins/monaqa/dial.nvim)
 ### file-explorer
 
 + [stevearc/oil.nvim](https://dotfyle.com/plugins/stevearc/oil.nvim)
@@ -92,9 +92,9 @@ Note: if you use the second option run neovim with `NVIM_APPNAME=xyven1/neovim-c
 + [ibhagwan/fzf-lua](https://dotfyle.com/plugins/ibhagwan/fzf-lua)
 ### git
 
++ [sindrets/diffview.nvim](https://dotfyle.com/plugins/sindrets/diffview.nvim)
 + [kdheepak/lazygit.nvim](https://dotfyle.com/plugins/kdheepak/lazygit.nvim)
 + [lewis6991/gitsigns.nvim](https://dotfyle.com/plugins/lewis6991/gitsigns.nvim)
-+ [sindrets/diffview.nvim](https://dotfyle.com/plugins/sindrets/diffview.nvim)
 ### github
 
 + [pwntester/octo.nvim](https://dotfyle.com/plugins/pwntester/octo.nvim)
@@ -103,6 +103,7 @@ Note: if you use the second option run neovim with `NVIM_APPNAME=xyven1/neovim-c
 + [nvim-tree/nvim-web-devicons](https://dotfyle.com/plugins/nvim-tree/nvim-web-devicons)
 ### indent
 
++ [NMAC427/guess-indent.nvim](https://dotfyle.com/plugins/NMAC427/guess-indent.nvim)
 + [lukas-reineke/indent-blankline.nvim](https://dotfyle.com/plugins/lukas-reineke/indent-blankline.nvim)
 ### keybinding
 
@@ -110,6 +111,8 @@ Note: if you use the second option run neovim with `NVIM_APPNAME=xyven1/neovim-c
 ### lsp
 
 + [simrat39/symbols-outline.nvim](https://dotfyle.com/plugins/simrat39/symbols-outline.nvim)
++ [ray-x/lsp_signature.nvim](https://dotfyle.com/plugins/ray-x/lsp_signature.nvim)
++ [mfussenegger/nvim-lint](https://dotfyle.com/plugins/mfussenegger/nvim-lint)
 + [neovim/nvim-lspconfig](https://dotfyle.com/plugins/neovim/nvim-lspconfig)
 + [glepnir/lspsaga.nvim](https://dotfyle.com/plugins/glepnir/lspsaga.nvim)
 ### lsp-installer
@@ -123,8 +126,8 @@ Note: if you use the second option run neovim with `NVIM_APPNAME=xyven1/neovim-c
 + [ggandor/leap.nvim](https://dotfyle.com/plugins/ggandor/leap.nvim)
 ### nvim-dev
 
-+ [MunifTanjim/nui.nvim](https://dotfyle.com/plugins/MunifTanjim/nui.nvim)
 + [nvim-lua/plenary.nvim](https://dotfyle.com/plugins/nvim-lua/plenary.nvim)
++ [MunifTanjim/nui.nvim](https://dotfyle.com/plugins/MunifTanjim/nui.nvim)
 + [folke/neodev.nvim](https://dotfyle.com/plugins/folke/neodev.nvim)
 ### plugin-manager
 
@@ -135,6 +138,9 @@ Note: if you use the second option run neovim with `NVIM_APPNAME=xyven1/neovim-c
 ### search
 
 + [nvim-pack/nvim-spectre](https://dotfyle.com/plugins/nvim-pack/nvim-spectre)
+### session
+
++ [stevearc/resession.nvim](https://dotfyle.com/plugins/stevearc/resession.nvim)
 ### split-and-window
 
 + [mrjones2014/smart-splits.nvim](https://dotfyle.com/plugins/mrjones2014/smart-splits.nvim)
@@ -157,8 +163,7 @@ Note: if you use the second option run neovim with `NVIM_APPNAME=xyven1/neovim-c
 + [andythigpen/nvim-coverage](https://dotfyle.com/plugins/andythigpen/nvim-coverage)
 ### utility
 
++ [kazhala/close-buffers.nvim](https://dotfyle.com/plugins/kazhala/close-buffers.nvim)
 + [rcarriga/nvim-notify](https://dotfyle.com/plugins/rcarriga/nvim-notify)
 + [kevinhwang91/nvim-ufo](https://dotfyle.com/plugins/kevinhwang91/nvim-ufo)
-+ [kazhala/close-buffers.nvim](https://dotfyle.com/plugins/kazhala/close-buffers.nvim)
 + [folke/noice.nvim](https://dotfyle.com/plugins/folke/noice.nvim)
-
