@@ -169,6 +169,7 @@ return {
   },
   {
     'ms-jpq/coq.thirdparty',
+    commit = '9e9b5ab8304ace94eab0671b8fb3b69c16c3cb9a',
     dependencies = {
       'github/copilot.vim',
     },
