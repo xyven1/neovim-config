@@ -188,10 +188,10 @@ return {
     opts = {
       implement = {
         enable = true,
-        lang = { 'rust' }
+        lang = { 'rust' },
       },
       lightbulb = {
-        sign = false,
+        enable = false,
       },
       code_action = {
         extend_gitsigns = true,
