@@ -55,13 +55,15 @@ map('t', '<C-l>', '<cmd>wincmd l<cr>', opts('Go to the right window'))
 map("n", "[q", vim.cmd.cprev, { desc = "Previous Quickfix" })
 map("n", "]q", vim.cmd.cnext, { desc = "Next Quickfix" })
 
+-- Command shortcuts
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
+map("n", "<C-s>", "<cmd>w<cr>", { desc = "Save" })
 
 map("n", "<leader>\\", function()
   vim.cmd("nohlsearch")
   local inactive_floating_wins = vim.fn.filter(vim.api.nvim_list_wins(), function(k, v)
     return vim.api.nvim_win_get_config(v).relative ~= ""
-      and v ~= vim.api.nvim_get_current_win()
+        and v ~= vim.api.nvim_get_current_win()
   end)
   for _, w in ipairs(inactive_floating_wins) do
     pcall(vim.api.nvim_win_close, w, false)

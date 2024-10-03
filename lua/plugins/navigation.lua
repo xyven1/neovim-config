@@ -17,6 +17,7 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     cmd = { 'FzfLua' },
     opts = {
+      "borderless_full",
       colorschemes = {
         ignore_patterns = { "^vim$" }
       },
