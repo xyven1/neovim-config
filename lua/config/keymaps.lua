@@ -27,9 +27,23 @@ map("v", "p", "\"_dP", opts("Paste over currently selected text without yanking 
 map("v", "<C-S-c>", "\"+y", opts("Copy to system clipboard"))
 
 -- toggles
-map('n', '<leader>um', function()
+map('n', '<leader>ut', function()
   vim.o.background = vim.o.background == 'dark' and 'light' or 'dark'
 end, opts('Toggle light/dark mode'))
+map('n', '<leader>ud', function()
+  vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+end, opts('Toggle light/dark mode'))
+local toggles = {
+  { 'spell',          's', 'spell check' },
+  { 'relativenumber', 'n', 'relative line numbers' },
+  { 'wrap',           'w', 'wrap' },
+  { 'linebreak',      'b', 'linebreak' },
+}
+for _, toggle in ipairs(toggles) do
+  map('n', '<leader>u' .. toggle[2], function()
+    vim.o[toggle[1]] = not vim.o[toggle[1]]
+  end, opts('Toggle ' .. toggle[3]))
+end
 
 -- keymaps to navigate between tabs
 map('n', '[t', '<cmd>tabprevious<cr>', opts('Previous tab'))
