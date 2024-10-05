@@ -142,5 +142,15 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {},
   },
-  { 'simrat39/symbols-outline.nvim', cmd = { 'SymbolsOutline' }, opts = {} },
+  {
+    'hedyhli/outline.nvim',
+    cmd = { 'Outline', 'OutlineOpen' },
+    keys = { { 'go', '<cmd>Outline<cr>', desc = "Toggle outline" }, },
+    opts = {
+      keymaps = {
+        up_and_jump = '<C-p>',
+        down_and_jump = '<C-n>',
+      }
+    },
+  },
 }

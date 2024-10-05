@@ -214,7 +214,6 @@ return {
       { '<leader>sw', "<cmd>Trouble diagnostics toggle<cr>",              desc = 'Show workspace diagnostics' },
       { '[d',         "<cmd>Lspsaga diagnostic_jump_prev<cr>",            desc = 'Jump to previous diagnostic' },
       { ']d',         "<cmd>Lspsaga diagnostic_jump_next<cr>",            desc = 'Jump to next diagnostic' },
-      { 'go',         "<cmd>Lspsaga outline<cr>",                         desc = 'Show outline' },
       { 'K',          "<cmd>Lspsaga hover_doc<cr>",                       desc = "Show symbol information",    mode = { 'n', 'v' } },
       { '<leader>a',  "<cmd>Lspsaga code_action<cr>",                     desc = 'Show code actions',          mode = { 'n', 'v' } },
       { '<A-d>',      "<cmd>Lspsaga term_toggle<cr>",                     desc = 'Toggle floating terminal',   mode = { 'n', 't' } },

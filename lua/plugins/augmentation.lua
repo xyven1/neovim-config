@@ -1,3 +1,4 @@
+local markdownMode = false;
 return {
   {
     "direnv/direnv.vim",
@@ -45,17 +46,64 @@ return {
     }
   },
   {
-    "toppair/peek.nvim",
-    cmd = "PeekOpen",
-    build = "deno -- task --quiet build:fast",
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    cmd = { 'RenderMarkdown' },
     opts = {
-      app = "browser",
+      heading = {
+        backgrounds = {
+          '', '', '', '', '', '',
+        }
+      }
     },
     config = function(_, opts)
-      require("peek").setup(opts)
-      vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
-      vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+      require('render-markdown').setup(opts)
+      vim.api.nvim_set_hl(0, '@markup.heading.1.markdown', { fg = '#fb4934', bg = '', bold = true })
+      vim.api.nvim_set_hl(0, '@markup.heading.2.markdown', { fg = '#fabd2f', bg = '', bold = true })
+      vim.api.nvim_set_hl(0, '@markup.heading.3.markdown', { fg = '#b8bb26', bg = '', bold = true })
+      vim.api.nvim_set_hl(0, '@markup.heading.4.markdown', { fg = '#8ec07c', bg = '', bold = true })
+      vim.api.nvim_set_hl(0, '@markup.heading.5.markdown', { fg = '#83a598', bg = '', bold = true })
+      vim.api.nvim_set_hl(0, '@markup.heading.6.markdown', { fg = '#d3869b', bg = '', bold = true })
     end,
+    keys = {
+      {
+        '<leader>um',
+        function()
+          local markdown = vim.api.nvim_create_augroup('MarkdownMode', { clear = true })
+          markdownMode = not markdownMode
+          local func = markdownMode
+              and function()
+                require('render-markdown').enable()
+                vim.opt_local.spell = true
+                vim.opt_local.linebreak = true
+
+                local outline = require('outline')
+                if outline then
+                  outline.open({ focus_outline = false })
+                end
+              end
+              or function()
+                require('render-markdown').disable()
+                vim.opt_local.spell = false
+                vim.opt_local.linebreak = false
+
+                local outline = require('outline')
+                if outline then
+                  outline.close()
+                end
+              end
+          vim.api.nvim_create_autocmd("FileType", {
+            group = markdown,
+            pattern = "markdown",
+            callback = func
+          })
+          func()
+        end,
+        desc = 'Toggle markdown mode'
+      },
+    }
   },
   {
     'kazhala/close-buffers.nvim',
