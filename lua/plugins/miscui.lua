@@ -9,8 +9,11 @@ return {
     opts = {}
   },
   {
-    'kevinhwang91/nvim-bqf',
-    ft = 'qf'
+    'stevearc/quicker.nvim',
+    event = 'FileType qf',
+    ---@module 'quicker'
+    ---@type quicker.SetupOptions
+    opts = {},
   },
   {
     "folke/noice.nvim",
@@ -116,4 +119,5 @@ return {
       },
     },
     dependencies = { 'nvim-tree/nvim-web-devicons' }
-  } }
+  }
+}
