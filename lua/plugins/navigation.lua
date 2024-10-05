@@ -102,30 +102,28 @@ return {
     end
   },
   {
-    'nvim-tree/nvim-tree.lua',
-    cmd = { 'NvimTreeOpen', 'NvimTreeToggle' },
-    keys = {
-      { '<leader>t', '<cmd>NvimTreeToggle<cr>', desc = "Toggle file explorer" }
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
     },
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    init = function()
-      vim.g.loaded_netrw = 1
-      vim.g.loaded_netrwPlugin = 1
-    end,
     opts = {
-      disable_netrw = true,
-      hijack_cursor = true,
-      sync_root_with_cwd = true,
-      renderer = {
-        indent_markers = {
-          enable = true,
-        },
+      sources = { "filesystem", "buffers", "git_status" },
+      open_files_do_not_replace_types = { "terminal", "Trouble", "trouble", "qf", "Outline" },
+      filesystem = {
+        bind_to_cwd = false,
+        follow_current_file = { enabled = true },
+        use_libuv_file_watcher = true,
       },
-      diagnostics = {
-        enable = true,
-        show_on_dirs = true,
-      },
-    }
+    },
+    keys = {
+      { '<leader>tt', '<cmd>Neotree toggle<cr>',     desc = "Toggle file tree" },
+      { '<leader>tg', '<cmd>Neotree git_status<cr>', desc = "Toggle git status tree" },
+      { '<leader>tb', '<cmd>Neotree buffers<cr>',    desc = "Toggle buffers tree" },
+      { '<leader>tf', '<cmd>Neotree<cr>',            desc = "Focus file tree" },
+    },
   },
   {
     'stevearc/oil.nvim',
