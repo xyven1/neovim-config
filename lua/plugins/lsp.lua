@@ -3,7 +3,7 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
       'ms-jpq/coq_nvim',
-      { 'folke/neodev.nvim', lazy = true },
+      'folke/lazydev.nvim',
     },
     event = "VeryLazy",
     opts = {
@@ -18,7 +18,7 @@ return {
           }
         },
         lua_ls = function()
-          require('neodev').setup {}
+          require('lazydev').setup()
           return {}
         end,
         clangd = {
