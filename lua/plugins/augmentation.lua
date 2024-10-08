@@ -48,9 +48,9 @@ return {
   {
     'MeanderingProgrammer/render-markdown.nvim',
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
+    cmd = { 'RenderMarkdown' },
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
-    cmd = { 'RenderMarkdown' },
     opts = {
       heading = {
         backgrounds = {
@@ -152,5 +152,9 @@ return {
     keys = {
       { '<leader>nr', function() require('spectre').open() end, desc = 'Replace in Files (Spectre)' },
     }
+  },
+  {
+    "ptdewey/pendulum-nvim",
+    opts = {}
   }
 }
