@@ -8,6 +8,12 @@ return {
     event = "VeryLazy",
     opts = {
       servers = {
+        tailwindcss = {
+          filetypes = {
+            'html', 'css', 'scss', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'svelte', 'vue',
+            'jsx', 'tsx'
+          }
+        },
         rust_analyzer = {
           settings = {
             ['rust-analyzer'] = {
