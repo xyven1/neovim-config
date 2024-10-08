@@ -155,6 +155,7 @@ return {
   },
   {
     "ptdewey/pendulum-nvim",
+    event = "VeryLazy",
     opts = {}
   }
 }
