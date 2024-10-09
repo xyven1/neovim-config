@@ -1,25 +1,7 @@
 return {
   {
     'WieeRd/auto-lsp.nvim',
-    dependencies = {
-      {
-        'neovim/nvim-lspconfig',
-        dependencies = {
-          'folke/lazydev.nvim',
-          'glepnir/lspsaga.nvim',
-        },
-        cmd = { 'LspInfo', 'LspStart', 'LspStop' },
-        keys = {
-          {
-            '<leader>uh',
-            function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
-            end,
-            desc = 'Toggle inlay hints'
-          },
-        },
-      }
-    },
+    dependencies = { 'neovim/nvim-lspconfig', },
     event = 'VeryLazy',
     opts = {
       ['*'] = function()
@@ -48,13 +30,35 @@ return {
         }
       },
       lua_ls = function()
-        require('lazydev').setup()
+        require('lazydev')
         return {}
       end,
       clangd = {
         capabilities = { offsetEncoding = { 'utf-16' } }
       }
     },
+  },
+  {
+    'neovim/nvim-lspconfig',
+    cmd = { 'LspInfo', 'LspStart', 'LspStop' },
+    keys = {
+      {
+        '<leader>uh',
+        function()
+          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
+        end,
+        desc = 'Toggle inlay hints'
+      },
+    },
+  },
+  {
+    'folke/lazydev.nvim',
+    dependencies = { 'Bilal2453/luvit-meta' },
+    opts = {
+      library = {
+        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+      },
+    }
   },
   {
     'stevearc/conform.nvim',
@@ -193,7 +197,11 @@ return {
           end
           curWidth = curWidth + chunkWidth
         end
-        table.insert(newVirtText, { suffix })
+        vim.api.nvim_set_hl(0, 'FoldSuffix', {
+          bg = vim.api.nvim_get_hl(0, { name = 'UfoFoldedBg' }).bg,
+          fg = vim.api.nvim_get_hl(0, { name = 'LineNr' }).fg,
+        })
+        table.insert(newVirtText, { suffix, 'FoldSuffix' })
         return newVirtText
       end,
       preview = {

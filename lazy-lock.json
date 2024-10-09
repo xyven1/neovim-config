@@ -26,6 +26,7 @@
   "lspsaga.nvim": { "branch": "main", "commit": "f0b5d2ce3912a9d84fae8083cb9cab90def39f3e" },
   "lualine-lsp-progress": { "branch": "master", "commit": "56842d097245a08d77912edf5f2a69ba29f275d7" },
   "lualine.nvim": { "branch": "master", "commit": "b431d228b7bbcdaea818bdc3e25b8cdbe861f056" },
+  "luvit-meta": { "branch": "main", "commit": "ce76f6f6cdc9201523a5875a4471dcfe0186eb60" },
   "mason-nvim-dap.nvim": { "branch": "main", "commit": "3c1a2fb1326d858b7361677b904d0f3c1eed45c1" },
   "neo-tree.nvim": { "branch": "v3.x", "commit": "a77af2e764c5ed4038d27d1c463fa49cd4794e07" },
   "neogen": { "branch": "main", "commit": "e932ba918b56723436b77aa3efb844a11b2851ab" },
