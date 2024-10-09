@@ -102,4 +102,40 @@ return {
       { ']b',      '<cmd>BufferLineMoveNext<cr>',  desc = 'Move buffer right' },
     }
   },
+  {
+    'luukvbaal/statuscol.nvim',
+    event = 'LazyFile',
+    config = function()
+      local builtin = require('statuscol.builtin')
+      vim.opt.foldcolumn = '1'
+      vim.opt.fillchars = {
+        eob = ' ',
+        fold = ' ',
+        foldopen = '',
+        foldsep = ' ',
+        foldclose = '',
+      }
+
+      require('statuscol').setup({
+        relculright = true,
+        ft_ignore = { 'neo-tree' },
+        segments = {
+          { text = { builtin.foldfunc }, click = 'v:lua.ScFa' },
+          {
+            sign = { namespace = { 'diagnostic/signs' }, maxwidth = 1, auto = true },
+            click = 'v:lua.ScSa'
+          },
+          {
+            sign = { name = { '.*' }, maxwidth = 1, auto = true, wrap = true },
+            click = 'v:lua.ScSa'
+          },
+          { text = { builtin.lnumfunc }, click = 'v:lua.ScLa', },
+          {
+            sign = { namespace = { 'gitsigns' }, maxwidth = 1, colwidth = 1, auto = false },
+            click = 'v:lua.ScSa'
+          },
+        }
+      })
+    end,
+  }
 }
