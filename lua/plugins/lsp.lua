@@ -216,13 +216,13 @@ return {
       }
     },
     keys = {
-      { 'zR', function() require('ufo').openAllFolds() end,  desc = 'Open all folds' },
-      { 'zM', function() require('ufo').closeAllFolds() end, desc = 'Close all folds' },
+      { 'zr', function() require('ufo').openFoldsExceptKinds() end,   desc = 'Open folds' },
+      { 'zR', function() require('ufo').openAllFolds() end,           desc = 'Open all folds' },
+      { 'zm', function(opts) require('ufo').closeFoldsWith(opts) end, desc = 'Close folds' },
       {
         'K',
         function()
-          local winid = require('ufo').peekFoldedLinesUnderCursor()
-          if not winid then
+          if not require('ufo').peekFoldedLinesUnderCursor() then
             vim.cmd [[Lspsaga hover_doc]]
           end
         end,
