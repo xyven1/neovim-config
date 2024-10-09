@@ -26,7 +26,7 @@ return {
       { 'f',           fzf 'grep_visual',                desc = 'Search current selection',      mode = 'v' },
       { 'f',           fzf 'live_grep_resume',           desc = 'Search in all files' },
       { 'F',           fzf 'live_grep',                  desc = 'Search in all files' },
-      { '<leader>',    fzf 'registers',                  desc = 'Search registers' },
+      { '<leader>"',   fzf 'registers',                  desc = 'Search registers' },
       { '<leader>o',   fzf 'files',                      desc = 'Open file' },
       { '<leader>O',   fzf 'git_files',                  desc = 'Search git files' },
       { '<leader>p',   fzf 'commands',                   desc = 'Browse commands' },

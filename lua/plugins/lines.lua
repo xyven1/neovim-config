@@ -104,19 +104,14 @@ return {
   },
   {
     'luukvbaal/statuscol.nvim',
-    event = 'LazyFile',
-    config = function()
+    lazy = false,
+    opts = function()
       local builtin = require('statuscol.builtin')
-      vim.opt.foldcolumn = '1'
-      vim.opt.fillchars = {
-        foldopen = '',
-        foldsep = ' ',
-        foldclose = '',
-      }
-
-      require('statuscol').setup({
+      return {
         relculright = true,
-        ft_ignore = { 'neo-tree' },
+        ft_ignore = {
+          'help', 'vim', 'Outline', 'dashboard', 'neo-tree', 'Trouble', 'lazy'
+        },
         segments = {
           {
             text = { builtin.foldfunc, ' ' },
@@ -142,6 +137,25 @@ return {
             click = 'v:lua.ScSa'
           },
         }
+      }
+    end,
+    config = function(_, opts)
+      vim.opt.foldcolumn = '1'
+      vim.opt.fillchars = {
+        foldopen = '',
+        foldsep = ' ',
+        foldclose = '',
+      }
+      local ft_ignore = opts.ft_ignore
+      opts.ft_ignore = nil
+      require('statuscol').setup(opts)
+      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufNew' }, {
+        callback = function()
+          if vim.tbl_contains(ft_ignore, vim.bo.filetype) then
+            vim.opt_local.foldcolumn = '0'
+            vim.opt_local.statuscolumn = ''
+          end
+        end
       })
     end,
   }
