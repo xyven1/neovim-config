@@ -109,8 +109,6 @@ return {
       local builtin = require('statuscol.builtin')
       vim.opt.foldcolumn = '1'
       vim.opt.fillchars = {
-        eob = ' ',
-        fold = ' ',
         foldopen = '',
         foldsep = ' ',
         foldclose = '',
@@ -120,9 +118,12 @@ return {
         relculright = true,
         ft_ignore = { 'neo-tree' },
         segments = {
-          { text = { builtin.foldfunc }, click = 'v:lua.ScFa' },
           {
-            sign = { namespace = { 'diagnostic/signs' }, maxwidth = 1, auto = true },
+            text = { builtin.foldfunc, ' ' },
+            condition = { true, builtin.not_empty }
+          },
+          {
+            sign = { namespace = { 'diagnostic/signs' }, auto = true, foldclosed = true },
             click = 'v:lua.ScSa'
           },
           {
@@ -131,7 +132,13 @@ return {
           },
           { text = { builtin.lnumfunc }, click = 'v:lua.ScLa', },
           {
-            sign = { namespace = { 'gitsigns' }, maxwidth = 1, colwidth = 1, auto = false },
+            sign = {
+              namespace = { 'gitsigns' },
+              maxwidth = 1,
+              colwidth = 1,
+              auto = false,
+              wrap = true,
+            },
             click = 'v:lua.ScSa'
           },
         }
