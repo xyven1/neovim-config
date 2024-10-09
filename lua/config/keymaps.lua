@@ -20,11 +20,11 @@ map('v', '<', '<gv')
 map('v', '>', '>gv')
 
 -- better paste
-map('n', '<C-S-v>', '\'+gP', opts('Paste from system clipboard'))
-map('n', '<C-S-c>', '\'+y', opts('Copy to system clipboard'))
-map('v', '<C-S-v>', '\'+gP', opts('Paste from system clipboard'))
-map('v', 'p', '\'_dP', opts('Paste over currently selected text without yanking it'))
-map('v', '<C-S-c>', '\'+y', opts('Copy to system clipboard'))
+map('n', '<C-S-v>', '"+gP', opts('Paste from system clipboard'))
+map('n', '<C-S-c>', '"+y', opts('Copy to system clipboard'))
+map('v', '<C-S-v>', '"+gP', opts('Paste from system clipboard'))
+map('v', 'p', '"_dP', opts('Paste over currently selected text without yanking it'))
+map('v', '<C-S-c>', '"+y', opts('Copy to system clipboard'))
 
 -- toggles
 map('n', '<leader>ut', function()
