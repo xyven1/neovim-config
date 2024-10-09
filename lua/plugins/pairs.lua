@@ -4,7 +4,6 @@ return {
     event = 'InsertEnter',
     opts = {
       check_ts = true,
-      map_bs = false,
       map_cr = false,
     },
     keys = {
@@ -12,34 +11,9 @@ return {
         '<cr>',
         function()
           local npairs = require('nvim-autopairs')
-          local function auto_cr()
-            return vim.api.nvim_feedkeys(npairs.autopairs_cr(), "n", false) or ""
-          end
-          if vim.fn.pumvisible() ~= 0 then
-            if vim.fn.complete_info({ 'selected' }).selected ~= -1 then
-              return npairs.esc('<c-y>')
-            else
-              return npairs.esc('<c-e>') .. auto_cr()
-            end
-          else
-            return auto_cr()
-          end
+          return vim.api.nvim_feedkeys(npairs.autopairs_cr(), "n", false) or ""
         end,
         desc = 'Map autopairs CR',
-        mode = { 'i' },
-        expr = true
-      },
-      {
-        '<bs>',
-        function()
-          local npairs = require('nvim-autopairs')
-          if vim.fn.pumvisible() ~= 0 and vim.fn.complete_info({ 'mode' }).mode == 'eval' then
-            return npairs.esc('<c-e>') .. '<bs>'
-          else
-            return '<bs>'
-          end
-        end,
-        desc = 'Map autopairs BS',
         mode = { 'i' },
         expr = true
       },

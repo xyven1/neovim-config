@@ -1,3 +1,4 @@
+local lsp_string = "The language server is either not installed, missing from PATH, or not executable"
 return {
   {
     "folke/which-key.nvim",
@@ -17,9 +18,25 @@ return {
   },
   {
     "folke/noice.nvim",
-    commit = "d9328ef903168b6f52385a751eb384ae7e906c6f",
     event = "VeryLazy",
+    init = function()
+      vim.notify = function(msg, level, opts)
+        if type(msg) == 'string' and msg.find("The language server is either not installed, missing from PATH, or not executable") then
+          return
+        end
+        vim.notify(msg, level, opts)
+      end
+    end,
     opts = {
+      routes = {
+        {
+          filter = {
+            event = "notify",
+            find = "The language server is either not installed, missing from PATH, or not executable",
+          },
+          opts = { skip = true }
+        }
+      },
       lsp = {
         hover = { enabled = false },
         signature = { enabled = false },
@@ -31,9 +48,6 @@ return {
       },
       cmdline = {
         view = "cmdline"
-      },
-      popupmenu = {
-        enabled = false,
       },
       -- you can enable a preset for easier configuration
       presets = {
