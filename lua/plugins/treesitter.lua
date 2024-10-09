@@ -3,7 +3,7 @@ return {
   {
     'nvim-treesitter/nvim-treesitter',
     version = false,
-    event = { "LazyFile", "VeryLazy" },
+    event = { 'LazyFile', 'VeryLazy' },
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects'
     },
@@ -13,7 +13,7 @@ return {
     opts = {
       ensure_installed = {},
       sync_install = false,
-      auto_install = true,
+      auto_install = false,
       modules = {},
       ignore_install = {}, -- List of parsers to ignore installing
       highlight = {
@@ -26,10 +26,10 @@ return {
       incremental_selection = {
         enable = true,
         keymaps = {
-          init_selection = "<CR>",
-          scope_incremental = "<CR>",
-          node_incremental = "<TAB>",
-          node_decremental = "<S-TAB>"
+          init_selection = '<CR>',
+          scope_incremental = '<CR>',
+          node_incremental = '<TAB>',
+          node_decremental = '<S-TAB>'
         }
       },
       indent = { enable = true },
@@ -38,55 +38,55 @@ return {
           enable = true,
           lookahead = true,
           keymaps = {
-            ["af"] = { query = "@function.outer", desc = "Select around function" },
-            ["if"] = { query = "@function.inner", desc = "Select inside function" },
-            ["al"] = { query = "@loop.outer", desc = "Select around loop" },
-            ["il"] = { query = "@loop.inner", desc = "Select inside loop" },
-            ["ib"] = { query = "@block.inner", desc = "Select inside block" },
-            ["ab"] = { query = "@block.outer", desc = "Select around block" },
-            ["ir"] = { query = "@parameter.inner", desc = "Select inside parameter" },
-            ["ar"] = { query = "@parameter.outer", desc = "Select around parameter" },
-            ["ic"] = { query = "@call.inner", desc = "Select inside call" },
-            ["ac"] = { query = "@call.outer", desc = "Select around call" },
-            ["aC"] = { query = "@class.outer", desc = "Select around class" },
-            ["iC"] = { query = "@class.inner", desc = "Select inside class" },
-            ["id"] = { query = "@conditional.inner", desc = "Select inside conditional" },
-            ["ad"] = { query = "@conditional.outer", desc = "Select around conditional" },
+            ['af'] = { query = '@function.outer', desc = 'Select around function' },
+            ['if'] = { query = '@function.inner', desc = 'Select inside function' },
+            ['al'] = { query = '@loop.outer', desc = 'Select around loop' },
+            ['il'] = { query = '@loop.inner', desc = 'Select inside loop' },
+            ['ib'] = { query = '@block.inner', desc = 'Select inside block' },
+            ['ab'] = { query = '@block.outer', desc = 'Select around block' },
+            ['ir'] = { query = '@parameter.inner', desc = 'Select inside parameter' },
+            ['ar'] = { query = '@parameter.outer', desc = 'Select around parameter' },
+            ['ic'] = { query = '@call.inner', desc = 'Select inside call' },
+            ['ac'] = { query = '@call.outer', desc = 'Select around call' },
+            ['aC'] = { query = '@class.outer', desc = 'Select around class' },
+            ['iC'] = { query = '@class.inner', desc = 'Select inside class' },
+            ['id'] = { query = '@conditional.inner', desc = 'Select inside conditional' },
+            ['ad'] = { query = '@conditional.outer', desc = 'Select around conditional' },
           }
         },
         move = {
           enable = true,
           set_jumps = true, -- whether to set jumps in the jumplist
           goto_next_start = {
-            ["]f"] = "@function.outer",
-            ["]]"] = "@class.outer",
-            ["]r"] = "@parameter.inner",
+            [']f'] = '@function.outer',
+            [']]'] = '@class.outer',
+            [']r'] = '@parameter.inner',
           },
           goto_next_end = {
-            ["]F"] = "@function.outer",
-            ["]["] = "@class.outer",
-            ["]R"] = "@parameter.inner",
+            [']F'] = '@function.outer',
+            [']['] = '@class.outer',
+            [']R'] = '@parameter.inner',
           },
           goto_previous_start = {
-            ["[f"] = "@function.outer",
-            ["[["] = "@class.outer",
-            ["[r"] = "@parameter.inner",
+            ['[f'] = '@function.outer',
+            ['[['] = '@class.outer',
+            ['[r'] = '@parameter.inner',
           },
           goto_previous_end = {
-            ["[F"] = "@function.outer",
-            ["[]"] = "@class.outer",
-            ["[R"] = "@parameter.inner",
+            ['[F'] = '@function.outer',
+            ['[]'] = '@class.outer',
+            ['[R'] = '@parameter.inner',
           },
         },
         swap = {
           enable = true,
           swap_next = {
-            ["g>r"] = { query = "@parameter.inner", desc = "Swap with next parameter" },
-            ["g>f"] = { query = "@function.outer", desc = "Swap with next function" },
+            ['g>r'] = { query = '@parameter.inner', desc = 'Swap with next parameter' },
+            ['g>f'] = { query = '@function.outer', desc = 'Swap with next function' },
           },
           swap_previous = {
-            ["g<r"] = { query = "@parameter.inner", desc = "Swap with previous parameter" },
-            ["g<f"] = { query = "@function.outer", desc = "Swap with previous function" },
+            ['g<r'] = { query = '@parameter.inner', desc = 'Swap with previous parameter' },
+            ['g<f'] = { query = '@function.outer', desc = 'Swap with previous function' },
           },
         },
       },

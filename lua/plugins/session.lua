@@ -1,19 +1,19 @@
 local function get_session_name()
-  local files = require("resession.files")
+  local files = require('resession.files')
   local name = vim.fn.getcwd()
-  local branch = vim.trim(vim.fn.system("git branch --show-current"))
-  if vim.v.shell_error == 0 and branch ~= "" then
-    name = name .. "~~" .. branch
+  local branch = vim.trim(vim.fn.system('git branch --show-current'))
+  if vim.v.shell_error == 0 and branch ~= '' then
+    name = name .. '~~' .. branch
   end
-  return name:gsub(files.sep, "_"):gsub(":", "_")
+  return name:gsub(files.sep, '_'):gsub(':', '_')
 end
 
-local DIRSESSION = "dirsession"
+local DIRSESSION = 'dirsession'
 
 local function get_all_sessions()
-  local resession = require("resession")
-  local files = require("resession.files")
-  local util = require("resession.util")
+  local resession = require('resession')
+  local files = require('resession.files')
+  local util = require('resession.util')
 
   local all_sessions = {}
   local load_from_dir = function(dir)
@@ -41,10 +41,10 @@ local function get_all_sessions()
 end
 
 local function action_on_any_session(kind, prompt, func)
-  local util = require("resession.util")
+  local util = require('resession.util')
   local all_sessions = get_all_sessions()
   if vim.tbl_isempty(all_sessions) then
-    vim.notify("No saved sessions", vim.log.levels.WARN)
+    vim.notify('No saved sessions', vim.log.levels.WARN)
     return
   end
 
@@ -54,15 +54,15 @@ local function action_on_any_session(kind, prompt, func)
     end
     local cwd = util.shorten_path(session.data.global.cwd)
     if session.dir == DIRSESSION then
-      local branch = session.name:match("~~(.*)")
-      return branch and string.format("%s  %s", cwd, branch) or cwd
+      local branch = session.name:match('~~(.*)')
+      return branch and string.format('%s  %s', cwd, branch) or cwd
     end
-    local formatted = session.name .. (session.dir and string.format(" (%s)", session.dir) or "")
+    local formatted = session.name .. (session.dir and string.format(' (%s)', session.dir) or '')
     if session.data.tab_scoped then
       local tab_cwd = session.data.tabs[1].cwd
-      return formatted .. string.format(" (tab) [%s]", util.shorten_path(tab_cwd))
+      return formatted .. string.format(' (tab) [%s]', util.shorten_path(tab_cwd))
     end
-    return formatted .. string.format(" [%s]", cwd)
+    return formatted .. string.format(' [%s]', cwd)
   end
 
   vim.ui.select(all_sessions, {
@@ -77,36 +77,36 @@ local function action_on_any_session(kind, prompt, func)
 end
 
 local function load_any_session()
-  local resession = require("resession")
-  action_on_any_session("resession_load", "Load Session> ", function(selected)
+  local resession = require('resession')
+  action_on_any_session('resession_load', 'Load Session> ', function(selected)
     resession.load(selected.name, {
       dir = selected.dir,
-      reset = "auto",
+      reset = 'auto',
       attach = true,
     })
   end)
 end
 
 local function delete_any_session()
-  local resession = require("resession")
-  action_on_any_session("resession_delete", "Delete Session> ", function(selected)
+  local resession = require('resession')
+  action_on_any_session('resession_delete', 'Delete Session> ', function(selected)
     resession.delete(selected.name, { dir = selected.dir })
   end)
 end
 
 
 local function load_latest_session()
-  local resession = require("resession")
+  local resession = require('resession')
   local all_sessions = get_all_sessions()
   if vim.tbl_isempty(all_sessions) then
-    vim.notify("No saved sessions", vim.log.levels.WARN)
+    vim.notify('No saved sessions', vim.log.levels.WARN)
     return
   end
 
   local latest_session = all_sessions[1]
   resession.load(latest_session.name, {
     dir = latest_session.dir,
-    reset = "auto",
+    reset = 'auto',
     attach = true,
   })
 end
@@ -120,21 +120,21 @@ local function save_curr_sess()
   elseif not vim.list_contains(resession.list({ dir = DIRSESSION }), session_name) then
     resession.save(session_name, { dir = DIRSESSION, notify = false })
   else
-    resession.save("scratch", { notify = false })
+    resession.save('scratch', { notify = false })
   end
 end
 
 local function close_everything()
-  local is_floating_win = vim.api.nvim_win_get_config(0).relative ~= ""
+  local is_floating_win = vim.api.nvim_win_get_config(0).relative ~= ''
   if is_floating_win then
     -- Go to the first window, which will not be floating
-    vim.cmd.wincmd({ args = { "w" }, count = 1 })
+    vim.cmd.wincmd({ args = { 'w' }, count = 1 })
   end
 
   local scratch = vim.api.nvim_create_buf(false, true)
-  vim.bo[scratch].bufhidden = "wipe"
+  vim.bo[scratch].bufhidden = 'wipe'
   vim.api.nvim_win_set_buf(0, scratch)
-  vim.bo[scratch].buftype = ""
+  vim.bo[scratch].buftype = ''
   for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
     if vim.bo[bufnr].buflisted then
       vim.api.nvim_buf_delete(bufnr, { force = true })
@@ -153,10 +153,10 @@ local function info()
 end
 
 local function load_current_dir_session()
-  local resession = require("resession")
+  local resession = require('resession')
   local session_name = get_session_name()
   if vim.list_contains(resession.list({ dir = DIRSESSION }), session_name) then
-    resession.load(session_name, { dir = DIRSESSION, reset = "auto", attach = true })
+    resession.load(session_name, { dir = DIRSESSION, reset = 'auto', attach = true })
   else
     save_curr_sess()
     detach()
@@ -168,37 +168,37 @@ end
 local functions = {
   load = {
     func = load_any_session,
-    desc = "Load session",
+    desc = 'Load session',
     key = 'w',
   },
   load_dir = {
     func = load_current_dir_session,
-    desc = "Load session in current directory",
+    desc = 'Load session in current directory',
     key = 'c',
   },
   load_latest = {
     func = load_latest_session,
-    desc = "Load latest session",
+    desc = 'Load latest session',
     key = 'l',
   },
   save = {
     func = save_curr_sess,
-    desc = "Save session",
+    desc = 'Save session',
     key = 's',
   },
   delete = {
     func = delete_any_session,
-    desc = "Delete session",
+    desc = 'Delete session',
     key = 'd',
   },
   detach = {
     func = detach,
-    desc = "Detach from current session",
+    desc = 'Detach from current session',
     key = 'u',
   },
   info = {
     func = info,
-    desc = "Session info",
+    desc = 'Session info',
     key = 'i',
   }
 }
@@ -221,7 +221,7 @@ return {
       extensions = { overseer = {} }
     },
     config = function(_, opts)
-      vim.api.nvim_create_autocmd("VimLeavePre", {
+      vim.api.nvim_create_autocmd('VimLeavePre', {
         callback = save_curr_sess,
       })
       vim.api.nvim_create_user_command('Resession', function(subcommand)
@@ -260,7 +260,7 @@ return {
 
       local resession = require('resession')
       resession.setup(opts)
-      resession.add_hook("pre_load", save_curr_sess)
+      resession.add_hook('pre_load', save_curr_sess)
     end,
   },
   {
@@ -269,9 +269,9 @@ return {
       git = {
         branches = {
           actions = {
-            ["default"] = function(selected, opts)
-              local is_remote = selected[1]:match("[^ ]+"):find("^remotes/")
-              require("fzf-lua.actions").git_switch(selected, opts)
+            ['default'] = function(selected, opts)
+              local is_remote = selected[1]:match('[^ ]+'):find('^remotes/')
+              require('fzf-lua.actions').git_switch(selected, opts)
               if is_remote then
                 detach()
                 close_everything()

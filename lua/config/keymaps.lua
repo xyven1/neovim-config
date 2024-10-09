@@ -7,24 +7,24 @@ local function opts(desc)
 end
 local map = vim.keymap.set
 -- map leader
-map("n", "<Space>", "<NOP>", opts("Disable space"))
+map('n', '<Space>', '<NOP>', opts('Disable space'))
 
 -- better up/down
-map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-map({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-map({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+map({ 'n', 'x' }, 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+map({ 'n', 'x' }, '<Down>', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+map({ 'n', 'x' }, 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+map({ 'n', 'x' }, '<Up>', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
 -- better indenting
-map("v", "<", "<gv")
-map("v", ">", ">gv")
+map('v', '<', '<gv')
+map('v', '>', '>gv')
 
 -- better paste
-map("n", "<C-S-v>", "\"+gP", opts("Paste from system clipboard"))
-map("n", "<C-S-c>", "\"+y", opts("Copy to system clipboard"))
-map("v", "<C-S-v>", "\"+gP", opts("Paste from system clipboard"))
-map("v", "p", "\"_dP", opts("Paste over currently selected text without yanking it"))
-map("v", "<C-S-c>", "\"+y", opts("Copy to system clipboard"))
+map('n', '<C-S-v>', '\'+gP', opts('Paste from system clipboard'))
+map('n', '<C-S-c>', '\'+y', opts('Copy to system clipboard'))
+map('v', '<C-S-v>', '\'+gP', opts('Paste from system clipboard'))
+map('v', 'p', '\'_dP', opts('Paste over currently selected text without yanking it'))
+map('v', '<C-S-c>', '\'+y', opts('Copy to system clipboard'))
 
 -- toggles
 map('n', '<leader>ut', function()
@@ -66,20 +66,20 @@ map('t', '<C-j>', '<cmd>wincmd j<cr>', opts('Go to the bottom window'))
 map('t', '<C-k>', '<cmd>wincmd k<cr>', opts('Go to the top window'))
 map('t', '<C-l>', '<cmd>wincmd l<cr>', opts('Go to the right window'))
 
-map("n", "[q", vim.cmd.cprev, { desc = "Previous Quickfix" })
-map("n", "]q", vim.cmd.cnext, { desc = "Next Quickfix" })
+map('n', '[q', vim.cmd.cprev, { desc = 'Previous Quickfix' })
+map('n', ']q', vim.cmd.cnext, { desc = 'Next Quickfix' })
 
 -- Command shortcuts
-map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
-map("n", "<C-s>", "<cmd>w<cr>", { desc = "Save" })
+map('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit all' })
+map('n', '<C-s>', '<cmd>w<cr>', { desc = 'Save' })
 
-map("n", "<leader>\\", function()
-  vim.cmd("nohlsearch")
+map('n', '<leader>\\', function()
+  vim.cmd('nohlsearch')
   local inactive_floating_wins = vim.fn.filter(vim.api.nvim_list_wins(), function(k, v)
-    return vim.api.nvim_win_get_config(v).relative ~= ""
+    return vim.api.nvim_win_get_config(v).relative ~= ''
         and v ~= vim.api.nvim_get_current_win()
   end)
   for _, w in ipairs(inactive_floating_wins) do
     pcall(vim.api.nvim_win_close, w, false)
   end
-end, { desc = "Clear screen" })
+end, { desc = 'Clear screen' })

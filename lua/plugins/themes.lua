@@ -4,21 +4,13 @@ return {
     opts = {
       italic_comments = true,
       group_overrides = {
-        -- WinBar = { ctermbg = 0, bg = 'NONE' },
-        -- WinBarNC = { ctermbg = 0, bg = 'NONE' },
         LspSignatureActiveParameter = { ctermbg = 0, bg = 'NONE', fg = '#179fff' },
         DapBreakpoint = { ctermbg = 0, fg = '#bf321d' },
         DapStopped = { ctermbg = 0, fg = '#ffcc00' },
         DapStoppedLine = { ctermbg = 0, bg = '#4b4b26' },
-        -- DiagnosticUnnecessary = { link = 'NonText' },
-        -- DiffviewDiffDeleteDim = { link = 'NonText' },
-        -- NotifyBackground = { ctermbg = 0, bg = '#1e1e1e' },
         BracketHighlighting0 = { fg = '#ffd700' },
         BracketHighlighting1 = { fg = '#da70d6' },
         BracketHighlighting2 = { fg = '#179fff' },
-        -- NormalFloat = { ctermbg = 0, bg = 'NONE' },
-        -- StatusLine = { ctermbg = 0, bg = 'NONE' },
-        -- Pmenu = { ctermbg = 0, bg = 'NONE' },
       },
     },
   },
@@ -28,12 +20,7 @@ return {
   },
   {
     'olimorris/onedarkpro.nvim',
-    opts = {
-      options = {
-        -- transparency = true,
-        -- highlight_inactive_windows = true
-      },
-    },
+    opts = {},
   },
   {
     'xyven1/onedark.nvim',

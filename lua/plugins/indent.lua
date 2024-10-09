@@ -11,9 +11,9 @@ return {
           [''] = rainbow.strategy['global']
         },
         highlight = {
-          "BracketHighlighting0",
-          "BracketHighlighting1",
-          "BracketHighlighting2",
+          'BracketHighlighting0',
+          'BracketHighlighting1',
+          'BracketHighlighting2',
         }
       })
       vim.g.rainbow = false
@@ -32,7 +32,7 @@ return {
               show_start = false,
               show_end = false,
               highlight = {
-                "IndentBlanklineContextChar",
+                'IndentBlanklineContextChar',
               }
             }
             require('rainbow-delimiters').disable(0)
@@ -42,44 +42,44 @@ return {
               show_start = true,
               show_end = true,
               highlight = {
-                "BracketHighlighting0",
-                "BracketHighlighting1",
-                "BracketHighlighting2",
+                'BracketHighlighting0',
+                'BracketHighlighting1',
+                'BracketHighlighting2',
               }
             }
             require('rainbow-delimiters').enable(0)
           end
           require('ibl').update({ scope = scope })
         end,
-        desc = "Toggle rainbow delimiters"
+        desc = 'Toggle rainbow delimiters'
       }
     },
   },
   {
     'lukas-reineke/indent-blankline.nvim',
-    event = "LazyFile",
+    event = 'LazyFile',
     opts = {
       indent = {
-        char = "▏",
+        char = '▏',
         highlight = {
-          "IndentBlanklineChar",
+          'IndentBlanklineChar',
         }
       },
       exclude = {
-        filetypes = { "dashboard" },
+        filetypes = { 'dashboard' },
       },
       scope = {
         show_start = false,
         show_end = false,
         injected_languages = true,
         highlight = {
-          "IndentBlanklineContextChar"
+          'IndentBlanklineContextChar'
         },
       }
     },
     config = function(_, opts)
-      local hooks = require "ibl.hooks"
-      require("ibl").setup(opts)
+      local hooks = require 'ibl.hooks'
+      require('ibl').setup(opts)
       hooks.register(hooks.type.SCOPE_HIGHLIGHT, function(tick, bufnr, scope, scope_index)
         if vim.g.rainbow then
           return hooks.builtin.scope_highlight_from_extmark(tick, bufnr, scope, scope_index)
@@ -91,7 +91,7 @@ return {
   },
   {
     'NMAC427/guess-indent.nvim',
-    event = "LazyFile",
+    event = 'LazyFile',
     opts = {}
   }
 }

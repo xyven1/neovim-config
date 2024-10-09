@@ -11,7 +11,7 @@ return {
         '<cr>',
         function()
           local npairs = require('nvim-autopairs')
-          return vim.api.nvim_feedkeys(npairs.autopairs_cr(), "n", false) or ""
+          return vim.api.nvim_feedkeys(npairs.autopairs_cr(), 'n', false) or ''
         end,
         desc = 'Map autopairs CR',
         mode = { 'i' },
@@ -20,7 +20,7 @@ return {
       {
         '<C-l>',
         function()
-          local closers = { ")", "]", "}", ">", "'", "\"", "`", "," }
+          local closers = { ')', ']', '}', '>', '\'', '"', '`', ',' }
           local line = vim.api.nvim_get_current_line()
           local row, col = unpack(vim.api.nvim_win_get_cursor(0))
           local after = line:sub(col + 1, -1)

@@ -1,8 +1,7 @@
-local lsp_string = "The language server is either not installed, missing from PATH, or not executable"
 return {
   {
-    "folke/which-key.nvim",
-    event = "VeryLazy",
+    'folke/which-key.nvim',
+    event = 'VeryLazy',
     init = function()
       vim.o.timeout = true
       vim.o.timeoutlen = 300
@@ -17,37 +16,20 @@ return {
     opts = {},
   },
   {
-    "folke/noice.nvim",
-    event = "VeryLazy",
-    init = function()
-      vim.notify = function(msg, level, opts)
-        if type(msg) == 'string' and msg.find("The language server is either not installed, missing from PATH, or not executable") then
-          return
-        end
-        vim.notify(msg, level, opts)
-      end
-    end,
+    'folke/noice.nvim',
+    event = 'VeryLazy',
     opts = {
-      routes = {
-        {
-          filter = {
-            event = "notify",
-            find = "The language server is either not installed, missing from PATH, or not executable",
-          },
-          opts = { skip = true }
-        }
-      },
       lsp = {
         hover = { enabled = false },
         signature = { enabled = false },
         -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
         override = {
-          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-          ["vim.lsp.util.stylize_markdown"] = true,
+          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+          ['vim.lsp.util.stylize_markdown'] = true,
         },
       },
       cmdline = {
-        view = "cmdline"
+        view = 'cmdline'
       },
       -- you can enable a preset for easier configuration
       presets = {
@@ -59,8 +41,8 @@ return {
       },
     },
     dependencies = {
-      "MunifTanjim/nui.nvim",
-      { "rcarriga/nvim-notify", opts = { top_down = false, } },
+      'MunifTanjim/nui.nvim',
+      { 'rcarriga/nvim-notify', opts = { top_down = false, } },
     },
     keys = {
       { '\\', '<cmd>NoiceDismiss<cr>', desc = 'Clear notifications' }
@@ -68,13 +50,13 @@ return {
   },
   {
     'tzachar/highlight-undo.nvim',
-    event = "LazyFile",
+    event = 'LazyFile',
     opts = {},
   },
   {
     'norcalli/nvim-colorizer.lua',
     config = function()
-      require 'colorizer'.setup({
+      require('colorizer').setup({
         '*',
         css = { css = true, },
         javascript = { css_fn = true },
@@ -94,7 +76,7 @@ return {
     opts = {
       large_file_cutoff = 4000,
       large_file_overrides = {
-        providers = { "lsp" }
+        providers = { 'lsp' }
       }
     },
     config = function(_, opts)
@@ -103,6 +85,7 @@ return {
   },
   {
     'nvimdev/dashboard-nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     event = 'VimEnter',
     opts = {
       theme = 'doom',
@@ -132,6 +115,5 @@ return {
         },
       },
     },
-    dependencies = { 'nvim-tree/nvim-web-devicons' }
   }
 }

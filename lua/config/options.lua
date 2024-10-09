@@ -13,7 +13,7 @@ vim.opt.mouse = ''            -- disable mouse support
 vim.opt.scrolloff = 4
 vim.opt.confirm = true
 vim.opt.laststatus = 3
-vim.g.mapleader = " "
+vim.g.mapleader = ' '
 
 -- neovide settings
 vim.g.neovide_transparency = 0.9
@@ -35,10 +35,23 @@ vim.g.terminal_color_14 = '#56b6c2'
 vim.g.terminal_color_15 = '#d4d4d4'
 vim.o.guifont = 'JetBrainsMono Nerd Font:h12'
 
-vim.opt.fillchars:append { diff = "╱" }
-vim.opt.wildignore:append { "blue.vim", "darkblue.vim", "default.vim",
-  "delek.vim", "desert.vim", "elflord.vim", "evening.vim", "habamax.vim",
-  "industry.vim", "koehler.vim", "lunaperche.vim", "morning.vim", "murphy.vim",
-  "pablo.vim", "peachpuff.vim", "quiet.vim", "retrobox.vim", "ron.vim",
-  "shine.vim", "slate.vim", "sorbet.vim", "torte.vim", "wildcharm.vim",
-  "zaibatsu.vim", "zellner.vim" }
+vim.opt.fillchars:append { diff = '╱' }
+vim.opt.wildignore:append { 'blue.vim', 'darkblue.vim', 'default.vim',
+  'delek.vim', 'desert.vim', 'elflord.vim', 'evening.vim', 'habamax.vim',
+  'industry.vim', 'koehler.vim', 'lunaperche.vim', 'morning.vim', 'murphy.vim',
+  'pablo.vim', 'peachpuff.vim', 'quiet.vim', 'retrobox.vim', 'ron.vim',
+  'shine.vim', 'slate.vim', 'sorbet.vim', 'torte.vim', 'wildcharm.vim',
+  'zaibatsu.vim', 'zellner.vim' }
+
+vim.diagnostic.config({
+  virtual_text = {
+    source = 'if_many',
+  },
+  severity_sort = true,
+})
+
+local signs = { Error = '󰅚 ', Warn = ' ', Hint = '󰌶 ', Info = ' ' }
+for type, icon in pairs(signs) do
+  local hl = 'DiagnosticSign' .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
