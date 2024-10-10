@@ -75,7 +75,7 @@ map('n', '<C-s>', '<cmd>w<cr>', { desc = 'Save' })
 
 map('n', '<leader>\\', function()
   vim.cmd('nohlsearch')
-  local inactive_floating_wins = vim.fn.filter(vim.api.nvim_list_wins(), function(k, v)
+  local inactive_floating_wins = vim.fn.filter(vim.api.nvim_list_wins(), function(_, v)
     return vim.api.nvim_win_get_config(v).relative ~= ''
         and v ~= vim.api.nvim_get_current_win()
   end)

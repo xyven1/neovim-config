@@ -115,7 +115,8 @@ return {
         segments = {
           {
             text = { builtin.foldfunc, ' ' },
-            condition = { true, builtin.not_empty }
+            condition = { true, builtin.not_empty },
+            click = 'v:lua.ScFa'
           },
           {
             sign = { namespace = { 'diagnostic/signs' }, auto = true, foldclosed = true },
