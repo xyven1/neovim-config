@@ -44,27 +44,32 @@ return {
       }
       local dap = require('dap')
       local adapters = require('mason-nvim-dap.mappings.adapters')
-      local configurations = require('mason-nvim-dap.mappings.configurations')
-      local filetypes = require('mason-nvim-dap.mappings.filetypes')
 
+      dap.adapters["pwa-chrome"] = {
+        type = "server",
+        host = "localhost",
+        port = "${port}",
+        executable = {
+          command = "js-debug",
+          args = { "${port}" },
+        },
+      }
+      dap.adapters["pwa-node"] = {
+        type = "server",
+        host = "localhost",
+        port = "${port}",
+        executable = {
+          command = "js-debug",
+          args = { "${port}" },
+        },
+      }
       for _, adapter_name in ipairs(adapter_names) do
         local config = {
           name = adapter_name,
-          adapters = adapters[adapter_name],
-          configurations = configurations[adapter_name],
-          filetypes = filetypes[adapter_name],
+          adapter = adapters[adapter_name],
         }
-        if type(config.adapters) == 'table' then
-          dap.adapters[config.name] = config.adapters
-          local configuration = config.configurations or {}
-          if type(opts.adapters) == 'table' and opts.adapters[adapter_name] and type(opts.adapters[adapter_name].configurations) == 'table' then
-            configuration = vim.tbl_extend('force', configuration, opts.adapters[adapter_name].configurations)
-          end
-          if not vim.tbl_isempty(configuration) then
-            for _, filetype in ipairs(config.filetypes) do
-              dap.configurations[filetype] = vim.list_extend(dap.configurations[filetype] or {}, configuration)
-            end
-          end
+        if type(config.adapter) == 'table' then
+          dap.adapters[config.name] = config.adapter
         end
       end
     end
