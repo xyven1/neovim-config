@@ -58,39 +58,32 @@ return {
         }
       }
     },
+    config = function(_, opts)
+      vim.api.nvim_create_autocmd('BufEnter', {
+        callback = function()
+          if vim.bo.filetype == 'markdown' then
+            vim.opt_local.spell = markdownMode
+            vim.opt_local.linebreak = markdownMode
+          end
+        end
+      })
+      require('render-markdown').setup(opts)
+    end,
     keys = {
       {
         '<leader>um',
         function()
-          local markdown = vim.api.nvim_create_augroup('MarkdownMode', { clear = true })
+          local rm = require('render-markdown')
           markdownMode = not markdownMode
-          local func = markdownMode
-              and function()
-                require('render-markdown').enable()
-                vim.opt_local.spell = true
-                vim.opt_local.linebreak = true
-
-                local outline = require('outline')
-                if outline then
-                  outline.open({ focus_outline = false })
-                end
-              end
-              or function()
-                require('render-markdown').disable()
-                vim.opt_local.spell = false
-                vim.opt_local.linebreak = false
-
-                local outline = require('outline')
-                if outline then
-                  outline.close()
-                end
-              end
-          vim.api.nvim_create_autocmd('FileType', {
-            group = markdown,
-            pattern = 'markdown',
-            callback = func
-          })
-          func()
+          if markdownMode then
+            rm.enable()
+          else
+            rm.disable()
+          end
+          if vim.bo.filetype == 'markdown' then
+            vim.opt_local.spell = markdownMode
+            vim.opt_local.linebreak = markdownMode
+          end
         end,
         desc = 'Toggle markdown mode'
       },
