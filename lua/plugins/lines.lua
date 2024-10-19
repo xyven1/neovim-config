@@ -67,9 +67,11 @@ return {
     opts = {
       options = {
         diagnostics = 'nvim_lsp',
-        diagnostics_indicator = function(count, level, _, _)
-          local icon = level:match('error') and '󰅚 ' or
-              level:match('warning') and ' '
+        diagnostics_indicator = function(_, level, dict, _)
+          local err = level:match('error')
+          local warn = level:match('warning')
+          local icon = err and '󰅚 ' or warn and ' '
+          local count = err and dict.error or warn and dict.warning
           return icon and icon .. count or ''
         end,
         offsets = {
@@ -113,17 +115,13 @@ return {
           'help', 'vim', 'Outline', 'dashboard', 'neo-tree', 'Trouble', 'lazy'
         },
         segments = {
-          {
-            text = { builtin.foldfunc, ' ' },
-            condition = { true, builtin.not_empty },
-            click = 'v:lua.ScFa'
-          },
-          {
-            sign = { namespace = { 'diagnostic/signs' }, auto = true, foldclosed = true },
+          { text = { builtin.foldfunc }, click = 'v:lua.ScFa' },
+          --[[ {
+            sign = { namespace = { 'diagnostic/signs' }, auto = ' ', foldclosed = true },
             click = 'v:lua.ScSa'
-          },
+          }, ]]
           {
-            sign = { name = { '.*' }, maxwidth = 1, auto = true, wrap = true },
+            sign = { name = { '.*' }, maxwidth = 1, auto = ' ', wrap = true },
             click = 'v:lua.ScSa'
           },
           { text = { builtin.lnumfunc }, click = 'v:lua.ScLa', },
