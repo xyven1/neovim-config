@@ -253,7 +253,11 @@ return {
     'zbirenbaum/copilot.lua',
     cmd = { 'Copilot' },
     event = 'LazyFile',
-    opts = {}
+    opts = function()
+      return vim.fn.executable('nvim-node') == 1 and {
+        copilot_node_command = 'nvim-node'
+      } or {}
+    end
   },
   -- UI
   {
