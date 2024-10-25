@@ -66,8 +66,15 @@ return {
     opts = {
       formatters_by_ft = {
         nix = { 'alejandra' },
-        python = { 'isort', 'black' },
+        python = function(bufnr)
+          if require('conform').get_formatter_info('ruff_format', bufnr).available then
+            return { 'ruff_format', 'ruff_organize_imports' }
+          else
+            return { 'isort', 'black' }
+          end
+        end,
         cpp = { 'astyle' },
+        rust = { 'rustfmt' }
       }
     },
     keys = {
@@ -79,7 +86,7 @@ return {
             lsp_fallback = true,
           })
         end,
-        desc = "Format buffer",
+        desc = 'Format buffer',
         mode = { 'n', 'v' }
       },
     }
