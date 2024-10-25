@@ -4,17 +4,15 @@ return {
     dependencies = {
       'lukas-reineke/indent-blankline.nvim',
     },
+    init = function()
+      vim.g.rainbow = false
+    end,
     config = function()
       local rainbow = require 'rainbow-delimiters'
       require('rainbow-delimiters.setup').setup({
         strategy = {
           [''] = rainbow.strategy['global']
         },
-        highlight = {
-          'BracketHighlighting0',
-          'BracketHighlighting1',
-          'BracketHighlighting2',
-        }
       })
       vim.g.rainbow = false
       vim.api.nvim_create_autocmd('BufEnter', {
@@ -42,9 +40,13 @@ return {
               show_start = true,
               show_end = true,
               highlight = {
-                'BracketHighlighting0',
-                'BracketHighlighting1',
-                'BracketHighlighting2',
+                'RainbowRed',
+                'RainbowYellow',
+                'RainbowBlue',
+                'RainbowOrange',
+                'RainbowGreen',
+                'RainbowViolet',
+                'RainbowCyan',
               }
             }
             require('rainbow-delimiters').enable(0)
@@ -80,6 +82,28 @@ return {
     config = function(_, opts)
       local hooks = require 'ibl.hooks'
       require('ibl').setup(opts)
+      vim.api.nvim_create_autocmd('ColorScheme', {
+        pattern = "*",
+        callback = function()
+          local highlights = {
+            IndentBlanklineChar = { fg = "#4b5263" },
+            IndentBlanklineContextChar = { fg = "#4b5263" },
+            RainbowRed = { fg = "#E06C75" },
+            RainbowYellow = { fg = "#E5C07B" },
+            RainbowBlue = { fg = "#61AFEF" },
+            RainbowOrange = { fg = "#D19A66" },
+            RainbowGreen = { fg = "#98C379" },
+            RainbowViolet = { fg = "#C678DD" },
+            RainbowCyan = { fg = "#56B6C2" },
+          }
+          for group, hl in pairs(highlights) do
+            if vim.fn.hlexists(group) == 0 then
+              vim.api.nvim_set_hl(0, group, hl)
+            end
+          end
+        end
+      })
+      -- hooks.register(hooks.type.HIGHLIGHT_SETUP, )
       hooks.register(hooks.type.SCOPE_HIGHLIGHT, function(tick, bufnr, scope, scope_index)
         if vim.g.rainbow then
           return hooks.builtin.scope_highlight_from_extmark(tick, bufnr, scope, scope_index)
