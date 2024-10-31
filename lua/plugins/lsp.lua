@@ -271,6 +271,7 @@ return {
     'glepnir/lspsaga.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     cmd = { 'Lspsaga' },
+    event = 'LspAttach',
     opts = {
       ui = {
         border = 'solid',
