@@ -13,6 +13,8 @@ vim.opt.mouse = ''            -- disable mouse support
 vim.opt.scrolloff = 4
 vim.opt.confirm = true
 vim.opt.laststatus = 3
+vim.opt.showbreak = '↪ '
+vim.opt.breakindent = true
 vim.g.mapleader = ' '
 
 -- neovide settings
