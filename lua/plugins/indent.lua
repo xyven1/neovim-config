@@ -21,7 +21,7 @@ return {
   },
   {
     'NMAC427/guess-indent.nvim',
-    event = 'LazyFile',
+    lazy = false,
     opts = {}
   }
 }
