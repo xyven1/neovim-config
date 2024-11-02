@@ -247,10 +247,6 @@ return {
       highlight = {
         use_nvim_cmp_as_default = true,
       },
-      keymap = {
-        select_prev = { '<Up>', '<C-p>' },
-        select_next = { '<Down>', '<C-n>' },
-      },
       nerd_font_variant = 'mono',
       accept = { auto_brackets = { enabled = true } },
       trigger = { signature_help = { enabled = true } },

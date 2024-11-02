@@ -141,6 +141,5 @@ return {
     'ptdewey/pendulum-nvim',
     event = 'VeryLazy',
     opts = {}
-  },
-  'stevearc/profile.nvim'
+  }
 }
