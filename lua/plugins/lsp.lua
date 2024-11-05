@@ -5,7 +5,7 @@ return {
     event = 'VeryLazy',
     opts = {
       ['*'] = function()
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        local capabilities = require('blink.cmp').get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities())
         capabilities.textDocument.foldingRange = {
           dynamicRegistration = false,
           lineFoldingOnly = true
@@ -243,7 +243,23 @@ return {
     lazy = false,
     dependencies = { 'rafamadriz/friendly-snippets' },
     version = 'v0.*',
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
     opts = {
+      keymap = {
+        ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+        ['<C-e>'] = { 'hide' },
+        ['<Tab>'] = { 'select_and_accept', 'fallback' },
+
+        ['<C-p>'] = { 'select_prev', 'fallback' },
+        ['<C-n>'] = { 'select_next', 'fallback' },
+
+        ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
+        ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
+
+        ['<C-y>'] = { 'snippet_forward', 'fallback' },
+        ['<C-S-y>'] = { 'snippet_backward', 'fallback' },
+      },
       highlight = {
         use_nvim_cmp_as_default = true,
       },

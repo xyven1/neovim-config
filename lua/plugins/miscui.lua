@@ -72,7 +72,8 @@ return {
       large_file_cutoff = 4000,
       large_file_overrides = {
         providers = { 'lsp' }
-      }
+      },
+      modes_denylist = { 'i' },
     },
     config = function(_, opts)
       require('illuminate').configure(opts)
