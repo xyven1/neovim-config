@@ -8,12 +8,12 @@ vim.opt.shiftwidth = 2        -- the number of spaces inserted for each indentat
 vim.opt.smartindent = true    -- make indenting smarter again
 vim.opt.tabstop = 2           -- how many columns a tab counts for
 vim.opt.termguicolors = true  -- use terminal colors
-vim.opt.pumblend = 30         -- popup menu transparency
+vim.opt.pumblend = 10         -- popup menu transparency
 vim.opt.mouse = ''            -- disable mouse support
 vim.opt.scrolloff = 4
 vim.opt.confirm = true
 vim.opt.laststatus = 3
-vim.opt.showbreak = '↪ '
+vim.opt.showbreak = '↪'
 vim.opt.breakindent = true
 vim.g.mapleader = ' '
 

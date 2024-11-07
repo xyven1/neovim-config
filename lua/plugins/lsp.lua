@@ -263,6 +263,11 @@ return {
       highlight = {
         use_nvim_cmp_as_default = true,
       },
+      windows = {
+        autocomplete = {
+          winblend = vim.o.pumblend,
+        },
+      },
       nerd_font_variant = 'mono',
       accept = { auto_brackets = { enabled = true } },
       trigger = { signature_help = { enabled = true } },
