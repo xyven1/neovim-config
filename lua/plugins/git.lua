@@ -53,26 +53,6 @@ return {
     event = 'VeryLazy',
   },
   {
-    'kdheepak/lazygit.nvim',
-    cmd = {
-      'LazyGit',
-      'LazyGitConfig',
-      'LazyGitCurrentFile',
-      'LazyGitFilter',
-      'LazyGitFilterCurrentFile',
-    },
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-    },
-    keys = {
-      { '<leader>g',  group = 'Git' },
-      { '<leader>gg', '<cmd>LazyGit<cr>',                  desc = 'Open LazyGit' },
-      { '<leader>gf', '<cmd>LazyGitFilter<cr>',            desc = 'LazyGit: Browse commits' },
-      { '<leader>gc', '<cmd>LazyGitCurrentFile<cr>',       desc = 'Open LazyGit for current file' },
-      { '<leader>gC', '<cmd>LazyGitFilterCurrentFile<cr>', desc = 'LazyGit: Browse commits for current file' },
-    }
-  },
-  {
     'sindrets/diffview.nvim',
     dependencies = {
       'nvim-tree/nvim-web-devicons'
@@ -82,10 +62,8 @@ return {
     },
     cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewFileHistory' },
     keys = {
-      { '<leader>d',  group = 'Diff' },
-      { '<leader>dd', '<cmd>DiffviewOpen<cr>',          desc = 'Open diff view' },
-      { '<leader>dc', '<cmd>DiffviewClose<cr>',         desc = 'Close diff view' },
-      { '<leader>dh', '<cmd>DiffviewFileHistory %<cr>', desc = 'Git file history' },
+      { '<leader>gd', '<cmd>DiffviewOpen<cr>',          desc = 'Open diff view' },
+      { '<leader>gh', '<cmd>DiffviewFileHistory %<cr>', desc = 'Git file history' },
     }
   },
   {

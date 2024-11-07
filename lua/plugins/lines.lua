@@ -25,7 +25,7 @@ return {
   {
     'nvim-lualine/lualine.nvim',
     event = 'VeryLazy',
-    dependencies = { 'nvim-tree/nvim-web-devicons', 'arkav/lualine-lsp-progress' },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = function()
       -- vim.opt.showmode = false
       return {
@@ -35,8 +35,8 @@ return {
         },
         sections = {
           lualine_a = { 'mode', },
-          lualine_b = { 'branch', 'diff', 'diagnostics' },
-          lualine_c = { 'lsp_progress' },
+          lualine_b = { 'branch', 'diff' },
+          lualine_c = { 'diagnostics' },
           lualine_x = {
             'overseer',
             {
