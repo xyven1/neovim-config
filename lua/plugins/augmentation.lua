@@ -130,11 +130,10 @@ return {
     }
   },
   {
-    'nvim-pack/nvim-spectre',
-    cmd = { 'Spectre' },
-    opts = { open_cmd = 'noswapfile vnew' },
+    'MagicDuck/grug-far.nvim',
+    opts = {},
     keys = {
-      { '<leader>nr', function() require('spectre').open() end, desc = 'Replace in Files (Spectre)' },
+      { '<leader>nr', function() require('grug-far').open() end, desc = 'Replace in Files' },
     }
   },
   {
