@@ -73,22 +73,22 @@ return {
       local configurations = require('mason-nvim-dap.mappings.configurations')
       local filetypes = require('mason-nvim-dap.mappings.filetypes')
 
-      dap.adapters["pwa-chrome"] = {
-        type = "server",
-        host = "localhost",
-        port = "${port}",
+      dap.adapters['pwa-chrome'] = {
+        type = 'server',
+        host = 'localhost',
+        port = '${port}',
         executable = {
-          command = "js-debug",
-          args = { "${port}" },
+          command = 'js-debug',
+          args = { '${port}' },
         },
       }
-      dap.adapters["pwa-node"] = {
-        type = "server",
-        host = "localhost",
-        port = "${port}",
+      dap.adapters['pwa-node'] = {
+        type = 'server',
+        host = 'localhost',
+        port = '${port}',
         executable = {
-          command = "js-debug",
-          args = { "${port}" },
+          command = 'js-debug',
+          args = { '${port}' },
         },
       }
 

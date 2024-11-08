@@ -92,7 +92,7 @@ return {
   {
     'kazhala/close-buffers.nvim',
     keys = {
-      { '<leader>x',  group = 'Close' },
+      { '<leader>x',  '',                                                                              desc = '+close' },
       {
         '<leader>xx',
         function()
@@ -142,7 +142,7 @@ return {
     opts = {}
   },
   {
-    "folke/snacks.nvim",
+    'folke/snacks.nvim',
     priority = 1000,
     lazy = false,
     ---@module 'snacks'
@@ -153,7 +153,7 @@ return {
       notifier = { top_down = false, }
     },
     keys = {
-      { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
+      { '<leader>gg', function() Snacks.lazygit() end, desc = 'Lazygit' },
     }
   }
 }

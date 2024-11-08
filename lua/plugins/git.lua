@@ -32,7 +32,7 @@ return {
     keys = {
       { '[h',         gitsigns 'prev_hunk',                                                                desc = 'Previous hunk' },
       { ']h',         gitsigns 'next_hunk',                                                                desc = 'Next hunk' },
-      { '<leader>h',  group = 'Git Hunk' },
+      { '<leader>h',  '',                                                                                  desc = 'Git Hunk' },
       { '<leader>hs', gitsigns 'stage_hunk',                                                               desc = 'Stage hunk' },
       { '<leader>hb', gitsigns 'toggle_current_line_blame',                                                desc = 'Toggle current line blame' },
       { '<leader>hr', gitsigns 'reset_hunk',                                                               desc = 'Reset hunk' },

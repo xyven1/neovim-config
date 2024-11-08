@@ -210,7 +210,7 @@ return {
     cmd = 'Resession',
     keys = function()
       local keys = {
-        { '<leader>w', group = 'Session' },
+        { '<leader>w', '', desc = '+session' },
       }
       for _, v in pairs(functions) do
         table.insert(keys, { '<leader>w' .. v.key, v.func, desc = v.desc })

@@ -30,24 +30,24 @@ return {
       { '<leader>o',   fzf 'files',                      desc = 'Open file' },
       { '<leader>O',   fzf 'git_files',                  desc = 'Search git files' },
       { '<leader>p',   fzf 'commands',                   desc = 'Browse commands' },
-      { '<leader>e',   group = 'FZF' },
+      { '<leader>e',   '',                               desc = '+fzf' },
       { '<leader>eb',  fzf 'buffers',                    desc = 'Browse buffers' },
       { '<leader>ec',  fzf 'colorschemes',               desc = 'Search colorschemes' },
-      { '<leader>ed',  group = 'DAP' },
+      { '<leader>ed',  '',                               desc = '+dap' },
       { '<leader>edb', fzf 'dap_breakpoints',            desc = 'Search breakpoints' },
       { '<leader>edc', fzf 'dap_commands',               desc = 'Search debug commands' },
       { '<leader>edf', fzf 'dap_frames',                 desc = 'Search frames' },
       { '<leader>eds', fzf 'dap_configurations',         desc = 'Search configurations' },
       { '<leader>edv', fzf 'dap_variables',              desc = 'Search variables' },
       { '<leader>ee',  fzf 'builtin',                    desc = 'Select fzf search' },
-      { '<leader>eg',  group = 'Git' },
+      { '<leader>eg',  '',                               desc = '+git' },
       { '<leader>egb', fzf 'git_branches',               desc = 'Search git branches' },
       { '<leader>egc', fzf 'git_commits',                desc = 'Search git commits' },
       { '<leader>egC', fzf 'git_bcommits',               desc = 'Search git commits (buffer)' },
       { '<leader>egh', fzf 'git_stash',                  desc = 'Search git stash' },
       { '<leader>egs', fzf 'git_status',                 desc = 'Search git status' },
       { '<leader>egt', fzf 'git_tags',                   desc = 'Search git tags' },
-      { '<leader>eh',  group = 'History' },
+      { '<leader>eh',  '',                               desc = '+history' },
       { '<leader>ehc', fzf 'command_history',            desc = 'Search command history' },
       { '<leader>ehs', fzf 'search_history',             desc = 'Search search history' },
       { '<leader>ej',  fzf 'jumps',                      desc = 'Search jumps' },
@@ -63,7 +63,7 @@ return {
       { '<leader>eT',  fzf 'tagstack',                   desc = 'Search tagstack' },
       { '<leader>ew',  fzf 'grep_cword',                 desc = 'Search word under cursor' },
       { '<leader>eW',  fzf 'grep_cWORD',                 desc = 'Search WORD under cursor' },
-      { '<leader>l',   group = 'LSP' },
+      { '<leader>l',   '',                               desc = '+lsp' },
       { '<leader>la',  fzf 'lsp_code_actions',           desc = 'Search code actions' },
       { '<leader>ld',  fzf 'lsp_definitions',            desc = 'Search definitions' },
       { '<leader>lD',  fzf 'lsp_declarations',           desc = 'Search declaration' },
@@ -119,6 +119,7 @@ return {
       },
     },
     keys = {
+      { '<leader>t',  '',                            desc = '+neo-tree' },
       { '<leader>tt', '<cmd>Neotree toggle<cr>',     desc = 'Toggle file tree' },
       { '<leader>tg', '<cmd>Neotree git_status<cr>', desc = 'Toggle git status tree' },
       { '<leader>tb', '<cmd>Neotree buffers<cr>',    desc = 'Toggle buffers tree' },
@@ -126,12 +127,12 @@ return {
     },
   },
   {
-    "nvim-neo-tree/neo-tree.nvim",
+    'nvim-neo-tree/neo-tree.nvim',
     opts = function(_, opts)
       local function on_move(data)
         Snacks.rename.on_rename_file(data.source, data.destination)
       end
-      local events = require("neo-tree.events")
+      local events = require('neo-tree.events')
       opts.event_handlers = opts.event_handlers or {}
       vim.list_extend(opts.event_handlers, {
         { event = events.FILE_MOVED,   handler = on_move },

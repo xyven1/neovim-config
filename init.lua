@@ -1,11 +1,11 @@
 -- All non plugin related (vim) options
-require("config/options")
+require('config/options')
 -- Global keymaps
-require("config/keymaps")
+require('config/keymaps')
 -- Plugin management via Lazy
-require("config/lazy")
+require('config/lazy')
 -- Set colorscheme
 vim.cmd [[set background=dark]]
 vim.cmd [[colorscheme vscode]]
 -- Vim autocommands/autogroups
-require("config/autocmd")
+require('config/autocmd')
