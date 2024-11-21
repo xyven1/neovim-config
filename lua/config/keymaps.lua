@@ -61,10 +61,6 @@ end, opts('Decrease transparency'))
 
 -- terminal mappings
 map('t', '<C-esc>', '<C-\\><C-n>', opts('Exit terminal mode'))
-map('t', '<C-h>', '<cmd>wincmd h<cr>', opts('Go to the left window'))
-map('t', '<C-j>', '<cmd>wincmd j<cr>', opts('Go to the bottom window'))
-map('t', '<C-k>', '<cmd>wincmd k<cr>', opts('Go to the top window'))
-map('t', '<C-l>', '<cmd>wincmd l<cr>', opts('Go to the right window'))
 
 map('n', '[q', vim.cmd.cprev, { desc = 'Previous Quickfix' })
 map('n', ']q', vim.cmd.cnext, { desc = 'Next Quickfix' })
