@@ -20,6 +20,14 @@ return {
           'jsx', 'tsx'
         }
       },
+      volar = {
+        filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+        init_options = {
+          vue = {
+            hybridMode = false,
+          },
+        },
+      },
       rust_analyzer = {
         settings = {
           ['rust-analyzer'] = {
@@ -35,7 +43,7 @@ return {
       end,
       clangd = {
         capabilities = { offsetEncoding = { 'utf-16' } }
-      }
+      },
     },
   },
   {
@@ -106,7 +114,12 @@ return {
     opts = {
       events = { 'BufWritePost', 'BufReadPost', 'InsertLeave' },
       linters_by_ft = {
-        make = { 'checkmake' }
+        make = { 'checkmake' },
+        vue = { 'eslint_d' },
+        javascript = { 'eslint_d' },
+        typescript = { 'eslint_d' },
+        javascriptreact = { 'eslint_d' },
+        typescriptreact = { 'eslint_d' },
       },
       linters = {},
     },
