@@ -28,14 +28,13 @@ return {
           },
         },
       },
-      rust_analyzer = {
+      rust_analyzer = false,
+      basedpyright  = {
         settings = {
-          ['rust-analyzer'] = {
-            checkOnSave = {
-              command = 'clippy',
-            },
-          }
-        }
+          basedpyright = {
+            disableOrganizeImports = true,
+          },
+        },
       },
       lua_ls = function()
         require('lazydev')
@@ -376,4 +375,10 @@ return {
       },
     },
   },
+  -- Language Specific
+  {
+    'mrcjkb/rustaceanvim',
+    version = '^5', -- Recommended
+    lazy = false,   -- This plugin is already lazy
+  }
 }
