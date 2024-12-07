@@ -148,9 +148,9 @@ return {
     ---@module 'snacks'
     ---@type snacks.Config
     opts = {
-      statuscolumn = { enabled = false },
-      words = { enabled = false },
-      notifier = { top_down = false, }
+      bigfile = { enabled = true },
+      notifier = { enabled = true, top_down = false, },
+      quickfile = { enabled = true },
     },
     keys = {
       { '<leader>gg', function() Snacks.lazygit() end, desc = 'Lazygit' },

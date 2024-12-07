@@ -67,7 +67,7 @@ return {
       vim.fn.sign_define('DapBreakpointRejected', { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
       vim.fn.sign_define('DapStopped', { text = '', texthl = '', linehl = 'DapStoppedLine', numhl = 'DapBreakpoint' })
       local adapter_names = {
-        'chrome', 'codelldb', 'coreclr', 'cppdbg', 'dart', 'delve', 'erlang', 'firefox', 'haskell', 'init', 'kotlin',
+        'chrome', 'coreclr', 'cppdbg', 'dart', 'delve', 'erlang', 'firefox', 'haskell', 'init', 'kotlin',
         'mix_task', 'node2', 'php', 'python',
       }
       local dap = require('dap')
