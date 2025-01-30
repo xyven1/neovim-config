@@ -104,6 +104,12 @@ return {
             key = 'r',
             action = 'Resession load'
           },
+          {
+            icon = '󰅴  ',
+            desc = 'Leetcode                                ',
+            key = 'c',
+            action = 'Leet'
+          },
         },
       },
     },

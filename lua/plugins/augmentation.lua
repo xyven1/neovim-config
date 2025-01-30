@@ -155,5 +155,26 @@ return {
     keys = {
       { '<leader>gg', function() Snacks.lazygit() end, desc = 'Lazygit' },
     }
+  },
+  {
+    "3rd/image.nvim",
+    build = false,
+    opts = {
+      window_overlap_clear_enabled = true
+    }
+  },
+  {
+    "kawre/leetcode.nvim",
+    dependencies = {
+      "ibhagwan/fzf-lua",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "3rd/image.nvim"
+    },
+    cmd = { "Leet" },
+    opts = {
+      lang = "rust",
+      image_support = true
+    },
   }
 }
