@@ -19,5 +19,8 @@ require('lazy').setup('plugins', {
   -- lockfile = '/home/xyven/code/neovim-config/lazy-lock.json',
   defaults = {
     lazy = true
-  }
+  },
+  rocks = {
+    enable = true
+  },
 })
