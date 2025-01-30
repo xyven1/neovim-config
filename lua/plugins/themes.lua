@@ -13,6 +13,7 @@ return {
       },
     },
   },
+  'rktjmp/lush.nvim',
   {
     'folke/tokyonight.nvim',
     opts = {},
