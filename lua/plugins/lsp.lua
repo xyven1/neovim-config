@@ -4,7 +4,7 @@ return {
     dependencies = { 'neovim/nvim-lspconfig', },
     event = 'VeryLazy',
     opts = {
-      ['*'] = function()
+      ['*']         = function()
         local capabilities = require('blink.cmp').get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities())
         capabilities.textDocument.foldingRange = {
           dynamicRegistration = false,
@@ -14,13 +14,13 @@ return {
           capabilities = capabilities
         }
       end,
-      tailwindcss = {
+      tailwindcss   = {
         filetypes = {
           'html', 'css', 'scss', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'svelte', 'vue',
           'jsx', 'tsx'
         }
       },
-      volar = {
+      volar         = {
         filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
         init_options = {
           vue = {
@@ -36,11 +36,11 @@ return {
           },
         },
       },
-      lua_ls = function()
+      lua_ls        = function()
         require('lazydev')
         return {}
       end,
-      clangd = {
+      clangd        = {
         capabilities = { offsetEncoding = { 'utf-16' } }
       },
     },
@@ -281,17 +281,16 @@ return {
         ['<C-y>'] = { 'snippet_forward', 'fallback' },
         ['<C-S-y>'] = { 'snippet_backward', 'fallback' },
       },
-      highlight = {
+      appearance = {
         use_nvim_cmp_as_default = true,
+        nerd_font_variant = 'mono',
       },
-      windows = {
-        autocomplete = {
+      completion = {
+        menu = {
           winblend = vim.o.pumblend,
         },
       },
-      nerd_font_variant = 'mono',
-      accept = { auto_brackets = { enabled = true } },
-      trigger = { signature_help = { enabled = true } },
+      signature = { enabled = true },
     }
   },
   {
