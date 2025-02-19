@@ -109,15 +109,25 @@ return {
       'nvim-tree/nvim-web-devicons',
       'MunifTanjim/nui.nvim',
     },
-    opts = {
-      sources = { 'filesystem', 'buffers', 'git_status' },
-      open_files_do_not_replace_types = { 'terminal', 'Trouble', 'trouble', 'qf', 'Outline' },
-      filesystem = {
-        bind_to_cwd = false,
-        follow_current_file = { enabled = true },
-        use_libuv_file_watcher = true,
-      },
-    },
+    opts = function(_, _)
+      local function on_move(data)
+        Snacks.rename.on_rename_file(data.source, data.destination)
+      end
+      local events = require('neo-tree.events')
+      return {
+        sources = { 'filesystem', 'buffers', 'git_status' },
+        open_files_do_not_replace_types = { 'terminal', 'Trouble', 'trouble', 'qf', 'Outline' },
+        filesystem = {
+          bind_to_cwd = false,
+          follow_current_file = { enabled = true },
+          use_libuv_file_watcher = true,
+        },
+        event_handlers = {
+          { event = events.FILE_MOVED,   handler = on_move },
+          { event = events.FILE_RENAMED, handler = on_move },
+        }
+      }
+    end,
     keys = {
       { '<leader>t',  '',                            desc = '+neo-tree' },
       { '<leader>tt', '<cmd>Neotree toggle<cr>',     desc = 'Toggle file tree' },
@@ -125,20 +135,6 @@ return {
       { '<leader>tb', '<cmd>Neotree buffers<cr>',    desc = 'Toggle buffers tree' },
       { '<leader>tf', '<cmd>Neotree<cr>',            desc = 'Focus file tree' },
     },
-  },
-  {
-    'nvim-neo-tree/neo-tree.nvim',
-    opts = function(_, opts)
-      local function on_move(data)
-        Snacks.rename.on_rename_file(data.source, data.destination)
-      end
-      local events = require('neo-tree.events')
-      opts.event_handlers = opts.event_handlers or {}
-      vim.list_extend(opts.event_handlers, {
-        { event = events.FILE_MOVED,   handler = on_move },
-        { event = events.FILE_RENAMED, handler = on_move },
-      })
-    end,
   },
   {
     'stevearc/oil.nvim',
