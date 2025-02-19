@@ -263,7 +263,7 @@ return {
     'saghen/blink.cmp',
     lazy = false,
     dependencies = { 'rafamadriz/friendly-snippets' },
-    version = 'v0.*',
+    version = '*',
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
