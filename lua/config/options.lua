@@ -36,7 +36,7 @@ vim.g.terminal_color_12 = '#569cd6'
 vim.g.terminal_color_13 = '#c678dd'
 vim.g.terminal_color_14 = '#56b6c2'
 vim.g.terminal_color_15 = '#d4d4d4'
-vim.o.guifont = 'JetBrainsMono Nerd Font:h12'
+vim.o.guifont = 'JetBrainsMono NFM:h12'
 
 vim.opt.fillchars:append { diff = '╱' }
 vim.opt.wildignore:append { 'blue.vim', 'darkblue.vim', 'default.vim',
@@ -51,10 +51,12 @@ vim.diagnostic.config({
     source = 'if_many',
   },
   severity_sort = true,
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '󰅚 ',
+      [vim.diagnostic.severity.WARN] = ' ',
+      [vim.diagnostic.severity.INFO] = ' ',
+      [vim.diagnostic.severity.HINT] = '󰌶 ',
+    }
+  },
 })
-
-local signs = { Error = '󰅚 ', Warn = ' ', Hint = '󰌶 ', Info = ' ' }
-for type, icon in pairs(signs) do
-  local hl = 'DiagnosticSign' .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end

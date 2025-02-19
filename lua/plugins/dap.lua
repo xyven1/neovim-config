@@ -62,10 +62,14 @@ return {
       { '<leader>dw', function() require('dap.ui.widgets').hover() end,              desc = 'Widgets' },
     },
     config = function(_, opts)
-      vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
-      vim.fn.sign_define('DapBreakpointCondition', { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
-      vim.fn.sign_define('DapBreakpointRejected', { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
-      vim.fn.sign_define('DapStopped', { text = '', texthl = '', linehl = 'DapStoppedLine', numhl = 'DapBreakpoint' })
+      vim.diagnostic.config({
+        signs = {
+          { name = 'DapBreakpoint', text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' },
+          { name = 'DapBreakpointCondition', text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' },
+          { name = 'DapBreakpointRejected', text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' },
+          { name = 'DapStopped', text = '', texthl = '', linehl = 'DapStoppedLine', numhl = 'DapBreakpoint' },
+        }
+      })
       local adapter_names = {
         'chrome', 'coreclr', 'cppdbg', 'dart', 'delve', 'erlang', 'firefox', 'haskell', 'init', 'kotlin',
         'mix_task', 'node2', 'php', 'python',
