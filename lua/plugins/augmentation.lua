@@ -90,6 +90,18 @@ return {
     }
   },
   {
+    "toppair/peek.nvim",
+    cmd = { "PeekOpen" },
+    build = "deno task build:fast",
+    opts = {
+      app = "browser"
+    },
+    init = function()
+      vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+      vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+    end,
+  },
+  {
     'kazhala/close-buffers.nvim',
     keys = {
       { '<leader>x',  '',                                                                              desc = '+close' },
