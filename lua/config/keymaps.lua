@@ -111,6 +111,7 @@ Snacks.toggle.new({
     end
   end,
 }):map('<leader>um')
+Snacks.toggle.zen():map('<leader>uz')
 
 -- keymaps to navigate between tabs
 map('n', '[t', '<cmd>tabprevious<cr>', opts('Previous tab'))
