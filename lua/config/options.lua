@@ -46,18 +46,27 @@ vim.opt.wildignore:append { 'blue.vim', 'darkblue.vim', 'default.vim',
   'shine.vim', 'slate.vim', 'sorbet.vim', 'torte.vim', 'wildcharm.vim',
   'zaibatsu.vim', 'zellner.vim' }
 
+local icons = {
+  [vim.diagnostic.severity.ERROR] = '󰅚 ',
+  [vim.diagnostic.severity.WARN] = ' ',
+  [vim.diagnostic.severity.INFO] = ' ',
+  [vim.diagnostic.severity.HINT] = '󰌶 ',
+}
 vim.diagnostic.config({
   virtual_text = {
     source = 'if_many',
+    prefix = function(diagnostic)
+      for d, icon in pairs(icons) do
+        if diagnostic.severity == d then
+          return icon
+        end
+      end
+      return ''
+    end
   },
   severity_sort = true,
   signs = {
-    text = {
-      [vim.diagnostic.severity.ERROR] = '󰅚 ',
-      [vim.diagnostic.severity.WARN] = ' ',
-      [vim.diagnostic.severity.INFO] = ' ',
-      [vim.diagnostic.severity.HINT] = '󰌶 ',
-    },
+    text = icons,
   },
 })
 local signs = {

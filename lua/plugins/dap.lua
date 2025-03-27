@@ -112,7 +112,11 @@ return {
       end
     end
   },
-  { 'xyven1/nvim-dap-virtual-text', branch = 'patch-1' },
+  {
+    'xyven1/nvim-dap-virtual-text',
+    branch = 'patch-1',
+    opts = { enabled = false }
+  },
   {
     'rcarriga/nvim-dap-ui',
     dependencies = { 'mfussenegger/nvim-dap', 'nvim-neotest/nvim-nio' },

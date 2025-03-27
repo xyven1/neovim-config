@@ -44,7 +44,19 @@ Snacks.toggle.new({
   name = 'Diagnostics Lines',
   get = function() return not not vim.diagnostic.config().virtual_lines end,
   set = function(state)
-    vim.diagnostic.config({ virtual_lines = state })
+    if state then
+      vim.g.virtual_text_opt = vim.diagnostic.config().virtual_text
+      vim.diagnostic.config({
+        virtual_lines = true,
+        virtual_text = false
+      })
+    else
+      vim.diagnostic.config({
+        virtual_lines = false,
+        virtual_text = vim.g.virtual_text_opt
+      })
+      vim.g.virtual_text_opt = nil
+    end
   end,
 }):map('<leader>ul')
 Snacks.toggle.inlay_hints():map('<leader>uh')
@@ -56,7 +68,7 @@ Snacks.toggle.new({
   end,
   set = function(state)
     local d = require('nvim-dap-virtual-text')
-    if state then d.disable() else d.enable() end
+    if state then d.enable() else d.disable() end
   end,
 }):map('<leader>uv')
 
@@ -72,16 +84,16 @@ Snacks.toggle.new({
   get = function() return require('colorizer').is_buffer_attached(0) end,
   set = function(state)
     local c = require('colorizer')
-    if state then c.detach_from_buffer(0) else c.attach_to_buffer(0) end
+    if state then c.attach_to_buffer(0) else c.detach_from_buffer(0) end
   end
-})
+}):map('<leader>uc')
 Snacks.toggle.new({
   id = 'illuminate',
   name = 'Hover Illumination',
   get = function() return not require('illuminate').is_paused() end,
   set = function(state)
     local i = require('illuminate')
-    if state then i.pause() else i.resume() end
+    if state then i.resume() else i.pause() end
   end,
 }):map('<leader>ui')
 local markdownMode = false;
