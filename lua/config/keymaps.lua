@@ -91,7 +91,12 @@ Snacks.toggle.new({
   get = function() return markdownMode end,
   set = function(state)
     local rm = require('render-markdown')
+    markdownMode = state
     if state then rm.enable() else rm.disable() end
+    if vim.bo.filetype == 'markdown' then
+      vim.opt_local.spell = markdownMode
+      vim.opt_local.linebreak = markdownMode
+    end
   end,
 }):map('<leader>um')
 

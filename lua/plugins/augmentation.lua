@@ -76,9 +76,10 @@ return {
     config = function(_, opts)
       vim.api.nvim_create_autocmd('BufEnter', {
         callback = function()
+          local state = Snacks.toggle.toggles.markdown.get(Snacks.toggle.toggles.markdown)
           if vim.bo.filetype == 'markdown' then
-            vim.opt_local.spell = markdownMode
-            vim.opt_local.linebreak = markdownMode
+            vim.opt_local.spell = state
+            vim.opt_local.linebreak = state
           end
         end
       })
