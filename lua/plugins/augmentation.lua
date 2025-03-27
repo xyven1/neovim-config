@@ -50,14 +50,14 @@ return {
       })
     end,
     keys = {
-      { '<C-a>',  function() require('dial.map').inc_normal('increment') end,  desc = 'Increment' },
-      { '<C-x>',  function() require('dial.map').inc_normal('decrement') end,  desc = 'Decrement' },
-      { '<C-a>',  function() require('dial.map').inc_visual('increment') end,  desc = 'Increment (visual)', mode = { 'v' } },
-      { '<C-x>',  function() require('dial.map').inc_visual('decrement') end,  desc = 'Decrement (visual)', mode = { 'v' } },
-      { 'g<C-a>', function() require('dial.map').inc_gnormal('increment') end, desc = 'Increment' },
-      { 'g<C-x>', function() require('dial.map').inc_gnormal('decrement') end, desc = 'Decrement' },
-      { 'g<C-a>', function() require('dial.map').inc_gvisual('increment') end, desc = 'Increment (visual)', mode = { 'v' } },
-      { 'g<C-x>', function() require('dial.map').inc_gvisual('decrement') end, desc = 'Decrement (visual)', mode = { 'v' } },
+      { '<C-a>',  function() require('dial.map').manipulate('increment', 'normal') end,  desc = 'Increment' },
+      { '<C-x>',  function() require('dial.map').manipulate('decrement', 'normal') end,  desc = 'Decrement' },
+      { '<C-a>',  function() require('dial.map').manipulate('increment', 'visual') end,  desc = 'Increment (visual)', mode = { 'v' } },
+      { '<C-x>',  function() require('dial.map').manipulate('decrement', 'visual') end,  desc = 'Decrement (visual)', mode = { 'v' } },
+      { 'g<C-a>', function() require('dial.map').manipulate('increment', 'gnormal') end, desc = 'Increment' },
+      { 'g<C-x>', function() require('dial.map').manipulate('decrement', 'gnormal') end, desc = 'Decrement' },
+      { 'g<C-a>', function() require('dial.map').manipulate('increment', 'gvisual') end, desc = 'Increment (visual)', mode = { 'v' } },
+      { 'g<C-x>', function() require('dial.map').manipulate('decrement', 'gvisual') end, desc = 'Decrement (visual)', mode = { 'v' } },
     }
   },
   {

@@ -22,6 +22,8 @@ return {
     event = 'VeryLazy',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = function()
+      local lualine_require = require("lualine_require")
+      lualine_require.require = require
       return {
         options = {
           theme = 'auto',
@@ -54,7 +56,7 @@ return {
           },
           lualine_y = { 'encoding', 'fileformat', },
           lualine_z = { 'progress', 'location' }
-        },
+        }
       }
     end,
   },
