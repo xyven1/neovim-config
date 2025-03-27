@@ -27,7 +27,7 @@ return {
       return {
         options = {
           theme = 'auto',
-          globalstatus = true,
+          disabled_filetypes = { statusline = { "snacks_dashboard" } },
         },
         sections = {
           lualine_a = { 'mode', },
@@ -139,11 +139,6 @@ return {
     end,
     config = function(_, opts)
       vim.opt.foldcolumn = '1'
-      vim.opt.fillchars = {
-        foldopen = '',
-        foldsep = ' ',
-        foldclose = '',
-      }
       local ft_ignore = opts.ft_ignore
       opts.ft_ignore = nil
       require('statuscol').setup(opts)

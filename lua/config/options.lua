@@ -38,7 +38,13 @@ vim.g.terminal_color_14 = '#56b6c2'
 vim.g.terminal_color_15 = '#d4d4d4'
 vim.o.guifont = 'JetBrainsMono NFM:h12'
 
-vim.opt.fillchars:append { diff = '╱' }
+vim.opt.fillchars = {
+  diff = '╱',
+  foldopen = '',
+  foldsep = ' ',
+  foldclose = '',
+  eob = ' '
+}
 vim.opt.wildignore:append { 'blue.vim', 'darkblue.vim', 'default.vim',
   'delek.vim', 'desert.vim', 'elflord.vim', 'evening.vim', 'habamax.vim',
   'industry.vim', 'koehler.vim', 'lunaperche.vim', 'morning.vim', 'murphy.vim',
