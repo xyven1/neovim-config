@@ -17,7 +17,7 @@ return {
   },
   {
     'folke/noice.nvim',
-    dependencies = { 'MunifTanjim/nui.nvim', },
+    dependencies = { 'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify' },
     event = 'VeryLazy',
     opts = {
       lsp = {
@@ -27,7 +27,6 @@ return {
       cmdline = {
         view = 'cmdline'
       },
-      -- you can enable a preset for easier configuration
       presets = {
         bottom_search = true,         -- use a classic bottom cmdline for search
         command_palette = false,      -- position the cmdline and popupmenu together
@@ -54,16 +53,10 @@ return {
         html = { css_fn = true },
       }, { names = false, RRGGBBAA = true })
     end,
-    keys = {
-      { '<leader>uc', '<cmd>ColorizerToggle<cr>', desc = 'Toggle colorizer' }
-    }
   },
   {
     'RRethy/vim-illuminate',
     event = 'LazyFile',
-    keys = {
-      { '<leader>ui', function() require('illuminate').toggle() end, desc = 'Toggle hover illumination' }
-    },
     opts = {
       large_file_cutoff = 4000,
       large_file_overrides = {
@@ -75,43 +68,4 @@ return {
       require('illuminate').configure(opts)
     end
   },
-  {
-    'nvimdev/dashboard-nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    event = 'VimEnter',
-    opts = {
-      theme = 'doom',
-      config = {
-        week_header = {
-          enable = true,
-        },
-        center = {
-          {
-            icon = '  ',
-            desc = 'Open current directory\'s session       ',
-            key = 's',
-            action = 'Resession load_dir'
-          },
-          {
-            icon = '  ',
-            desc = 'Open lastest session                    ',
-            key = 'l',
-            action = 'Resession load_latest'
-          },
-          {
-            icon = '󰈢  ',
-            desc = 'Recently opened sessions                ',
-            key = 'r',
-            action = 'Resession load'
-          },
-          {
-            icon = '󰅴  ',
-            desc = 'Leetcode                                ',
-            key = 'c',
-            action = 'Leet'
-          },
-        },
-      },
-    },
-  }
 }

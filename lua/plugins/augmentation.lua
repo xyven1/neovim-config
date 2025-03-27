@@ -1,4 +1,3 @@
-local markdownMode = false;
 return {
   {
     'direnv/direnv.vim',
@@ -12,6 +11,11 @@ return {
       vim.g.suda_smart_edit = 1
     end,
     priority = 1,
+  },
+  {
+    'NMAC427/guess-indent.nvim',
+    lazy = false,
+    opts = {}
   },
   {
     'mrjones2014/smart-splits.nvim',
@@ -34,15 +38,26 @@ return {
   },
   {
     'monaqa/dial.nvim',
+    config = function()
+      local augend = require('dial.augend')
+      require("dial.config").augends:register_group({
+        default = {
+          augend.integer.alias.decimal,
+          augend.integer.alias.hex,
+          augend.date.alias["%Y/%m/%d"],
+          augend.constant.alias.bool
+        },
+      })
+    end,
     keys = {
-      { '<C-a>',  function() require('dial.map').manipulate('increment', 'normal') end,  desc = 'Increment' },
-      { '<C-x>',  function() require('dial.map').manipulate('decrement', 'normal') end,  desc = 'Decrement' },
-      { 'g<C-a>', function() require('dial.map').manipulate('increment', 'gnormal') end, desc = 'Increment (gnormal)' },
-      { 'g<C-x>', function() require('dial.map').manipulate('decrement', 'gnormal') end, desc = 'Decrement (gnormal)' },
-      { '<C-a>',  function() require('dial.map').manipulate('increment', 'visual') end,  desc = 'Increment (visual)',  mode = { 'v' } },
-      { '<C-x>',  function() require('dial.map').manipulate('decrement', 'visual') end,  desc = 'Decrement (visual)',  mode = { 'v' } },
-      { 'g<C-a>', function() require('dial.map').manipulate('increment', 'gvisual') end, desc = 'Increment (gvisual)', mode = { 'v' } },
-      { 'g<C-x>', function() require('dial.map').manipulate('decrement', 'gvisual') end, desc = 'Decrement (gvisual)', mode = { 'v' } },
+      { '<C-a>',  function() require('dial.map').inc_normal('increment') end,  desc = 'Increment' },
+      { '<C-x>',  function() require('dial.map').inc_normal('decrement') end,  desc = 'Decrement' },
+      { '<C-a>',  function() require('dial.map').inc_visual('increment') end,  desc = 'Increment (visual)', mode = { 'v' } },
+      { '<C-x>',  function() require('dial.map').inc_visual('decrement') end,  desc = 'Decrement (visual)', mode = { 'v' } },
+      { 'g<C-a>', function() require('dial.map').inc_gnormal('increment') end, desc = 'Increment' },
+      { 'g<C-x>', function() require('dial.map').inc_gnormal('decrement') end, desc = 'Decrement' },
+      { 'g<C-a>', function() require('dial.map').inc_gvisual('increment') end, desc = 'Increment (visual)', mode = { 'v' } },
+      { 'g<C-x>', function() require('dial.map').inc_gvisual('decrement') end, desc = 'Decrement (visual)', mode = { 'v' } },
     }
   },
   {
@@ -69,25 +84,6 @@ return {
       })
       require('render-markdown').setup(opts)
     end,
-    keys = {
-      {
-        '<leader>um',
-        function()
-          local rm = require('render-markdown')
-          markdownMode = not markdownMode
-          if markdownMode then
-            rm.enable()
-          else
-            rm.disable()
-          end
-          if vim.bo.filetype == 'markdown' then
-            vim.opt_local.spell = markdownMode
-            vim.opt_local.linebreak = markdownMode
-          end
-        end,
-        desc = 'Toggle markdown mode'
-      },
-    }
   },
   {
     "toppair/peek.nvim",
@@ -100,38 +96,6 @@ return {
       vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
       vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
     end,
-  },
-  {
-    'kazhala/close-buffers.nvim',
-    keys = {
-      { '<leader>x',  '',                                                                              desc = '+close' },
-      {
-        '<leader>xx',
-        function()
-          local cb = require('close_buffers')
-          if vim.bo.modified then
-            local choice = vim.fn.confirm('Save changes to %q?', '&Yes\n&No\n&Cancel')
-            if choice == 1 then
-              vim.cmd.write()
-              cb.delete({ type = 'this' })
-            elseif choice == 2 then
-              cb.delete({ type = 'this', force = true })
-            end
-          else
-            cb.delete({ type = 'this' })
-          end
-        end,
-        desc = 'Close current buffer'
-      },
-      { '<leader>xf', function() require('close_buffers').delete({ type = 'this', force = true }) end, desc = 'Force close current buffer' },
-      { '<leader>xn', function() require('close_buffers').delete({ type = 'nameless' }) end,           desc = 'Close nameless buffers' },
-      { '<leader>xh', function() require('close_buffers').delete({ type = 'hidden' }) end,             desc = 'Close hidden buffers' },
-      { '<leader>xa', function() require('close_buffers').delete({ type = 'all' }) end,                desc = 'Close all buffers' },
-      { '<leader>xo', function() require('close_buffers').delete({ type = 'other' }) end,              desc = 'Close other buffers' },
-      { '<leader>xt', '<cmd>tabclose<cr>',                                                             desc = 'Close tab' },
-
-    },
-    opts = {}
   },
   {
     'danymat/neogen',
@@ -161,18 +125,55 @@ return {
     ---@type snacks.Config
     opts = {
       bigfile = { enabled = true },
+      dashboard = {
+        enabled = true,
+        preset = {
+          keys = {
+            { icon = ' ', key = 's', desc = 'Restore Session', action = ':Resession load_dir' },
+            { icon = ' ', key = 'f', desc = 'Find File', action = ':lua Snacks.dashboard.pick("files")' },
+            { icon = ' ', key = 'n', desc = 'New File', action = ':ene | startinsert' },
+            { icon = ' ', key = 'g', desc = 'Find Text', action = ':lua Snacks.dashboard.pick("live_grep")' },
+            { icon = ' ', key = 'r', desc = 'Recent Files', action = ':lua Snacks.dashboard.pick("oldfiles")' },
+            { icon = ' ', key = 'c', desc = 'Config', action = ':lua Snacks.dashboard.pick("files", {cwd = vim.fn.stdpath("config")})' },
+            { icon = '󰅴 ', key = 'l', desc = 'Leetcode', action = ':Leet' },
+            { icon = '󰒲 ', key = 'L', desc = 'Lazy', action = ':Lazy', enabled = package.loaded.lazy ~= nil },
+            { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
+          }
+        }
+      },
       notifier = { enabled = true, top_down = false, },
       quickfile = { enabled = true },
+      indent = {
+        enabled = true,
+        indent = {
+          char = '▏',
+        },
+        scope = {
+          char = '▏',
+          hl = 'IndentBlanklineContextChar'
+        },
+      }
     },
     keys = {
-      { '<leader>gg', function() Snacks.lazygit() end, desc = 'Lazygit' },
-    }
-  },
-  {
-    "3rd/image.nvim",
-    build = false,
-    opts = {
-      window_overlap_clear_enabled = true
+      { '<leader>g',  '',                                                       desc = '+git' },
+      { '<leader>gg', function() Snacks.lazygit() end,                          desc = 'Lazygit' },
+      { '<leader>x',  '',                                                       desc = '+close' },
+      { '<leader>x',  '',                                                       desc = '+close' },
+      { '<leader>xx', function() Snacks.bufdelete.delete() end,                 desc = 'Close current buffer' },
+      { '<leader>xf', function() Snacks.bufdelete.delete({ force = true }) end, desc = 'Force close current buffer' },
+      {
+        '<leader>xn',
+        function()
+          Snacks.bufdelete.delete({
+            filter = function(b) return vim.api.nvim_buf_get_name(b) == '' end
+          })
+        end,
+        desc = 'Force close current buffer'
+      },
+      { '<leader>xa', function() Snacks.bufdelete.all() end,   desc = 'Close all buffers' },
+      { '<leader>xo', function() Snacks.bufdelete.other() end, desc = 'Close other buffers' },
+      { '<leader>xt', '<cmd>tabclose<cr>',                     desc = 'Close tab' },
+      { '<leader>nt', function() Snacks.terminal.open() end,   desc = '+git' },
     }
   },
   {
@@ -181,7 +182,7 @@ return {
       "ibhagwan/fzf-lua",
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
-      "3rd/image.nvim"
+      { "3rd/image.nvim", build = false, opts = { window_overlap_clear_enabled = true } }
     },
     cmd = { "Leet" },
     opts = {

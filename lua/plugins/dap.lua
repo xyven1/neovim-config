@@ -62,14 +62,6 @@ return {
       { '<leader>dw', function() require('dap.ui.widgets').hover() end,              desc = 'Widgets' },
     },
     config = function(_, opts)
-      vim.diagnostic.config({
-        signs = {
-          { name = 'DapBreakpoint', text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' },
-          { name = 'DapBreakpointCondition', text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' },
-          { name = 'DapBreakpointRejected', text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' },
-          { name = 'DapStopped', text = '', texthl = '', linehl = 'DapStoppedLine', numhl = 'DapBreakpoint' },
-        }
-      })
       local adapter_names = {
         'chrome', 'coreclr', 'cppdbg', 'dart', 'delve', 'erlang', 'firefox', 'haskell', 'init', 'kotlin',
         'mix_task', 'node2', 'php', 'python',
@@ -120,19 +112,7 @@ return {
       end
     end
   },
-  {
-    'theHamsta/nvim-dap-virtual-text',
-    opts = { enabled = false },
-    keys = {
-      {
-        '<leader>uv',
-        function()
-          require('nvim-dap-virtual-text').toggle()
-        end,
-        desc = 'Toggle dap virtual text'
-      },
-    },
-  },
+  { 'xyven1/nvim-dap-virtual-text', branch = 'patch-1' },
   {
     'rcarriga/nvim-dap-ui',
     dependencies = { 'mfussenegger/nvim-dap', 'nvim-neotest/nvim-nio' },

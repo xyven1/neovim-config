@@ -16,18 +16,12 @@ local function fg(name)
   return col and { fg = col } or nil
 end
 
-local function macro_recording()
-  local mode = require('noice').api.status.mode.get()
-  return mode and string.match(mode, '(recording @.*)') or ''
-end
-
 return {
   {
     'nvim-lualine/lualine.nvim',
     event = 'VeryLazy',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = function()
-      -- vim.opt.showmode = false
       return {
         options = {
           theme = 'auto',
@@ -40,13 +34,16 @@ return {
           lualine_x = {
             'overseer',
             {
-              function() return require('noice').api.status.command.get() end,
-              cond = function() return package.loaded['noice'] and require('noice').api.status.command.has() end,
+              require('noice').api.status.command.get,
+              cond = require('noice').api.status.command.has,
               color = fg('Statement'),
             },
             {
-              macro_recording,
-              cond = function() return package.loaded['noice'] and require('noice').api.status.mode.has() end,
+              function()
+                local mode = require('noice').api.status.mode.get()
+                return mode and string.match(mode, '(recording @.*)') or ''
+              end,
+              cond = require('noice').api.status.mode.has,
               color = fg('Constant'),
             },
             {

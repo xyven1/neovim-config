@@ -1,17 +1,19 @@
 return {
   {
     'WieeRd/auto-lsp.nvim',
-    dependencies = { 'neovim/nvim-lspconfig', },
+    dependencies = { { 'neovim/nvim-lspconfig', cmd = { 'LspInfo', 'LspStart', 'LspStop' } } },
     event = 'VeryLazy',
     opts = {
       ['*']         = function()
-        local capabilities = require('blink.cmp').get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities())
-        capabilities.textDocument.foldingRange = {
-          dynamicRegistration = false,
-          lineFoldingOnly = true
-        }
         return {
-          capabilities = capabilities
+          capabilities = require('blink.cmp').get_lsp_capabilities({
+            textDocument = {
+              foldingRange = {
+                dynamicRegistration = false,
+                lineFoldingOnly = true
+              }
+            }
+          })
         }
       end,
       tailwindcss   = {
@@ -42,19 +44,6 @@ return {
       end,
       clangd        = {
         capabilities = { offsetEncoding = { 'utf-16' } }
-      },
-    },
-  },
-  {
-    'neovim/nvim-lspconfig',
-    cmd = { 'LspInfo', 'LspStart', 'LspStop' },
-    keys = {
-      {
-        '<leader>uh',
-        function()
-          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
-        end,
-        desc = 'Toggle inlay hints'
       },
     },
   },
@@ -234,8 +223,9 @@ return {
       end,
       preview = {
         win_config = {
-          border = 'solid',
-          winblend = 0
+          border = 'none',
+          winhighlight = 'HoverNormal:Normal',
+          winblend = 15
         },
         mappings = {
           scrollU = '<C-b>',
@@ -254,8 +244,9 @@ return {
             vim.cmd [[Lspsaga hover_doc]]
           end
         end,
-        desc = 'Hover'
-      }
+        desc = 'Hover',
+        mode = { 'n', 'v' }
+      },
     },
   },
   -- Completion
@@ -293,16 +284,12 @@ return {
       signature = { enabled = true },
     }
   },
-  {
+  --[[ {
     'zbirenbaum/copilot.lua',
     cmd = { 'Copilot' },
-    event = 'LazyFile',
-    opts = function()
-      return vim.fn.executable('nvim-node') == 1 and {
-        copilot_node_command = 'nvim-node'
-      } or {}
-    end
-  },
+    event = 'InsertEnter',
+    opts = {}
+  }, ]]
   -- UI
   {
     'glepnir/lspsaga.nvim',
@@ -341,7 +328,6 @@ return {
       { '<leader>sw', '<cmd>Trouble diagnostics toggle<cr>',              desc = 'Show workspace diagnostics' },
       { '[d',         '<cmd>Lspsaga diagnostic_jump_prev<cr>',            desc = 'Jump to previous diagnostic' },
       { ']d',         '<cmd>Lspsaga diagnostic_jump_next<cr>',            desc = 'Jump to next diagnostic' },
-      { 'K',          '<cmd>Lspsaga hover_doc<cr>',                       desc = 'Show symbol information',    mode = { 'n', 'v' } },
       { '<leader>a',  '<cmd>Lspsaga code_action<cr>',                     desc = 'Show code actions',          mode = { 'n', 'v' } },
       { '<A-d>',      '<cmd>Lspsaga term_toggle<cr>',                     desc = 'Toggle floating terminal',   mode = { 'n', 't' } },
       {

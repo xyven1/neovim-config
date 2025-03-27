@@ -57,6 +57,15 @@ vim.diagnostic.config({
       [vim.diagnostic.severity.WARN] = ' ',
       [vim.diagnostic.severity.INFO] = ' ',
       [vim.diagnostic.severity.HINT] = '󰌶 ',
-    }
+    },
   },
 })
+local signs = {
+  DapBreakpoint = { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' },
+  DapBreakpointCondition = { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' },
+  DapBreakpointRejected = { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' },
+  DapStopped = { text = '', texthl = '', linehl = 'DapStoppedLine', numhl = '' },
+}
+for name, value in pairs(signs) do
+  vim.fn.sign_define(name, value)
+end

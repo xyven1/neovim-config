@@ -3,13 +3,11 @@ return {
     'Mofiqul/vscode.nvim',
     opts = {
       italic_comments = true,
+      transparent = true,
       group_overrides = {
-        LspSignatureActiveParameter = { ctermbg = 0, bg = 'NONE', fg = '#179fff' },
         DapBreakpoint = { ctermbg = 0, fg = '#bf321d' },
         DapStopped = { ctermbg = 0, fg = '#ffcc00' },
         DapStoppedLine = { ctermbg = 0, bg = '#4b4b26' },
-        IblIndent = { link = 'IndentBlanklineChar' },
-        IblScope = { link = 'IndentBlanklineContextChar' },
       },
     },
   },
