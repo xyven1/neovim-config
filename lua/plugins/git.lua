@@ -49,10 +49,6 @@ return {
     }
   },
   {
-    'tpope/vim-fugitive',
-    event = 'VeryLazy',
-  },
-  {
     'sindrets/diffview.nvim',
     dependencies = {
       'nvim-tree/nvim-web-devicons'
@@ -68,11 +64,14 @@ return {
   },
   {
     'pwntester/octo.nvim',
-    cmd = { 'Octo' },
     dependencies = {
       'nvim-lua/plenary.nvim',
       'ibhagwan/fzf-lua',
       'nvim-tree/nvim-web-devicons',
+    },
+    cmd = { 'Octo' },
+    keys = {
+      { '<leader>go', '<cmd>Octo<cr>', desc = 'Open GitHub UI' }
     },
     opts = {
       picker = 'fzf-lua',
