@@ -26,10 +26,10 @@ return {
       { '<A-j>',             function() require('smart-splits').resize_down() end,       desc = 'Resize down' },
       { '<A-k>',             function() require('smart-splits').resize_up() end,         desc = 'Resize up' },
       { '<A-l>',             function() require('smart-splits').resize_right() end,      desc = 'Split right' },
-      { '<C-h>',             function() require('smart-splits').move_cursor_left() end,  desc = 'Move cursor left',  mode = { "n", "t" } },
-      { '<C-j>',             function() require('smart-splits').move_cursor_down() end,  desc = 'Move cursor down',  mode = { "n", "t" } },
-      { '<C-k>',             function() require('smart-splits').move_cursor_up() end,    desc = 'Move cursor up',    mode = { "n", "t" } },
-      { '<C-l>',             function() require('smart-splits').move_cursor_right() end, desc = 'Move cursor right', mode = { "n", "t" } },
+      { '<C-h>',             function() require('smart-splits').move_cursor_left() end,  desc = 'Move cursor left',  mode = { 'n', 't' } },
+      { '<C-j>',             function() require('smart-splits').move_cursor_down() end,  desc = 'Move cursor down',  mode = { 'n', 't' } },
+      { '<C-k>',             function() require('smart-splits').move_cursor_up() end,    desc = 'Move cursor up',    mode = { 'n', 't' } },
+      { '<C-l>',             function() require('smart-splits').move_cursor_right() end, desc = 'Move cursor right', mode = { 'n', 't' } },
       { '<leader><leader>h', function() require('smart-splits').swap_buf_left() end,     desc = 'Swap buffer left' },
       { '<leader><leader>j', function() require('smart-splits').swap_buf_down() end,     desc = 'Swap buffer down' },
       { '<leader><leader>k', function() require('smart-splits').swap_buf_up() end,       desc = 'Swap buffer up' },
@@ -40,11 +40,11 @@ return {
     'monaqa/dial.nvim',
     config = function()
       local augend = require('dial.augend')
-      require("dial.config").augends:register_group({
+      require('dial.config').augends:register_group({
         default = {
           augend.integer.alias.decimal,
           augend.integer.alias.hex,
-          augend.date.alias["%Y/%m/%d"],
+          augend.date.alias['%Y/%m/%d'],
           augend.constant.alias.bool
         },
       })
@@ -87,15 +87,15 @@ return {
     end,
   },
   {
-    "toppair/peek.nvim",
-    cmd = { "PeekOpen" },
-    build = "deno task build:fast",
+    'toppair/peek.nvim',
+    cmd = { 'PeekOpen' },
+    build = 'deno task build:fast',
     opts = {
-      app = "browser"
+      app = 'browser'
     },
     init = function()
-      vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
-      vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+      vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
+      vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})
     end,
   },
   {
@@ -131,10 +131,7 @@ return {
         preset = {
           keys = {
             { icon = ' ', key = 's', desc = 'Restore Session', action = ':Resession load_dir' },
-            { icon = ' ', key = 'f', desc = 'Find File', action = ':lua Snacks.dashboard.pick("files")' },
             { icon = ' ', key = 'n', desc = 'New File', action = ':ene | startinsert' },
-            { icon = ' ', key = 'g', desc = 'Find Text', action = ':lua Snacks.dashboard.pick("live_grep")' },
-            { icon = ' ', key = 'r', desc = 'Recent Files', action = ':lua Snacks.dashboard.pick("oldfiles")' },
             { icon = ' ', key = 'c', desc = 'Config', action = ':lua Snacks.dashboard.pick("files", {cwd = vim.fn.stdpath("config")})' },
             { icon = '󰅴 ', key = 'l', desc = 'Leetcode', action = ':Leet' },
             { icon = '󰒲 ', key = 'L', desc = 'Lazy', action = ':Lazy', enabled = package.loaded.lazy ~= nil },
@@ -178,16 +175,16 @@ return {
     }
   },
   {
-    "kawre/leetcode.nvim",
+    'kawre/leetcode.nvim',
     dependencies = {
-      "ibhagwan/fzf-lua",
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      { "3rd/image.nvim", build = false, opts = { window_overlap_clear_enabled = true } }
+      'ibhagwan/fzf-lua',
+      'nvim-lua/plenary.nvim',
+      'MunifTanjim/nui.nvim',
+      { '3rd/image.nvim', build = false, opts = { window_overlap_clear_enabled = true } }
     },
-    cmd = { "Leet" },
+    cmd = { 'Leet' },
     opts = {
-      lang = "rust",
+      lang = 'rust',
       image_support = true
     },
   }

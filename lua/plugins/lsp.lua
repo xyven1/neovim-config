@@ -71,15 +71,15 @@ return {
         end,
         cpp = { 'astyle' },
         rust = { 'rustfmt' },
-        javascript = { "prettierd", "prettier", stop_after_first = true },
-        typescript = { "prettierd", "prettier", stop_after_first = true },
-        javascriptreact = { "prettierd", "prettier", stop_after_first = true },
-        typescriptreact = { "prettierd", "prettier", stop_after_first = true },
-        html = { "prettierd", "prettier", stop_after_first = true },
-        css = { "prettierd", "prettier", stop_after_first = true },
-        json = { "prettierd", "prettier", stop_after_first = true },
-        svelte = { "prettierd", "prettier", stop_after_first = true },
-        vue = { "prettierd", "prettier", stop_after_first = true },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        typescript = { 'prettierd', 'prettier', stop_after_first = true },
+        javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+        typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+        html = { 'prettierd', 'prettier', stop_after_first = true },
+        css = { 'prettierd', 'prettier', stop_after_first = true },
+        json = { 'prettierd', 'prettier', stop_after_first = true },
+        svelte = { 'prettierd', 'prettier', stop_after_first = true },
+        vue = { 'prettierd', 'prettier', stop_after_first = true },
       }
     },
     keys = {
@@ -259,37 +259,67 @@ return {
     ---@type blink.cmp.Config
     opts = {
       keymap = {
-        ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
-        ['<C-e>'] = { 'hide' },
-        ['<Tab>'] = { 'select_and_accept', 'fallback' },
-
-        ['<C-p>'] = { 'select_prev', 'fallback' },
-        ['<C-n>'] = { 'select_next', 'fallback' },
-
-        ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
-        ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
-
-        ['<C-y>'] = { 'snippet_forward', 'fallback' },
-        ['<C-S-y>'] = { 'snippet_backward', 'fallback' },
+        preset = 'super-tab',
+        ['<Up>'] = {},
+        ['<Down>'] = {},
       },
       appearance = {
-        use_nvim_cmp_as_default = true,
         nerd_font_variant = 'mono',
       },
       completion = {
-        menu = {
-          winblend = vim.o.pumblend,
-        },
+        ghost_text = { enabled = true },
+        list = {
+          selection = {
+            preselect = function(_) return not require('blink.cmp').snippet_active({ direction = 1 }) end
+          }
+        }
       },
       signature = { enabled = true },
-    }
+    },
+    init = function()
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'BlinkCmpMenuOpen',
+        callback = function()
+          require('copilot.suggestion').dismiss()
+        end,
+      })
+    end
   },
-  --[[ {
+  {
     'zbirenbaum/copilot.lua',
     cmd = { 'Copilot' },
     event = 'InsertEnter',
-    opts = {}
-  }, ]]
+    opts = {
+      lsp_binary = 'copilot-lsp',
+      suggestion = {
+        keymap = {
+          next = false,
+          prev = false
+        }
+      }
+    },
+    keys = {
+      {
+        '<M-]>',
+        function()
+          require('blink.cmp').hide()
+          require('copilot.suggestion').next()
+        end,
+        desc = '[copilot] next suggestion',
+        mode = { 'i' }
+      },
+      {
+        '<M-[>',
+        function()
+          require('blink.cmp').hide()
+          require('copilot.suggestion').prev()
+        end,
+        desc = '[copilot] prev suggestion',
+        mode = { 'i' }
+      }
+    }
+  },
+  --
   -- UI
   {
     'glepnir/lspsaga.nvim',

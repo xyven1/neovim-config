@@ -109,7 +109,7 @@ return {
       return {
         relculright = true,
         ft_ignore = {
-          'help', 'vim', 'Outline', 'dashboard', 'neo-tree', 'Trouble', 'lazy'
+          'help', 'vim', 'Outline', 'snacks-dashboard', 'neo-tree', 'Trouble', 'lazy'
         },
         segments = {
           { text = { builtin.foldfunc }, click = 'v:lua.ScFa' },

@@ -27,26 +27,26 @@ map('v', 'p', '"_dP', opts('Paste over currently selected text without yanking i
 map('v', '<C-S-c>', '"+y', opts('Copy to system clipboard'))
 
 -- Option Toggles
-Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
-Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
-Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>un")
-Snacks.toggle.option("linebreak", { name = "Line Break" }):map("<leader>ub")
-Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ut")
-Snacks.toggle.option("conceallevel",
-  { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = "Conceal Level" }):map("<leader>uC")
-Snacks.toggle.option("showtabline", { off = 0, on = vim.o.showtabline > 0 and vim.o.showtabline or 2, name = "Tabline" })
-    :map("<leader>uA")
+Snacks.toggle.option('spell', { name = 'Spelling' }):map('<leader>us')
+Snacks.toggle.option('wrap', { name = 'Wrap' }):map('<leader>uw')
+Snacks.toggle.option('relativenumber', { name = 'Relative Number' }):map('<leader>un')
+Snacks.toggle.option('linebreak', { name = 'Line Break' }):map('<leader>ub')
+Snacks.toggle.option('background', { off = 'light', on = 'dark', name = 'Dark Background' }):map('<leader>ut')
+Snacks.toggle.option('conceallevel',
+  { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = 'Conceal Level' }):map('<leader>uC')
+Snacks.toggle.option('showtabline', { off = 0, on = vim.o.showtabline > 0 and vim.o.showtabline or 2, name = 'Tabline' })
+    :map('<leader>uA')
 
 -- Diagnostic Toggles
-Snacks.toggle.diagnostics():map("<leader>ud")
+Snacks.toggle.diagnostics():map('<leader>ud')
 Snacks.toggle.new({
-  id = "diagnostics_lines",
-  name = "Diagnostics Lines",
+  id = 'diagnostics_lines',
+  name = 'Diagnostics Lines',
   get = function() return not not vim.diagnostic.config().virtual_lines end,
   set = function(state)
     vim.diagnostic.config({ virtual_lines = state })
   end,
-}):map("<leader>ul")
+}):map('<leader>ul')
 Snacks.toggle.inlay_hints():map('<leader>uh')
 Snacks.toggle.new({
   id = 'dap_virtual_text',
@@ -61,11 +61,11 @@ Snacks.toggle.new({
 }):map('<leader>uv')
 
 -- UI Toggles
-Snacks.toggle.treesitter():map("<leader>uT")
-Snacks.toggle.dim():map("<leader>uD")
-Snacks.toggle.animate():map("<leader>ua")
-Snacks.toggle.scroll():map("<leader>uS")
-Snacks.toggle.indent():map("<leader>ug")
+Snacks.toggle.treesitter():map('<leader>uT')
+Snacks.toggle.dim():map('<leader>uD')
+Snacks.toggle.animate():map('<leader>ua')
+Snacks.toggle.scroll():map('<leader>uS')
+Snacks.toggle.indent():map('<leader>ug')
 Snacks.toggle.new({
   id = 'colorizer',
   name = 'Colorizer',
