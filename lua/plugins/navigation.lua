@@ -110,13 +110,15 @@ return {
       'MunifTanjim/nui.nvim',
     },
     lazy = false,
-    opts = function(_, _)
+    opts = function()
       local function on_move(data)
         Snacks.rename.on_rename_file(data.source, data.destination)
       end
       local events = require('neo-tree.events')
+      ---@type neotree.Config
       return {
         sources = { 'filesystem', 'buffers', 'git_status' },
+        popup_border_style = 'solid',
         open_files_do_not_replace_types = { 'terminal', 'Trouble', 'trouble', 'qf', 'Outline' },
         filesystem = {
           bind_to_cwd = false,

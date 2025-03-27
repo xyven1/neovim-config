@@ -8,7 +8,8 @@ local confirm = function(message, callback)
 end
 return {
   {
-    'lewis6991/gitsigns.nvim',
+    'xyven1/gitsigns.nvim',
+    branch = 'patch-1',
     dependencies = { 'nvim-lua/plenary.nvim' },
     event = 'LazyFile',
     opts = {
