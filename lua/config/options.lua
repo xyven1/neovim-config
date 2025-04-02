@@ -36,7 +36,7 @@ vim.g.terminal_color_12 = '#569cd6'
 vim.g.terminal_color_13 = '#c678dd'
 vim.g.terminal_color_14 = '#56b6c2'
 vim.g.terminal_color_15 = '#d4d4d4'
-vim.o.guifont = 'JetBrainsMono NFM:h12'
+vim.o.guifont = "JetBrains Mono,Symbols Nerd Font Mono:h12"
 
 vim.opt.fillchars = {
   diff = '╱',

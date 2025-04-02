@@ -3,7 +3,7 @@ return {
     'Mofiqul/vscode.nvim',
     opts = {
       italic_comments = true,
-      transparent = true,
+      transparent = not vim.g.neovide,
       group_overrides = {
         DapBreakpoint = { ctermbg = 0, fg = '#bf321d' },
         DapStopped = { ctermbg = 0, fg = '#ffcc00' },
