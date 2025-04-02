@@ -84,3 +84,5 @@ local signs = {
 for name, value in pairs(signs) do
   vim.fn.sign_define(name, value)
 end
+
+vim.deprecate = function() end
