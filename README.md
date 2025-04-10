@@ -8,29 +8,27 @@ This is my Neovim configuration. It uses recent and maintained plugins with a fo
 ## Motivation
 The motivation to maintain my own configuration is two fold:
 1) Support unique aspects of my workflow (NixOS, Wezterm, Neovide, etc)
-2) I understand exactly why everything works the way it does, as I wrote and maintain the *entire* config
+2) I understand exactly why everything works the way it does, as I wrote the *entire* config
 
-#### Features
+### Features
 - Robust and automatic session management *per branch* in directories, as well as the ability to create custom sessions.
 - Popular and functional colorschemes preinstalled
 - Modern UI with Noice, nvim-notify, and others
 - Almost entirely lazy loaded
 - Searchable (`<space>ek`), well documented, and thorough keymappings
-- LSP, DAP, and linting, all completely language agnostic
+- LSP, DAP, and linting which work well with NixOS 
 - Treesitter textobject bindings that will become staples of your workflow
 
-#### How I Got Here
-The original impetus to hand crafted my own configuration was to ensure that I understood *everything* my Neovim configuration was capable of. Starting from a completely unmodified Neovim instance, I slowly added functionality (with packer.nvim, the, at the time, de facto plugin manager), as I needed and wanted, **but only once fully understanding what I already had**. I would research all plugins which provided a specific functionality, and their advantages and disadvantages, before adding them to ensure that I got the best and most up to date experience possible.
+This config may contain some helpful examples of how to customize and configure Neovim, but pretty much *only* serves as that, as this config is completely tailored to my immediate needs and desires. If you use NixOS, then you find this configuration particularly interesting, as that is the OS is was written to support.
 
-As time passed, I adopted [lazy.nvim](https://github.com/folke/lazy.nvim), greatly improving my config's performance with lazy loading, added dozens plugins to my config, and swapped old plugins to more modern alternatives, getting me to where I am now. While I still firmly believe that everyone should start with plain Neovim (before diving into highly complex plugins and distros), I don't know if I could recommend starting from complete scratch as I did, especially if your workflow is more typical. Newer distros such as [LazyVim](https://www.lazyvim.org/) provide such a good baseline without sacrificing configurability.
+### How I got here, and why I think other people should conisder doing the same thing
+The original impetus to hand-craft my own configuration was to ensure that I understood *everything* my Neovim configuration was capable of. I started from a completely unmodified Neovim instance and slowly added functionality as I needed or wanted, **but only after fully understanding what I already had**. This depth-first approach to configuration is crucial if you want an efficient and comfortable workflow. In general, ~80% of your workflow will consist of only a few actions, so it's *much* more important to make those actions fast than to have access to a wide array of less-used features.
 
-The are many good arguments to be made for distros: time saved messing with configs, better support when things break, powerful features and customizations, and much more. Despite that, I would still very much recommend everyone spends time to fully understand Vim/Neovim *completely*, as well as take time to understand your all the plugins your config provides, as the real power of Neovim only unlocks when you are using every feature of your configuration to your *advantage*, instead of fighting with key-mappings you can't remember, and nurturing bad habits like spamming hjkl to get anywhere in your code, because you never did the built in Neovim tutorial.
+Another key benefit of crafting your own configuration emerges during the process of adding new functionality. When confronted with the need (or desire) for new functionality, you have the opportunity to explore all plugins that provide that functionality. This has served two purposes in my experience. The first is straightforward: I could ensure I got the best and most up-to-date experience possible, avoiding dead or dying plugins. The second is more subtle: you don't know what you don't know. In the context of Neovim, this often meant discovering plugins that provided functionality I didn't even know was possible—yet which ended up becoming key parts of my workflow. Two examples are [nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) and [oil.nvim](https://github.com/stevearc/oil.nvim). This kind of discovery only happens if you take the time to do the research, but the payoff is huge.
 
-While newer distros such as [LazyVim](https://www.lazyvim.org/) have greatly improved in striking a balance between providing good defaults and setups for common needs while still allowing complete customization, I have stuck with my config as I don't really get much (at this point) from migrating to a modified distro. I would have to learn all the idiosyncrasies of that config, and then end up rewriting half of it just to suit my workflow.
+The upshot of all this is the following: I firmly believe everyone should start with plain Neovim before diving into highly complex plugins and distros. Neovim and Vim are, in their own right, powerful text editors—and at the end of the day, editing text makes up the vast majority of an IDE's responsibilities. So, before rushing to turn Neovim into an IDE, everyone should take the time to explore Neovim on its own, then add plugins to address specific workflow needs. The real power of Neovim only unlocks when you are using every feature of your configuration—and Neovim itself—to your *advantage*, instead of fighting with key mappings you can't remember or nurturing bad habits like spamming `hjkl` to get anywhere in your code because you never did the built-in Neovim tutorial. And unlike graphical IDEs, the functionality of Neovim is necessarily more obscured and difficult to discover through usage—that's essentially the exact issue graphical IDEs seek to address! You will only love Neovim if you fully embrace its philosophy, and not attempt to recreate what other tools can do better.
 
-
-#### Caveats
-This config may contain some helpful examples of how to customize and configure Neovim and particular plugins (listed below), but serves pretty much *only* as that, as the config is completely tailored to my immediate needs and desires. This is reflected in the number of plugins (77 total, 49 loaded with a `.c` file open) vs Neovim distro's like [LazyVim](https://www.lazyvim.org/)'s (43 plugins total, 28 loaded with a `.c` file open as of Aug 2024) with almost identical base functionality.
+Despite this, I'm not sure I could recommend starting from complete scratch when transitioning to using Neovim as a full IDE, especially if your workflow is more typical. Newer distros such as [LazyVim](https://www.lazyvim.org/) provide a great baseline without sacrificing configurability. There are many good arguments to be made for distros: time saved messing with configs, better support when things break, powerful features and customizations, and more. I've stuck with my configuration because my workflow is fast, comfortable, and natural. Switching configurations would require that I learn all the idiosyncrasies of the new setup and probably end up rewriting half of it just to suit my needs.
 
 ## Install Steps
 
@@ -42,20 +40,20 @@ or if you already have a config
 
 `git clone https://github.com/xyven1/neovim-config.git ~/.config/xyven1/neovim-config`
 
-Note: if you use the second option run Neovim with `NVIM_APPNAME=xyven1/neovim-config/`
+If you use the second option run Neovim with the folling environment variable: `NVIM_APPNAME=xyven1/neovim-config/`
 
 
 2. Install Neovim **>=v0.10.0** from your package manager, or use the following script:  `~/.config/nvim/scripts/nvim.sh`
 4. Install the dependencies listed below (ones necessary for basic functionality are marked with !)
-3. Run the command `nvim` and let Lazy.nvim do its thing, then run `:COQdeps` to install the dependencies for `coq_nvim`
+3. Run the command `nvim` and let Lazy.nvim do its thing.
 4. Restart Neovim, and everything should work.
 
-## External dependencies
-- !python > 3.8.2 (for coq_nvim)
-- !python3-venv (for coq_nvim)
+### External dependencies
 - !fzf
 - !ripgrep
 - direnv (for loading development environments)
+- lazygit (git UI)
+- go (to build pendulum viewer)
 
 ## Plugins
 
@@ -192,7 +190,3 @@ Note: if you use the second option run Neovim with `NVIM_APPNAME=xyven1/neovim-c
 + [kevinhwang91/nvim-ufo](https://dotfyle.com/plugins/kevinhwang91/nvim-ufo)
 + [rcarriga/nvim-notify](https://dotfyle.com/plugins/rcarriga/nvim-notify)
 + [folke/noice.nvim](https://dotfyle.com/plugins/folke/noice.nvim)
-## Language Servers
-
-+ html
-+ svelte
