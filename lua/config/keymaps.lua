@@ -146,4 +146,5 @@ map('n', '<leader>\\', function()
   for _, w in ipairs(inactive_floating_wins) do
     pcall(vim.api.nvim_win_close, w, false)
   end
+  vim.snippet.stop()
 end, { desc = 'Clear screen' })

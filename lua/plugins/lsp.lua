@@ -12,7 +12,7 @@ return {
                 dynamicRegistration = false,
                 lineFoldingOnly = true
               }
-            }
+            },
           })
         }
       end,
@@ -31,6 +31,14 @@ return {
         },
       },
       rust_analyzer = false,
+      svelte        = {
+        filetypes = { 'svelte', 'js', 'jsx', 'ts', 'tsx' },
+        capabilities = {
+          workspace = {
+            didChangeWatchedFiles = false
+          }
+        }
+      },
       basedpyright  = {
         settings = {
           basedpyright = {
@@ -290,7 +298,10 @@ return {
     cmd = { 'Copilot' },
     event = 'InsertEnter',
     opts = {
-      lsp_binary = 'copilot-lsp',
+      server = {
+        type = "binary",
+        custom_server_filepath = 'copilot-lsp',
+      },
       suggestion = {
         keymap = {
           next = false,
