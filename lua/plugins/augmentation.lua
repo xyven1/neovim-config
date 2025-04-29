@@ -148,7 +148,6 @@ return {
         },
         scope = {
           char = '▏',
-          hl = 'IndentBlanklineContextChar'
         },
       }
     },
