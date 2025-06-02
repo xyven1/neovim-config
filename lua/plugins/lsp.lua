@@ -67,9 +67,10 @@ return {
   {
     'stevearc/conform.nvim',
     cmd = { 'ConformInfo' },
+    ---@type conform.setupOpts
     opts = {
       formatters_by_ft = {
-        nix = { 'alejandra' },
+        nix = { 'alejandra', 'nixfmt', stop_after_first = true },
         python = function(bufnr)
           if require('conform').get_formatter_info('ruff_format', bufnr).available then
             return { 'ruff_format', 'ruff_organize_imports' }
