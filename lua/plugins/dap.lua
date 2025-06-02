@@ -113,8 +113,7 @@ return {
     end
   },
   {
-    'xyven1/nvim-dap-virtual-text',
-    branch = 'patch-1',
+    'theHamsta/nvim-dap-virtual-text',
     opts = { enabled = false }
   },
   {
