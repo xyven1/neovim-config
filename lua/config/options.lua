@@ -19,7 +19,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- neovide settings
-vim.g.neovide_transparency = 0.9
+vim.g.neovide_opacity = 0.9
 vim.g.terminal_color_0 = '#1e1e1e'
 vim.g.terminal_color_1 = '#f44747'
 vim.g.terminal_color_2 = '#608b4e'
