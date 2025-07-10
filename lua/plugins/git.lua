@@ -77,15 +77,15 @@ return {
       picker = 'fzf-lua',
       picker_config = {
         mappings = {
-          open_in_browser = { lhs = '<C-s-b>', desc = 'open issue in browser' },
+          -- open_in_browser = { lhs = '<C-s-b>', desc = 'open issue in browser' },
         }
       },
       mappings = {
         issue = {
-          open_in_browser = { lhs = '<C-s-b>', desc = 'open issue in browser' },
+          -- open_in_browser = { lhs = '<C-S-b>', desc = 'open issue in browser' },
         },
         pull_request = {
-          open_in_browser = { lhs = '<C-s-b>', desc = 'open PR in browser' },
+          -- open_in_browser = { lhs = '<C-S-b>', desc = 'open PR in browser' },
         },
       }
     }

@@ -7,6 +7,14 @@ return {
     lazy = vim.fn.argc(-1) == 0,
     dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects' },
     config = function(_, opts)
+      vim.filetype.add({ extension = { fbs = "fbs", } })
+      require("nvim-treesitter.parsers").get_parser_configs().flatbuffers = {
+        install_info = {
+          url = "https://github.com/yuanchenxi95/tree-sitter-flatbuffers",
+          files = { "src/parser.c" },
+        },
+        filetype = "fbs",
+      }
       require('nvim-treesitter.configs').setup(opts)
     end,
     opts = {
