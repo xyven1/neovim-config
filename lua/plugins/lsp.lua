@@ -284,15 +284,7 @@ return {
         }
       },
       signature = { enabled = true },
-    },
-    init = function()
-      vim.api.nvim_create_autocmd('User', {
-        pattern = 'BlinkCmpMenuOpen',
-        callback = function()
-          require('copilot.suggestion').dismiss()
-        end,
-      })
-    end
+    }
   },
   {
     'zbirenbaum/copilot.lua',
@@ -329,7 +321,15 @@ return {
         desc = '[copilot] prev suggestion',
         mode = { 'i' }
       }
-    }
+    },
+    init = function()
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'BlinkCmpMenuOpen',
+        callback = function()
+          require('copilot.suggestion').dismiss()
+        end,
+      })
+    end
   },
   -- UI
   {
