@@ -59,6 +59,8 @@ return {
             ['iC'] = { query = '@class.inner', desc = 'Select inside class' },
             ['id'] = { query = '@conditional.inner', desc = 'Select inside conditional' },
             ['ad'] = { query = '@conditional.outer', desc = 'Select around conditional' },
+            ['a/'] = { query = '@comment.outer', desc = 'Select around comment' },
+            ['i/'] = { query = '@comment.inner', desc = 'Select inside comment' },
           }
         },
         move = {
