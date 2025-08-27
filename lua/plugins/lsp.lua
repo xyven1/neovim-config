@@ -1,8 +1,12 @@
 return {
+  "neovim/nvim-lspconfig",
   {
-    'WieeRd/auto-lsp.nvim',
-    dependencies = { { 'neovim/nvim-lspconfig', cmd = { 'LspInfo', 'LspStart', 'LspStop' } } },
+    'xyven1/auto-lsp.nvim',
     event = 'VeryLazy',
+    init = function()
+      local lspConfigPath = require("lazy.core.config").options.root .. "/nvim-lspconfig"
+      vim.opt.runtimepath:prepend(lspConfigPath)
+    end,
     opts = {
       ['*']         = function()
         return {
