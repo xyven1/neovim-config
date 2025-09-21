@@ -19,9 +19,6 @@ return {
         backdrop = false
       },
       modes = {
-        search = {
-          enabled = true
-        },
         char = {
           enabled = false
         }
