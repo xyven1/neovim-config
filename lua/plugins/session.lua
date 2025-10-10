@@ -149,7 +149,12 @@ local function detach()
 end
 
 local function info()
-  require('resession').get_current_session_info()
+  local sess_info = require('resession').get_current_session_info()
+  if sess_info then
+    vim.notify(string.format('Session: %s (dir: %s)', sess_info.name, sess_info.dir or 'default'), vim.log.levels.INFO)
+  else
+    vim.notify('No session loaded', vim.log.levels.INFO)
+  end
 end
 
 local function load_current_dir_session()
