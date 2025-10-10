@@ -84,6 +84,7 @@ return {
         end,
         cpp = { 'astyle' },
         rust = { 'rustfmt' },
+        sh = { 'shfmt' },
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
         typescript = { 'prettierd', 'prettier', stop_after_first = true },
         javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
