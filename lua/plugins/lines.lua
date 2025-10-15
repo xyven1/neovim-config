@@ -25,15 +25,17 @@ return {
       local lualine_require = require("lualine_require")
       lualine_require.require = require
       return {
-        options = {
+        options    = {
           theme = 'auto',
           globalstatus = true,
+          component_separators = '',
+          section_separators = '',
           disabled_filetypes = { statusline = { "snacks_dashboard" } },
         },
-        sections = {
+        sections   = {
           lualine_a = { 'mode', },
           lualine_b = { 'branch', 'diff' },
-          lualine_c = { 'diagnostics' },
+          lualine_c = { 'diagnostics', 'lsp_status' },
           lualine_x = {
             'overseer',
             {
@@ -57,6 +59,18 @@ return {
           },
           lualine_y = { 'encoding', 'fileformat', },
           lualine_z = { 'progress', 'location' }
+        },
+        extensions = {
+          'fzf',
+          'lazy',
+          'man',
+          'neo-tree',
+          'nvim-dap-ui',
+          'oil',
+          'overseer',
+          'quickfix',
+          'symbols-outline',
+          'trouble',
         }
       }
     end,

@@ -3,12 +3,10 @@ return {
     'Mofiqul/vscode.nvim',
     opts = {
       italic_comments = true,
-      transparent = not vim.g.neovide,
       group_overrides = {
         DapBreakpoint = { ctermbg = 0, fg = '#bf321d' },
         DapStopped = { ctermbg = 0, fg = '#ffcc00' },
         DapStoppedLine = { ctermbg = 0, bg = '#4b4b26' },
-        SnacksIndentScope = { link = "IblScope" }
       },
     },
   },
