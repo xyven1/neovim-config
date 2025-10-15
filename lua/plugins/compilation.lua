@@ -14,7 +14,10 @@ return {
   {
     'stevearc/overseer.nvim',
     event = 'VeryLazy',
+    ---@module 'overseer'
+    ---@type overseer.Config
     opts = {
+      dap = false,
       task_list = {
         bindings = {
           [']'] = 'IncreaseDetail',

@@ -62,6 +62,8 @@ return {
       { '<leader>dw', function() require('dap.ui.widgets').hover() end,              desc = 'Widgets' },
     },
     config = function(_, opts)
+      require("overseer").enable_dap()
+
       local adapter_names = {
         'chrome', 'coreclr', 'cppdbg', 'dart', 'delve', 'erlang', 'firefox', 'haskell', 'init', 'kotlin',
         'mix_task', 'node2', 'php', 'python',
