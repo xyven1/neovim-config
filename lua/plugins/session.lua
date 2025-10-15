@@ -212,6 +212,9 @@ return {
   {
     'stevearc/resession.nvim',
     event = { 'VeryLazy', 'VimLeavePre' },
+    dependencies = {
+      { "tiagovla/scope.nvim", lazy = false, config = true },
+    },
     cmd = 'Resession',
     keys = function()
       local keys = {
@@ -223,7 +226,20 @@ return {
       return keys
     end,
     opts = {
-      extensions = { overseer = {} }
+      extensions = { overseer = {}, scope = {} },
+      buf_filter = function(bufnr)
+        local buftype = vim.bo[bufnr].buftype
+        if buftype == 'help' then
+          return true
+        end
+        if buftype ~= "" and buftype ~= "acwrite" then
+          return false
+        end
+        if vim.api.nvim_buf_get_name(bufnr) == "" then
+          return false
+        end
+        return true
+      end,
     },
     config = function(_, opts)
       vim.api.nvim_create_autocmd('VimLeavePre', {
