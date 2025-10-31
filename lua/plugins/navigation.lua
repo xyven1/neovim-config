@@ -1,5 +1,68 @@
 local function fzf(cmd) return function() require('fzf-lua')[cmd]() end end
 
+---@param client vim.lsp.Client
+local function lsp_restart(client)
+  local attached_buffers = vim.tbl_keys(client.attached_buffers) ---@type integer[]
+  local config = client.config
+  client:stop(true)
+  vim.defer_fn(function()
+    local id = vim.lsp.start(config)
+    if id then
+      for _, b in ipairs(attached_buffers) do
+        vim.lsp.buf_attach_client(b, id)
+      end
+      vim.notify(string.format("Lsp `%s` has been restarted.", config.name))
+    else
+      vim.notify(string.format("Error restarting `%s`.", config.name), vim.log.levels.ERROR)
+    end
+  end, 600)
+end
+
+---@param client vim.lsp.Client
+local function lsp_stop(client)
+  client:stop(true)
+  vim.notify('Stopped LSP: ' .. client.name, vim.log.levels.INFO)
+end
+
+---@param map table<string, vim.lsp.Client>
+---@return fzf-lua.previewer.Builtin
+local function lsp_previewer(map)
+  local LspPreviewer = require("fzf-lua.previewer.builtin").base:extend()
+
+  function LspPreviewer:new(o, opts, fzf_win)
+    LspPreviewer.super.new(self, o, opts, fzf_win)
+    setmetatable(self, LspPreviewer)
+    return self
+  end
+
+  function LspPreviewer:populate_preview_buf(entry_str)
+    local lsp_info = vim.split(vim.inspect(map[entry_str]), '\n')
+    local tmpbuf = self:get_tmp_buffer()
+    vim.api.nvim_buf_set_lines(tmpbuf, 0, -1, false, lsp_info)
+    self:set_preview_buf(tmpbuf)
+    self.win:update_preview_scrollbar()
+  end
+
+  function LspPreviewer:gen_winopts()
+    return vim.tbl_extend("force", self.winopts, {
+      wrap   = false,
+      number = false
+    })
+  end
+
+  return LspPreviewer
+end
+
+---@generic T
+---@param map table<string, T>
+---@param fn fun(item: T)
+---@return fun(selected: string[], opts: table)
+local function on_selected(map, fn)
+  return function(selected)
+    fn(map[selected[1]])
+  end
+end
+
 return {
   --[[ {
     'ggandor/leap.nvim',
@@ -97,6 +160,47 @@ return {
       { '<leader>ls',  fzf 'lsp_document_symbols',       desc = 'Search symbols (document)' },
       { '<leader>lS',  fzf 'lsp_live_workspace_symbols', desc = 'Search symbols (workspace)' },
       { '<leader>lt',  fzf 'lsp_typedefs',               desc = 'Search type definitions' },
+      {
+        '<leader>ll',
+        function()
+          local clients = vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() })
+          ---@type table<string, vim.lsp.Client>
+          local map = {}
+          for _, client in ipairs(clients) do
+            map[string.format('%s(%s) %s', client.name, client.id, client.config.root_dir or '(no root)')] = client
+          end
+
+          local fzf_lua = require('fzf-lua')
+          fzf_lua.fzf_exec(vim.tbl_keys(map), {
+            winopts = { title = 'LSP Clients', },
+            previewer = lsp_previewer(map),
+            actions = {
+              ['default'] = on_selected(map, function(client)
+                ---@type table<string, fun(client: vim.lsp.Client)>
+                local actions = {
+                  ['Stop'] = lsp_stop,
+                  ['Restart'] = lsp_restart
+                }
+                fzf_lua.fzf_exec(vim.tbl_keys(actions), {
+                  winopts = {
+                    title = 'LSP Actions for "' .. client.name .. '"',
+                    width = 50,
+                    height = 10,
+                    col = .5,
+                    row = .5,
+                  },
+                  actions = {
+                    ['default'] = on_selected(actions, function(action) action(client) end)
+                  }
+                })
+              end),
+              ['ctrl-x'] = on_selected(map, lsp_stop),
+              ['ctrl-r'] = on_selected(map, lsp_restart),
+            }
+          })
+        end,
+        desc = 'Manage language servers'
+      },
     },
     init = function()
       vim.ui.select = function(...)
