@@ -248,6 +248,12 @@ return {
           bind_to_cwd = false,
           follow_current_file = { enabled = true },
           use_libuv_file_watcher = true,
+          filtered_items = {
+            visible = false,
+            hide_gitignored = true,
+            hide_dotfiles = false,
+            never_show = { ".git" },
+          },
         },
         event_handlers = {
           { event = events.FILE_MOVED,   handler = on_move },
