@@ -126,6 +126,8 @@ return {
     ---@type snacks.Config
     opts = {
       bigfile = { enabled = true },
+      gh = { enabled = true },
+      image = { enabled = true },
       dashboard = {
         enabled = true,
         preset = {
@@ -155,7 +157,6 @@ return {
       { '<leader>g',  '',                                                       desc = '+git' },
       { '<leader>gg', function() Snacks.lazygit() end,                          desc = 'Lazygit' },
       { '<leader>x',  '',                                                       desc = '+close' },
-      { '<leader>x',  '',                                                       desc = '+close' },
       { '<leader>xx', function() Snacks.bufdelete.delete() end,                 desc = 'Close current buffer' },
       { '<leader>xf', function() Snacks.bufdelete.delete({ force = true }) end, desc = 'Force close current buffer' },
       {
@@ -170,7 +171,7 @@ return {
       { '<leader>xa', function() Snacks.bufdelete.all() end,   desc = 'Close all buffers' },
       { '<leader>xo', function() Snacks.bufdelete.other() end, desc = 'Close other buffers' },
       { '<leader>xt', '<cmd>tabclose<cr>',                     desc = 'Close tab' },
-      { '<leader>nt', function() Snacks.terminal.open() end,   desc = '+git' },
+      { '<leader>nt', function() Snacks.terminal.open() end,   desc = 'Open Terminal' },
     }
   },
   {
