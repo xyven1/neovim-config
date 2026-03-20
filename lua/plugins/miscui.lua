@@ -61,9 +61,14 @@ return {
         providers = { 'lsp' }
       },
       modes_denylist = { 'i' },
+      disable_keymaps = true,
     },
     config = function(_, opts)
       require('illuminate').configure(opts)
-    end
+    end,
+    keys = {
+      { ']]', function() require('illuminate').goto_next_reference() end, desc = 'Goto next reference' },
+      { '[[', function() require('illuminate').goto_prev_reference() end, desc = 'Goto previous reference' },
+    }
   },
 }

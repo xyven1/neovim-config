@@ -11,6 +11,7 @@ return {
       require("nvim-treesitter.parsers").get_parser_configs().flatbuffers = {
         install_info = {
           url = "https://github.com/yuanchenxi95/tree-sitter-flatbuffers",
+          branch = "main",
           files = { "src/parser.c" },
         },
         filetype = "fbs",
@@ -68,22 +69,22 @@ return {
           set_jumps = true, -- whether to set jumps in the jumplist
           goto_next_start = {
             [']f'] = '@function.outer',
-            [']]'] = '@class.outer',
+            [']c'] = '@class.outer',
             [']r'] = '@parameter.inner',
           },
           goto_next_end = {
             [']F'] = '@function.outer',
-            [']['] = '@class.outer',
+            [']C'] = '@class.outer',
             [']R'] = '@parameter.inner',
           },
           goto_previous_start = {
             ['[f'] = '@function.outer',
-            ['[['] = '@class.outer',
+            ['[c'] = '@class.outer',
             ['[r'] = '@parameter.inner',
           },
           goto_previous_end = {
             ['[F'] = '@function.outer',
-            ['[]'] = '@class.outer',
+            ['[C'] = '@class.outer',
             ['[R'] = '@parameter.inner',
           },
         },
