@@ -9,7 +9,7 @@ vim.opt.smartindent = true    -- make indenting smarter again
 vim.opt.tabstop = 2           -- how many columns a tab counts for
 vim.opt.termguicolors = true  -- use terminal colors
 vim.opt.pumblend = 10         -- popup menu transparency
-vim.opt.mouse = ''            -- disable mouse support
+vim.opt.mouse = 'a'           -- enable mouse support
 vim.opt.scrolloff = 4
 vim.opt.confirm = true
 vim.opt.laststatus = 3
@@ -17,6 +17,21 @@ vim.opt.showbreak = '↪'
 vim.opt.breakindent = true
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+
+-- if running in zellij, force osc52
+if os.getenv('ZELLIJ') then
+  vim.g.clipboard = {
+    name = 'OSC 52',
+    copy = {
+      ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+      ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+    },
+    paste = {
+      ['+'] = function() end,
+      ['*'] = function() end,
+    },
+  }
+end
 
 -- neovide settings
 vim.g.neovide_opacity = 0.9
