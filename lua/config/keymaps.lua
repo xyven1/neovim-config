@@ -5,7 +5,7 @@ local function opts(desc)
     desc = desc
   }
 end
-local map = vim.keymap.set
+local map = Snacks.keymap.set
 -- map leader
 map('n', '<Space>', '<NOP>', opts('Disable space'))
 
