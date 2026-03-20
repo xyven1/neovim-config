@@ -64,15 +64,6 @@ local function on_selected(map, fn)
 end
 
 return {
-  --[[ {
-    'ggandor/leap.nvim',
-    dependencies = { 'tpope/vim-repeat' },
-    init = function()
-      local leap = require('leap')
-      leap.set_default_mappings()
-      require('leap.user').set_repeat_keys('<enter>', '<backspace>')
-    end,
-  }, ]]
   {
     "folke/flash.nvim",
     event = "VeryLazy",
