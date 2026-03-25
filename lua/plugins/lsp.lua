@@ -274,8 +274,6 @@ return {
     opts = {
       keymap = {
         preset = 'super-tab',
-        ['<Up>'] = {},
-        ['<Down>'] = {},
       },
       appearance = {
         nerd_font_variant = 'mono',
@@ -411,5 +409,9 @@ return {
     'mrcjkb/rustaceanvim',
     version = '^6', -- Recommended
     lazy = false,   -- This plugin is already lazy
+  },
+  {
+    'mfussenegger/nvim-ansible',
+    lazy = false
   }
 }
