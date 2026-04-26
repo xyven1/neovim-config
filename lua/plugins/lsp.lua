@@ -23,7 +23,16 @@ return {
       tailwindcss   = {
         filetypes = {
           'html', 'css', 'scss', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'svelte', 'vue',
-          'jsx', 'tsx'
+          'jsx', 'tsx', 'rust'
+        },
+        settings = {
+          tailwindCSS = {
+            experimental = {
+              classRegex = {
+                'class="(.*)"'
+              }
+            }
+          },
         }
       },
       volar         = {
@@ -83,7 +92,7 @@ return {
           end
         end,
         cpp = { 'astyle' },
-        rust = { 'rustfmt' },
+        rust = { 'leptosfmt', 'rustfmt' },
         sh = { 'shfmt' },
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
         typescript = { 'prettierd', 'prettier', stop_after_first = true },
@@ -409,7 +418,7 @@ return {
   -- Language Specific
   {
     'mrcjkb/rustaceanvim',
-    version = '^6', -- Recommended
+    version = '^9', -- Recommended
     lazy = false,   -- This plugin is already lazy
   }
 }

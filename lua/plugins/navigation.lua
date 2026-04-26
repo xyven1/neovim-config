@@ -2,30 +2,18 @@ local function fzf(cmd) return function() require('fzf-lua')[cmd]() end end
 
 ---@param client vim.lsp.Client
 local function lsp_restart(client)
-  local attached_buffers = vim.tbl_keys(client.attached_buffers) ---@type integer[]
-  local config = client.config
-  client:stop(true)
-  vim.defer_fn(function()
-    local id = vim.lsp.start(config)
-    if id then
-      for _, b in ipairs(attached_buffers) do
-        vim.lsp.buf_attach_client(b, id)
-      end
-      vim.notify(string.format("Lsp `%s` has been restarted.", config.name))
-    else
-      vim.notify(string.format("Error restarting `%s`.", config.name), vim.log.levels.ERROR)
-    end
-  end, 600)
+  vim.cmd({ cmd = 'lsp', args = { 'restart', client.name } })
+  vim.notify('Stopped LSP: ' .. client.name, vim.log.levels.INFO)
 end
 
 ---@param client vim.lsp.Client
 local function lsp_stop(client)
-  client:stop(true)
+  client:stop(client.exit_timeout)
   vim.notify('Stopped LSP: ' .. client.name, vim.log.levels.INFO)
 end
 
 ---@param map table<string, vim.lsp.Client>
----@return fzf-lua.previewer.Builtin
+---@return fzf-lua.config.Previewer
 local function lsp_previewer(map)
   local LspPreviewer = require("fzf-lua.previewer.builtin").base:extend()
 
@@ -84,7 +72,21 @@ return {
       { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
       { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
       { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
+      {
+        "<CR>",
+        mode = { "n", "o", "x" },
+        function()
+          require("flash").treesitter({
+            actions = {
+              ["<CR>"] = "next",
+              ["<BS>"] = "prev"
+            }
+          })
+        end,
+        desc = "Treesitter Incremental Selection"
+      },
     },
+
   },
   {
     'ibhagwan/fzf-lua',

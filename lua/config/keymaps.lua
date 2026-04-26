@@ -34,8 +34,6 @@ Snacks.toggle.option('linebreak', { name = 'Line Break' }):map('<leader>ub')
 Snacks.toggle.option('background', { off = 'light', on = 'dark', name = 'Dark Background' }):map('<leader>ut')
 Snacks.toggle.option('conceallevel',
   { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = 'Conceal Level' }):map('<leader>uC')
-Snacks.toggle.option('showtabline', { off = 0, on = vim.o.showtabline > 0 and vim.o.showtabline or 2, name = 'Tabline' })
-    :map('<leader>uA')
 
 -- Diagnostic Toggles
 Snacks.toggle.diagnostics():map('<leader>ud')
