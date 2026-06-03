@@ -240,8 +240,6 @@ return {
           follow_current_file = { enabled = true },
           use_libuv_file_watcher = true,
           filtered_items = {
-            visible = false,
-            hide_gitignored = true,
             hide_dotfiles = false,
             never_show = { ".git" },
           },

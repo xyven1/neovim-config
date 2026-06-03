@@ -17,6 +17,7 @@ vim.opt.showbreak = '↪'
 vim.opt.breakindent = true
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+vim.g.no_plugin_maps = true
 
 -- if running in zellij, force osc52
 if os.getenv('ZELLIJ') then

@@ -1,14 +1,18 @@
 return {
   {
     'Mofiqul/vscode.nvim',
-    opts = {
-      italic_comments = true,
-      group_overrides = {
-        DapBreakpoint = { ctermbg = 0, fg = '#bf321d' },
-        DapStopped = { ctermbg = 0, fg = '#ffcc00' },
-        DapStoppedLine = { ctermbg = 0, bg = '#4b4b26' },
-      },
-    },
+    opts = function()
+      local c = require('vscode.colors').get_colors()
+      return {
+        italic_comments = true,
+        group_overrides = {
+          DapBreakpoint = { ctermbg = 0, fg = '#bf321d' },
+          DapStopped = { ctermbg = 0, fg = '#ffcc00' },
+          DapStoppedLine = { ctermbg = 0, bg = '#4b4b26' },
+          NeoTreeIndentMarker = { fg = c.vscContext, bg = 'NONE' }
+        },
+      }
+    end,
   },
   'rktjmp/lush.nvim',
   {

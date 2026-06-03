@@ -62,6 +62,7 @@ return {
   {
     'folke/lazydev.nvim',
     dependencies = { 'Bilal2453/luvit-meta' },
+    ft = "lua",
     opts = {
       library = {
         { path = 'luvit-meta/library', words = { 'vim%.uv' } },
@@ -122,6 +123,7 @@ return {
         typescript = { 'eslint_d' },
         javascriptreact = { 'eslint_d' },
         typescriptreact = { 'eslint_d' },
+        cmake = { 'cmake_lint' },
       },
       linters = {},
     },
@@ -287,6 +289,16 @@ return {
         }
       },
       signature = { enabled = true },
+      sources = {
+        default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+        providers = {
+          lazydev = {
+            name = "LazyDev",
+            module = "lazydev.integrations.blink",
+            score_offset = 100,
+          },
+        },
+      },
     }
   },
   {
@@ -407,11 +419,11 @@ return {
   -- Language Specific
   {
     'mrcjkb/rustaceanvim',
-    version = '^6', -- Recommended
+    version = '^8', -- Recommended
     lazy = false,   -- This plugin is already lazy
   },
   {
     'mfussenegger/nvim-ansible',
-    lazy = false
-  }
+    lazy = false,
+  },
 }
