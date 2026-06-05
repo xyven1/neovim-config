@@ -14,6 +14,7 @@ return {
   {
     'stevearc/overseer.nvim',
     event = 'VeryLazy',
+    version = '^1',
     ---@module 'overseer'
     ---@type overseer.Config
     opts = {
