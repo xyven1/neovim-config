@@ -86,6 +86,7 @@ return {
         cpp = { 'astyle' },
         rust = { 'rustfmt' },
         sh = { 'shfmt' },
+        dockerfile = { 'dockerfmt' },
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
         typescript = { 'prettierd', 'prettier', stop_after_first = true },
         javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
@@ -310,10 +311,14 @@ return {
         type = "binary",
         custom_server_filepath = 'copilot-lsp',
       },
+      panel = {
+        enabled = false,
+      },
       suggestion = {
         keymap = {
           next = false,
-          prev = false
+          prev = false,
+          dismiss = false,
         }
       }
     },
