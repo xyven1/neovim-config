@@ -189,5 +189,35 @@ return {
       lang = 'rust',
       image_support = true
     },
+  },
+  {
+    "coder/claudecode.nvim",
+    opts = {
+      terminal = {
+        auto_insert = false,
+        snacks_win_opts = {
+          position = "bottom",
+          height = 0.3,
+        },
+      }
+    },
+    keys = {
+      { "<leader>i",  "",                               desc = "+ai",               mode = { "n", "v" } },
+      { "<leader>ic", "<cmd>ClaudeCode<cr>",            desc = "Toggle Claude" },
+      { "<leader>if", "<cmd>ClaudeCodeFocus<cr>",       desc = "Focus Claude" },
+      { "<leader>ir", "<cmd>ClaudeCode --resume<cr>",   desc = "Resume Claude" },
+      { "<leader>iC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
+      { "<leader>ib", "<cmd>ClaudeCodeAdd %<cr>",       desc = "Add current buffer" },
+      { "<leader>is", "<cmd>ClaudeCodeSend<cr>",        mode = "v",                 desc = "Send to Claude" },
+      {
+        "<leader>is",
+        "<cmd>ClaudeCodeTreeAdd<cr>",
+        desc = "Add file",
+        ft = { "NvimTree", "neo-tree", "oil" },
+      },
+      -- Diff management
+      { "<leader>ia", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+      { "<leader>id", "<cmd>ClaudeCodeDiffDeny<cr>",   desc = "Deny diff" },
+    },
   }
 }
