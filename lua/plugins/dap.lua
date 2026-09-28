@@ -91,6 +91,11 @@ return {
           args = { '${port}' },
         },
       }
+      dap.adapters['lldb_remote'] = {
+        type = "server",
+        host = "127.0.0.1",
+        port = 4711,
+      }
 
       for _, adapter_name in ipairs(adapter_names) do
         local config = {
