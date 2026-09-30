@@ -157,7 +157,17 @@ return {
     },
     keys = {
       { '<leader>g',  '',                                                       desc = '+git' },
-      { '<leader>gg', function() Snacks.lazygit() end,                          desc = 'Lazygit' },
+      {
+        '<leader>gg',
+        function()
+          Snacks.lazygit({
+            win = {
+              on_close = function() require('plugins.session').sync_session_to_git() end,
+            },
+          })
+        end,
+        desc = 'Lazygit',
+      },
       { '<leader>x',  '',                                                       desc = '+close' },
       { '<leader>xx', function() Snacks.bufdelete.delete() end,                 desc = 'Close current buffer' },
       { '<leader>xf', function() Snacks.bufdelete.delete({ force = true }) end, desc = 'Force close current buffer' },
@@ -192,9 +202,10 @@ return {
   },
   {
     "coder/claudecode.nvim",
+    branch = "main",
     opts = {
       terminal = {
-        auto_insert = false,
+        auto_insert = true,
         snacks_win_opts = {
           position = "bottom",
           height = 0.3,
