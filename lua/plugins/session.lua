@@ -1,14 +1,59 @@
-local function get_session_name()
+--- Git state of the current working directory, or nil if it can't be
+--- determined (not a repo, or the directory no longer exists).
+--- `worktree` is true for a linked worktree: its git-dir differs from
+--- the repo's common dir, unlike the main checkout.
+local function git_info()
+  local cwd = vim.fn.getcwd()
+  -- getcwd() is empty if the directory was deleted (e.g. a removed worktree)
+  if cwd == '' or not vim.uv.fs_stat(cwd) then
+    return nil
+  end
+  local res = vim.system(
+    { 'git', 'rev-parse', '--path-format=absolute', '--git-dir', '--git-common-dir' },
+    { cwd = cwd, text = true }
+  ):wait()
+  if res.code ~= 0 then
+    return nil
+  end
+  local dirs = vim.split(vim.trim(res.stdout), '\n')
+  local branch = vim.trim(vim.system({ 'git', 'branch', '--show-current' }, { cwd = cwd, text = true }):wait().stdout or '')
+  return {
+    branch = branch ~= '' and branch or nil,
+    worktree = dirs[1] ~= dirs[2],
+  }
+end
+
+--- @param git? table pre-fetched `git_info()` result, to avoid re-shelling
+--- out when the caller already has one
+local function get_session_name(git)
   local files = require('resession.files')
   local name = vim.fn.getcwd()
-  local branch = vim.trim(vim.fn.system('git branch --show-current'))
-  if vim.v.shell_error == 0 and branch ~= '' then
-    name = name .. '~~' .. branch
+  git = git or git_info()
+  -- A linked worktree's directory already identifies it, so only key on the
+  -- branch for the main checkout
+  if git and git.branch and not git.worktree then
+    name = name .. '~~' .. git.branch
   end
-  return name:gsub(files.sep, '_'):gsub(':', '_')
+  return (name:gsub(files.sep, '_'):gsub(':', '_'))
 end
 
 local DIRSESSION = 'dirsession'
+local GIT_EXT = 'gitinfo'
+
+-- Inline resession extension that stores git state alongside each session, so
+-- the picker can show the real branch name and whether it was a worktree
+package.preload['resession.extensions.' .. GIT_EXT] = function()
+  return {
+    on_save = function()
+      return git_info() or {}
+    end,
+  }
+end
+
+local function session_cwd_missing(session)
+  local cwd = session.data and session.data.global and session.data.global.cwd
+  return cwd ~= nil and vim.uv.fs_stat(cwd) == nil
+end
 
 local function get_all_sessions()
   local resession = require('resession')
@@ -53,9 +98,21 @@ local function action_on_any_session(kind, prompt, func)
       return session.name
     end
     local cwd = util.shorten_path(session.data.global.cwd)
+    if session_cwd_missing(session) then
+      cwd = cwd .. ' (missing)'
+    end
     if session.dir == DIRSESSION then
-      local branch = session.name:match('~~(.*)')
-      return branch and string.format('%s  %s', cwd, branch) or cwd
+      local git = session.data[GIT_EXT] or {}
+      -- Older sessions have no git data; fall back to the (sanitized) name suffix
+      local branch = git.branch or session.name:match('~~(.*)')
+      local formatted = cwd
+      if branch then
+        formatted = string.format('%s  %s', formatted, branch)
+      end
+      if git.worktree then
+        formatted = formatted .. ' (worktree)'
+      end
+      return formatted
     end
     local formatted = session.name .. (session.dir and string.format(' (%s)', session.dir) or '')
     if session.data.tab_scoped then
@@ -79,6 +136,10 @@ end
 local function load_any_session()
   local resession = require('resession')
   action_on_any_session('resession_load', 'Load Session> ', function(selected)
+    if session_cwd_missing(selected) then
+      vim.notify(string.format('Session directory %s no longer exists', selected.data.global.cwd), vim.log.levels.WARN)
+      return
+    end
     resession.load(selected.name, {
       dir = selected.dir,
       reset = 'auto',
@@ -97,13 +158,14 @@ end
 
 local function load_latest_session()
   local resession = require('resession')
-  local all_sessions = get_all_sessions()
-  if vim.tbl_isempty(all_sessions) then
+  local latest_session = vim.iter(get_all_sessions()):find(function(session)
+    return not session_cwd_missing(session)
+  end)
+  if not latest_session then
     vim.notify('No saved sessions', vim.log.levels.WARN)
     return
   end
 
-  local latest_session = all_sessions[1]
   resession.load(latest_session.name, {
     dir = latest_session.dir,
     reset = 'auto',
@@ -157,18 +219,63 @@ local function info()
   end
 end
 
-local function load_current_dir_session()
+--- @param already_saved? boolean the caller saved before changing branch/cwd,
+--- so saving now would file the old layout under the new session name
+local function load_current_dir_session(already_saved)
   local resession = require('resession')
   local session_name = get_session_name()
   if vim.list_contains(resession.list({ dir = DIRSESSION }), session_name) then
     resession.load(session_name, { dir = DIRSESSION, reset = 'auto', attach = true })
   else
-    save_curr_sess()
+    if not already_saved then
+      save_curr_sess()
+    end
     detach()
     close_everything()
   end
 end
 
+
+--- Reconciles the tracked session with the branch actually checked out.
+--- Call after anything outside resession's control might have moved it:
+--- a branch switch via fzf-lua, or a `lazygit` float closing.
+---
+--- A dirsession's name encodes its branch, so this is a plain comparison
+--- against whichever dirsession is already loaded. No-op if they match.
+---
+--- Skips reconciling in three cases, since none give a branch to trust:
+--- - Nothing is attached.
+--- - A manually-named (non-dirsession) session is attached.
+--- - HEAD is detached: mid-rebase, mid-cherry-pick, mid-bisect, or a
+---   `--detach` checkout. `git branch --show-current` prints nothing here,
+---   indistinguishable from "no branch", and would otherwise rebuild the
+---   session mid-operation - often the worst possible time.
+local function sync_session_to_git()
+  local resession = require('resession')
+  local info = resession.get_current_session_info()
+  if not info or info.dir ~= DIRSESSION then
+    return
+  end
+  local git = git_info()
+  if git and not git.branch then
+    return
+  end
+  local session_name = get_session_name(git)
+  if info.name == session_name then
+    return
+  end
+  local has_session = vim.list_contains(resession.list({ dir = DIRSESSION }), session_name)
+  vim.notify(
+    string.format(
+      '[session] branch changed, %s session for %s',
+      has_session and 'loading' or 'starting a fresh',
+      git and git.branch or vim.fn.getcwd()
+    ),
+    vim.log.levels.INFO
+  )
+  resession.save(info.name, { dir = info.dir, notify = false })
+  load_current_dir_session(true)
+end
 
 local functions = {
   load = {
@@ -208,7 +315,10 @@ local functions = {
   }
 }
 
-return {
+-- The array part is the lazy.nvim plugin spec list. lazy.nvim's
+-- Spec:normalize only ipairs() over it, so the named fields below are
+-- invisible to lazy.nvim and safe to read via `require('plugins.session')`.
+local M = {
   {
     'stevearc/resession.nvim',
     event = { 'VeryLazy', 'VimLeavePre' },
@@ -226,7 +336,7 @@ return {
       return keys
     end,
     opts = {
-      extensions = { overseer = {}, scope = {} },
+      extensions = { overseer = {}, scope = {}, [GIT_EXT] = {} },
       buf_filter = function(bufnr)
         local buftype = vim.bo[bufnr].buftype
         if buftype == 'help' then
@@ -258,8 +368,7 @@ return {
               functions[selected].func()
             end
           end)
-        end
-        if functions[subcommand.fargs[1]] then
+        elseif functions[subcommand.fargs[1]] then
           functions[subcommand.fargs[1]].func()
         else
           vim.notify('Resession: No such command "' .. subcommand.fargs[1] .. '"', vim.log.levels.ERROR)
@@ -267,7 +376,7 @@ return {
       end, {
         nargs = '*',
         bang = true,
-        complete = function(args, cmd_line)
+        complete = function(args)
           local completions = {}
           for k, _ in pairs(functions) do
             if vim.startswith(k, args) then
@@ -291,14 +400,10 @@ return {
         branches = {
           actions = {
             ['default'] = function(selected, opts)
-              local is_remote = selected[1]:match('[^ ]+'):find('^remotes/')
+              -- git_switch can fail (e.g. uncommitted changes) or redirect
+              -- into another worktree; sync_session_to_git() handles both.
               require('fzf-lua.actions').git_switch(selected, opts)
-              if is_remote then
-                detach()
-                close_everything()
-              else
-                load_current_dir_session()
-              end
+              sync_session_to_git()
             end,
           },
         },
@@ -306,3 +411,7 @@ return {
     }
   }
 }
+
+M.sync_session_to_git = sync_session_to_git
+
+return M
