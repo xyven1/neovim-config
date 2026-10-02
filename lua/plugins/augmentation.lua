@@ -20,6 +20,11 @@ return {
   {
     'mrjones2014/smart-splits.nvim',
     lazy = false,
+    init = function()
+      -- zellij backend can't detect edges, so it always hands focus off to zellij;
+      -- must be set before plugin/ runs, opts.multiplexer_integration is too late
+      vim.g.smart_splits_multiplexer_integration = false
+    end,
     opts = {
       at_edge = "stop"
     },
