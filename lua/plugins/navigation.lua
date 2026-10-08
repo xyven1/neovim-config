@@ -272,7 +272,21 @@ return {
         event_handlers = {
           { event = events.FILE_MOVED,   handler = on_move },
           { event = events.FILE_RENAMED, handler = on_move },
-        }
+        },
+        commands = {
+          diffview = function(state)
+            vim.cmd.DiffviewOpen('-- ' .. vim.fn.fnameescape(state.tree:get_node().path))
+          end,
+          diffview_history = function(state)
+            vim.cmd.DiffviewFileHistory(vim.fn.fnameescape(state.tree:get_node().path))
+          end,
+        },
+        window = {
+          mappings = {
+            ['gd'] = { 'diffview', desc = 'Open diff view' },
+            ['gh'] = { 'diffview_history', desc = 'Git file history' },
+          },
+        },
       }
     end,
     keys = {
