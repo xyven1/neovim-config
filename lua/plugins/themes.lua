@@ -9,7 +9,8 @@ return {
           DapBreakpoint = { ctermbg = 0, fg = '#bf321d' },
           DapStopped = { ctermbg = 0, fg = '#ffcc00' },
           DapStoppedLine = { ctermbg = 0, bg = '#4b4b26' },
-          NeoTreeIndentMarker = { fg = c.vscContext, bg = 'NONE' }
+          NeoTreeIndentMarker = { fg = c.vscContext, bg = 'NONE' },
+          DiffChange = { bg = 'NONE' },
         },
       }
     end,
