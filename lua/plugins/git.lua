@@ -36,6 +36,24 @@ local function change_base(branch, merge_base)
   vim.notify(('Gitsigns base: %s%s'):format(merge_base and 'merge-base with ' or '', branch))
 end
 
+--- Open diffview against the merge-base of HEAD and the PR base branch.
+local function diff_merge_base()
+  local branch = gh_base_branch()
+  local base = branch and system({ 'git', 'merge-base', 'HEAD', branch })
+  if not base then return vim.notify('Could not determine merge-base', vim.log.levels.ERROR) end
+  vim.cmd.DiffviewOpen(base)
+end
+
+--- Buffers ufo has been detached from while they are shown in diffview's inline layout.
+---@type table<integer, true>
+local ufo_detached = {}
+
+---@param bufnr integer
+local function ufo_reattach(bufnr)
+  ufo_detached[bufnr] = nil
+  if vim.api.nvim_buf_is_valid(bufnr) then require('ufo').attach(bufnr) end
+end
+
 --- Pick the gitsigns base branch with fzf; ctrl-t toggles between merge-base and branch tip.
 local function pick_base()
   local merge_base = true
@@ -128,16 +146,43 @@ return {
     }
   },
   {
-    'sindrets/diffview.nvim',
+    'dlyongemallo/diffview-plus.nvim',
+    main = 'diffview',
     dependencies = {
       'nvim-tree/nvim-web-devicons'
     },
     opts = {
       enhanced_diff_hl = true,
+      view = {
+        cycle_layouts = {
+          default = { "diff2_horizontal", "diff1_inline", "diff2_vertical" },
+        },
+        inline = {
+          fold_unchanged = true,
+        },
+      },
+      hooks = {
+        -- ufo takes over folding once the inline layout turns diff mode off, clobbering the
+        -- layout's own folds, so keep it detached from the buffer while it is shown inline
+        diff_buf_win_enter = function(bufnr, _, ctx)
+          if ctx.layout_name == 'diff1_inline' then
+            if package.loaded['ufo'] and require('ufo').hasAttached(bufnr) then
+              require('ufo').detach(bufnr)
+              ufo_detached[bufnr] = true
+            end
+          elseif ufo_detached[bufnr] then
+            ufo_reattach(bufnr)
+          end
+        end,
+        view_closed = function()
+          for bufnr in pairs(ufo_detached) do ufo_reattach(bufnr) end
+        end,
+      },
     },
     cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewFileHistory' },
     keys = {
       { '<leader>gd', '<cmd>DiffviewOpen<cr>',          desc = 'Open diff view' },
+      { '<leader>gm', diff_merge_base,                  desc = 'Diff to merge-base with PR base (gh)' },
       { '<leader>gh', '<cmd>DiffviewFileHistory %<cr>', desc = 'Git file history' },
     }
   },
