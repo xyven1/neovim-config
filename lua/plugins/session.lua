@@ -399,7 +399,9 @@ local M = {
       git = {
         branches = {
           actions = {
-            ['default'] = function(selected, opts)
+            -- not the legacy 'default' key: it trumps 'enter', so pickers that pass their own
+            -- 'enter' action (see pick_base in git.lua) would still switch branches
+            ['enter'] = function(selected, opts)
               -- git_switch can fail (e.g. uncommitted changes) or redirect
               -- into another worktree; sync_session_to_git() handles both.
               require('fzf-lua.actions').git_switch(selected, opts)

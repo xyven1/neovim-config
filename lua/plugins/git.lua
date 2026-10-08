@@ -25,23 +25,34 @@ local function gh_base_branch()
   return system({ 'git', 'rev-parse', '--verify', '--quiet', remote }) and remote or branch
 end
 
---- Change the gitsigns base to a branch, or to the merge-base of HEAD and that branch.
+--- Resolve a branch to the revision to compare against: the branch tip, or the merge-base of
+--- HEAD and the branch.
 ---@param branch string?
 ---@param merge_base boolean compare against the merge-base rather than the branch tip
-local function change_base(branch, merge_base)
+---@return string? base nil (after notifying) if it can't be resolved
+local function resolve_base(branch, merge_base)
   if not branch then return vim.notify('Could not determine base branch', vim.log.levels.ERROR) end
   local base = merge_base and system({ 'git', 'merge-base', 'HEAD', branch }) or branch
   if not base then return vim.notify('No merge-base with ' .. branch, vim.log.levels.ERROR) end
+  return base
+end
+
+--- Change the gitsigns base to a branch, or to the merge-base of HEAD and that branch.
+---@param branch string?
+---@param merge_base boolean
+local function change_base(branch, merge_base)
+  local base = resolve_base(branch, merge_base)
+  if not base then return end
   require('gitsigns').change_base(base, true)
   vim.notify(('Gitsigns base: %s%s'):format(merge_base and 'merge-base with ' or '', branch))
 end
 
---- Open diffview against the merge-base of HEAD and the PR base branch.
-local function diff_merge_base()
-  local branch = gh_base_branch()
-  local base = branch and system({ 'git', 'merge-base', 'HEAD', branch })
-  if not base then return vim.notify('Could not determine merge-base', vim.log.levels.ERROR) end
-  vim.cmd.DiffviewOpen(base)
+--- Open diffview against a branch, or against the merge-base of HEAD and that branch.
+---@param branch string?
+---@param merge_base boolean
+local function diff_base(branch, merge_base)
+  local base = resolve_base(branch, merge_base)
+  if base then vim.cmd.DiffviewOpen(base) end
 end
 
 --- Mark whether a buffer is shown in diffview's inline layout. While `b:diffview_inline` is set
@@ -58,14 +69,15 @@ local function set_inline(bufnr, inline)
   end
 end
 
---- Pick the gitsigns base branch with fzf; ctrl-t toggles between merge-base and branch tip.
-local function pick_base()
+--- Pick a branch with fzf to use as a base; ctrl-t toggles between merge-base and branch tip.
+---@param apply fun(branch: string?, merge_base: boolean)
+local function pick_base(apply)
   local merge_base = true
   require('fzf-lua').git_branches({
     prompt = 'Merge-base> ',
     actions = {
       ['enter'] = function(selected)
-        if selected[1] then change_base(selected[1]:match('%s-[%+%*]?%s+([^ ]+)'), merge_base) end
+        if selected[1] then apply(selected[1]:match('%s-[%+%*]?%s+([^ ]+)'), merge_base) end
       end,
       ['ctrl-t'] = {
         fn = function() merge_base = not merge_base end,
@@ -120,7 +132,7 @@ return {
       { '<leader>hd', function() require 'gitsigns'.diffthis() end,                  desc = 'Diff this' },
       { '<leader>hD', function() require 'gitsigns'.diffthis('~') end,               desc = 'Diff this (cached)' },
       { '<leader>hm', function() change_base(gh_base_branch(), true) end,            desc = 'Base: merge-base with PR base (gh)' },
-      { '<leader>hM', pick_base,                                                     desc = 'Base: pick branch (fzf)' },
+      { '<leader>hM', function() pick_base(change_base) end,                         desc = 'Base: pick branch (fzf)' },
       { '<leader>hc', function() require 'gitsigns'.reset_base(true) end,            desc = 'Base: reset to index' },
       { 'ah',         function() require 'gitsigns'.select_hunk() end,               desc = 'Select hunk',                       mode = { 'o', 'x' } },
 
@@ -158,6 +170,9 @@ return {
     opts = {
       enhanced_diff_hl = true,
       view = {
+        default = {
+          layout = "diff1_inline",
+        },
         cycle_layouts = {
           default = { "diff2_horizontal", "diff1_inline", "diff2_vertical" },
         },
@@ -176,9 +191,10 @@ return {
     },
     cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewFileHistory' },
     keys = {
-      { '<leader>gd', '<cmd>DiffviewOpen<cr>',          desc = 'Open diff view' },
-      { '<leader>gm', diff_merge_base,                  desc = 'Diff to merge-base with PR base (gh)' },
-      { '<leader>gh', '<cmd>DiffviewFileHistory %<cr>', desc = 'Git file history' },
+      { '<leader>gd', '<cmd>DiffviewOpen<cr>',                          desc = 'Open diff view' },
+      { '<leader>gm', function() diff_base(gh_base_branch(), true) end, desc = 'Diff to merge-base with PR base (gh)' },
+      { '<leader>gM', function() pick_base(diff_base) end,              desc = 'Diff to picked branch (fzf)' },
+      { '<leader>gh', '<cmd>DiffviewFileHistory %<cr>',                 desc = 'Git file history' },
     }
   },
   {
