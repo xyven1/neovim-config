@@ -165,16 +165,13 @@ return {
     'dlyongemallo/diffview-plus.nvim',
     main = 'diffview',
     dependencies = {
-      'nvim-tree/nvim-web-devicons'
+      'nvim-tree/nvim-web-devicons',
     },
     opts = {
       enhanced_diff_hl = true,
       view = {
         default = {
           layout = "diff1_inline",
-        },
-        cycle_layouts = {
-          default = { "diff2_horizontal", "diff1_inline", "diff2_vertical" },
         },
         inline = {
           fold_unchanged = true,
