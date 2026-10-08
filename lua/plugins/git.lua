@@ -178,6 +178,10 @@ return {
         },
       },
       hooks = {
+        -- keep diffview's tabs out of saved sessions (see save_session in session.lua)
+        view_opened = function(view)
+          vim.t[view.tabpage].session_ignore = true
+        end,
         diff_buf_win_enter = function(bufnr, _, ctx)
           set_inline(bufnr, ctx.layout_name == 'diff1_inline')
         end,

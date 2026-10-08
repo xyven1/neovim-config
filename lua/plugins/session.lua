@@ -173,16 +173,88 @@ local function load_latest_session()
   })
 end
 
+--- `resession.save()`, minus the tabs marked with `t:session_ignore`. Anything that opens a
+--- tab which can't be restored meaningfully (e.g. diffview) opts it out by setting
+--- `vim.t[tabpage].session_ignore = true`.
+--- resession can't filter tabpages, so hide them from it (and from the scope extension, which
+--- stores a buffer list per tab) for the duration of the save, along with the buffers that
+--- belong only to them.
+--- @param name string
+--- @param opts table
+local function save_session(name, opts)
+  local resession = require('resession')
+  local list_tabpages = vim.api.nvim_list_tabpages
+  local skip = {}
+  for _, tab in ipairs(list_tabpages()) do
+    if vim.t[tab].session_ignore then skip[tab] = true end
+  end
+  local kept = vim.tbl_filter(function(tab) return not skip[tab] end, list_tabpages())
+  if #kept == 0 or #kept == #list_tabpages() then
+    return resession.save(name, opts)
+  end
+
+  local current, eventignore = vim.api.nvim_get_current_tabpage(), vim.o.eventignore
+  local scope = package.loaded['scope.core']
+  local last_tab = scope and scope.last_tab
+  vim.o.eventignore = 'all'
+  -- scope keeps a tab's buffers in 'buflisted', swapping them on TabLeave/TabEnter
+  local function goto_tab(tab)
+    if tab == vim.api.nvim_get_current_tabpage() then return end
+    if scope then scope.on_tab_leave() end
+    vim.api.nvim_set_current_tabpage(tab)
+    if scope then scope.on_tab_enter() end
+  end
+  -- extensions save from the current tab, so it can't be one of the skipped ones
+  goto_tab(skip[current] and kept[1] or current)
+
+  --- @param tabs integer[]
+  --- @return table<integer, true> bufs shown in, or scoped to, any of the tabs
+  local function tab_bufs(tabs)
+    local bufs = {}
+    for _, tab in ipairs(tabs) do
+      for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
+        bufs[vim.api.nvim_win_get_buf(win)] = true
+      end
+      local is_current = tab == vim.api.nvim_get_current_tabpage()
+      for _, buf in ipairs(scope and (is_current and vim.api.nvim_list_bufs() or scope.cache[tab]) or {}) do
+        if not is_current or vim.bo[buf].buflisted then bufs[buf] = true end
+      end
+    end
+    return bufs
+  end
+  local kept_bufs, skipped_bufs = tab_bufs(kept), tab_bufs(vim.tbl_keys(skip))
+  local config = require('resession.config')
+  local buf_filter = config.buf_filter
+  config.buf_filter = function(bufnr)
+    return (kept_bufs[bufnr] or not skipped_bufs[bufnr]) and buf_filter(bufnr)
+  end
+  local scope_cache = {}
+  for tab in pairs(scope and skip or {}) do
+    scope_cache[tab], scope.cache[tab] = scope.cache[tab], nil
+  end
+  vim.api.nvim_list_tabpages = function() return kept end
+
+  local ok, err = pcall(resession.save, name, opts)
+
+  vim.api.nvim_list_tabpages = list_tabpages
+  config.buf_filter = buf_filter
+  for tab, bufs in pairs(scope_cache) do scope.cache[tab] = bufs end
+  goto_tab(current)
+  if scope then scope.last_tab = last_tab end
+  vim.o.eventignore = eventignore
+  if not ok then error(err, 0) end
+end
+
 local function save_curr_sess()
   local resession = require('resession')
   local info = resession.get_current_session_info()
   local session_name = get_session_name()
   if info ~= nil then
-    resession.save(info.name, { dir = info.dir, notify = false })
+    save_session(info.name, { dir = info.dir, notify = false })
   elseif not vim.list_contains(resession.list({ dir = DIRSESSION }), session_name) then
-    resession.save(session_name, { dir = DIRSESSION, notify = false })
+    save_session(session_name, { dir = DIRSESSION, notify = false })
   else
-    resession.save('scratch', { notify = false })
+    save_session('scratch', { notify = false })
   end
 end
 
@@ -273,7 +345,7 @@ local function sync_session_to_git()
     ),
     vim.log.levels.INFO
   )
-  resession.save(info.name, { dir = info.dir, notify = false })
+  save_session(info.name, { dir = info.dir, notify = false })
   load_current_dir_session(true)
 end
 
