@@ -163,6 +163,15 @@ return {
         '<leader>gg',
         function()
           Snacks.lazygit({
+            config = {
+              os = {
+                edit = [[nvim --server "$NVIM" --remote-send "q"; nvim --server "$NVIM" --remote {{filename}}]],
+                editAtLine =
+                [[nvim --server "$NVIM" --remote-send "q"; nvim --server "$NVIM" --remote {{filename}}; nvim --server "$NVIM" --remote-send ":{{line}}<CR>"]],
+                openDirInEditor =
+                [[nvim --server "$NVIM" --remote-send "q"; nvim --server "$NVIM" --remote {{dir}}]],
+              },
+            },
             win = {
               on_close = function() require('plugins.session').sync_session_to_git() end,
             },
