@@ -18,10 +18,12 @@ return {
     opts = {}
   },
   {
-    'mrjones2014/smart-splits.nvim',
-    lazy = false,
+    'smart-splits-nvim/smart-splits.nvim',
+    init = function()
+      vim.g.smart_splits_multiplexer_integration = false
+    end,
     opts = {
-      at_edge = "stop"
+      at_edge = "stop",
     },
     keys = {
       { '<A-h>',             function() require('smart-splits').resize_left() end,       desc = 'Resize left' },
