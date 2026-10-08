@@ -44,14 +44,18 @@ local function diff_merge_base()
   vim.cmd.DiffviewOpen(base)
 end
 
---- Buffers ufo has been detached from while they are shown in diffview's inline layout.
----@type table<integer, true>
-local ufo_detached = {}
-
+--- Mark whether a buffer is shown in diffview's inline layout. While `b:diffview_inline` is set
+--- ufo's fold providers are disabled (see its `provider_selector`), so that it only renders the
+--- layout's own folds. Providers are selected on attach, hence the re-attach.
 ---@param bufnr integer
-local function ufo_reattach(bufnr)
-  ufo_detached[bufnr] = nil
-  if vim.api.nvim_buf_is_valid(bufnr) then require('ufo').attach(bufnr) end
+---@param inline boolean
+local function set_inline(bufnr, inline)
+  if not vim.api.nvim_buf_is_valid(bufnr) or (vim.b[bufnr].diffview_inline or false) == inline then return end
+  vim.b[bufnr].diffview_inline = inline or nil
+  if package.loaded['ufo'] and require('ufo').hasAttached(bufnr) then
+    require('ufo').detach(bufnr)
+    require('ufo').attach(bufnr)
+  end
 end
 
 --- Pick the gitsigns base branch with fzf; ctrl-t toggles between merge-base and branch tip.
@@ -162,20 +166,11 @@ return {
         },
       },
       hooks = {
-        -- ufo takes over folding once the inline layout turns diff mode off, clobbering the
-        -- layout's own folds, so keep it detached from the buffer while it is shown inline
         diff_buf_win_enter = function(bufnr, _, ctx)
-          if ctx.layout_name == 'diff1_inline' then
-            if package.loaded['ufo'] and require('ufo').hasAttached(bufnr) then
-              require('ufo').detach(bufnr)
-              ufo_detached[bufnr] = true
-            end
-          elseif ufo_detached[bufnr] then
-            ufo_reattach(bufnr)
-          end
+          set_inline(bufnr, ctx.layout_name == 'diff1_inline')
         end,
         view_closed = function()
-          for bufnr in pairs(ufo_detached) do ufo_reattach(bufnr) end
+          for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do set_inline(bufnr, false) end
         end,
       },
     },

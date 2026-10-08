@@ -1,15 +1,3 @@
---- Run a ufo fold command, or the native key where ufo isn't attached (e.g. diffview's inline
---- layout, which uses its own folds).
----@param key string
----@param cmd string
-local function ufo_fold(key, cmd)
-  return function()
-    local ufo = require('ufo')
-    if ufo.hasAttached() then return ufo[cmd]() end
-    vim.cmd.normal({ vim.v.count1 .. key, bang = true })
-  end
-end
-
 return {
   "neovim/nvim-lspconfig",
   {
@@ -219,6 +207,10 @@ return {
       vim.o.foldenable = true
     end,
     opts = {
+      -- diffview's inline layout has its own folds: disable the providers and only render them
+      provider_selector = function(bufnr)
+        if vim.b[bufnr].diffview_inline then return '' end
+      end,
       fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
         local newVirtText = {}
         local suffix = (' 󰁂 %d '):format(endLnum - lnum)
@@ -263,9 +255,9 @@ return {
       }
     },
     keys = {
-      { 'zr', ufo_fold('zr', 'openFoldsExceptKinds'), desc = 'Open folds' },
-      { 'zR', ufo_fold('zR', 'openAllFolds'),         desc = 'Open all folds' },
-      { 'zm', ufo_fold('zm', 'closeFoldsWith'),       desc = 'Close folds' },
+      { 'zr', function() require('ufo').openFoldsExceptKinds() end,   desc = 'Open folds' },
+      { 'zR', function() require('ufo').openAllFolds() end,           desc = 'Open all folds' },
+      { 'zm', function(opts) require('ufo').closeFoldsWith(opts) end, desc = 'Close folds' },
       {
         'K',
         function()
