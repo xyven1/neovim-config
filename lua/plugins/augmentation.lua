@@ -26,10 +26,10 @@ return {
       at_edge = "stop",
     },
     keys = {
-      { '<A-h>',             function() require('smart-splits').resize_left() end,       desc = 'Resize left' },
-      { '<A-j>',             function() require('smart-splits').resize_down() end,       desc = 'Resize down' },
-      { '<A-k>',             function() require('smart-splits').resize_up() end,         desc = 'Resize up' },
-      { '<A-l>',             function() require('smart-splits').resize_right() end,      desc = 'Split right' },
+      { '<A-h>',             function() require('smart-splits').resize_left() end,       desc = 'Resize left',       mode = { 'n', 't' } },
+      { '<A-j>',             function() require('smart-splits').resize_down() end,       desc = 'Resize down',       mode = { 'n', 't' } },
+      { '<A-k>',             function() require('smart-splits').resize_up() end,         desc = 'Resize up',         mode = { 'n', 't' } },
+      { '<A-l>',             function() require('smart-splits').resize_right() end,      desc = 'Split right',       mode = { 'n', 't' } },
       { '<C-h>',             function() require('smart-splits').move_cursor_left() end,  desc = 'Move cursor left',  mode = { 'n', 't' } },
       { '<C-j>',             function() require('smart-splits').move_cursor_down() end,  desc = 'Move cursor down',  mode = { 'n', 't' } },
       { '<C-k>',             function() require('smart-splits').move_cursor_up() end,    desc = 'Move cursor up',    mode = { 'n', 't' } },
@@ -220,6 +220,8 @@ return {
         snacks_win_opts = {
           position = "bottom",
           height = 0.3,
+          -- position = "right",
+          -- width = 0.5,
         },
       }
     },
