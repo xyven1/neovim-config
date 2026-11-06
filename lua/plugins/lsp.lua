@@ -87,6 +87,8 @@ return {
         rust = { 'rustfmt' },
         sh = { 'shfmt' },
         dockerfile = { 'dockerfmt' },
+        bzl = { 'buildifier' },
+        starlark = { 'buildifier' },
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
         typescript = { 'prettierd', 'prettier', stop_after_first = true },
         javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
