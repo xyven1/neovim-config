@@ -378,6 +378,24 @@ return {
         extend_gitsigns = true,
       },
     },
+    config = function(_, opts)
+      require('lspsaga').setup(opts)
+      -- lspsaga's peek/goto handlers bufload() the target and assume the buffer
+      -- survives; when it doesn't, they throw "Invalid buffer id" from inside
+      -- vim.schedule. Patch the metatable (the instance is cleared by clean_ctx)
+      -- so a failure becomes a warning naming the target, for diagnosis.
+      local def = getmetatable(require('lspsaga.definition'))
+      for _, name in ipairs({ 'peek_handler', 'goto_handler' }) do
+        local orig = def[name]
+        def[name] = function(self, result, ...)
+          local ok, err = pcall(orig, self, result, ...)
+          if not ok then
+            local uri = result and (result.targetUri or result.uri) or '?'
+            vim.notify(('[lspsaga] %s failed for %s: %s'):format(name, uri, err), vim.log.levels.WARN)
+          end
+        end
+      end
+    end,
     keys = {
       { 'ga',         '<cmd>Lspsaga finder<cr>',                          desc = 'Open symbol finder' },
       { 'ghi',        '<cmd>Lspsaga finder imp<cr>',                      desc = 'Find all implementations' },
