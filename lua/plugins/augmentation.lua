@@ -7,8 +7,49 @@ return {
   {
     'lambdalisue/vim-suda',
     lazy = false,
-    init = function()
-      vim.g.suda_smart_edit = 1
+    -- Port of suda's smart edit (g:suda_smart_edit). The upstream BufEnter
+    -- synchronously swaps a read-only file for suda:// and wipes the original
+    -- buffer, which also fires inside bufload()'s hidden autocmd window and in
+    -- floats, invalidating buffers plugins just created (e.g. lspsaga's
+    -- peek/goto definition -> "Invalid buffer id"). This version only acts in
+    -- normal windows, and defers the swap so the caller finishes first,
+    -- keeping the cursor position across the swap.
+    config = function()
+      local function needs_suda(name)
+        if vim.fn.isdirectory(name) == 1 or name:match('^%a+://') then return false end
+        if vim.fn.filereadable(name) == 1 and vim.fn.filewritable(name) == 1 then return false end
+        if vim.fn.getftype(name) == '' then
+          -- new file: fine if the nearest existing ancestor dir is writable
+          local parent = vim.fn.fnamemodify(name, ':p')
+          while parent ~= vim.fn.fnamemodify(parent, ':h') do
+            parent = vim.fn.fnamemodify(parent, ':h')
+            if vim.fn.filewritable(parent) == 2 then return false end
+            if vim.fn.filereadable(parent) == 0 and vim.fn.isdirectory(parent) == 1 then break end
+          end
+        end
+        return true
+      end
+
+      vim.api.nvim_create_autocmd('BufEnter', {
+        group = vim.api.nvim_create_augroup('suda_smart_edit', { clear = true }),
+        callback = function(args)
+          local buf = args.buf
+          if vim.b[buf].suda_smart_edit_checked or vim.fn.win_gettype() ~= '' then return end
+          vim.schedule(function()
+            if not vim.api.nvim_buf_is_valid(buf) or vim.b[buf].suda_smart_edit_checked
+                or vim.api.nvim_get_current_buf() ~= buf or vim.fn.win_gettype() ~= '' then
+              return
+            end
+            vim.b[buf].suda_smart_edit_checked = true
+            local name = vim.api.nvim_buf_get_name(buf)
+            if vim.bo[buf].buftype ~= '' or name == '' or not needs_suda(name) then return end
+            local view = vim.fn.winsaveview()
+            vim.cmd('keepalt keepjumps edit ' .. vim.fn.fnameescape('suda://' .. vim.fn.fnamemodify(name, ':p')))
+            vim.fn.winrestview(view)
+            pcall(vim.api.nvim_buf_delete, buf, { force = true })
+          end)
+        end,
+      })
     end,
     priority = 1,
   },
