@@ -67,18 +67,19 @@ return {
       at_edge = "stop",
     },
     keys = function()
-      -- No-op in floats (fzf-lua, lspsaga, ...) so alt-hjkl can't resize them
-      local function resize(dir)
+      -- In floats (fzf-lua, lspsaga, ...) pass alt-hjkl through untouched so
+      -- the float's own binding (e.g. fzf's) still works instead of resizing
+      local function resize(key, dir)
         return function()
-          if vim.api.nvim_win_get_config(0).relative ~= '' then return end
-          require('smart-splits')['resize_' .. dir]()
+          if vim.api.nvim_win_get_config(0).relative ~= '' then return key end
+          return '<Cmd>lua require("smart-splits").resize_' .. dir .. '()<CR>'
         end
       end
       return {
-        { '<A-h>',             resize('left'),                                      desc = 'Resize left',       mode = { 'n', 't' } },
-        { '<A-j>',             resize('down'),                                      desc = 'Resize down',       mode = { 'n', 't' } },
-        { '<A-k>',             resize('up'),                                        desc = 'Resize up',         mode = { 'n', 't' } },
-        { '<A-l>',             resize('right'),                                     desc = 'Resize right',      mode = { 'n', 't' } },
+        { '<A-h>', resize('<A-h>', 'left'),  expr = true, desc = 'Resize left',  mode = { 'n', 't' } },
+        { '<A-j>', resize('<A-j>', 'down'),  expr = true, desc = 'Resize down',  mode = { 'n', 't' } },
+        { '<A-k>', resize('<A-k>', 'up'),    expr = true, desc = 'Resize up',    mode = { 'n', 't' } },
+        { '<A-l>', resize('<A-l>', 'right'), expr = true, desc = 'Resize right', mode = { 'n', 't' } },
         { '<C-h>',             function() require('smart-splits').move_cursor_left() end,  desc = 'Move cursor left',  mode = { 'n', 't' } },
         { '<C-j>',             function() require('smart-splits').move_cursor_down() end,  desc = 'Move cursor down',  mode = { 'n', 't' } },
         { '<C-k>',             function() require('smart-splits').move_cursor_up() end,    desc = 'Move cursor up',    mode = { 'n', 't' } },
