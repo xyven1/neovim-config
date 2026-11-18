@@ -60,11 +60,8 @@ return {
   },
   {
     'smart-splits-nvim/smart-splits.nvim',
-    init = function()
-      vim.g.smart_splits_multiplexer_integration = false
-    end,
     opts = {
-      at_edge = "stop",
+      move = { at_edge = 'stop' },
     },
     keys = function()
       -- In floats (fzf-lua, lspsaga, ...) pass the key through untouched so the
