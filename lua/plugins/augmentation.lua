@@ -66,20 +66,29 @@ return {
     opts = {
       at_edge = "stop",
     },
-    keys = {
-      { '<A-h>',             function() require('smart-splits').resize_left() end,       desc = 'Resize left',       mode = { 'n', 't' } },
-      { '<A-j>',             function() require('smart-splits').resize_down() end,       desc = 'Resize down',       mode = { 'n', 't' } },
-      { '<A-k>',             function() require('smart-splits').resize_up() end,         desc = 'Resize up',         mode = { 'n', 't' } },
-      { '<A-l>',             function() require('smart-splits').resize_right() end,      desc = 'Split right',       mode = { 'n', 't' } },
-      { '<C-h>',             function() require('smart-splits').move_cursor_left() end,  desc = 'Move cursor left',  mode = { 'n', 't' } },
-      { '<C-j>',             function() require('smart-splits').move_cursor_down() end,  desc = 'Move cursor down',  mode = { 'n', 't' } },
-      { '<C-k>',             function() require('smart-splits').move_cursor_up() end,    desc = 'Move cursor up',    mode = { 'n', 't' } },
-      { '<C-l>',             function() require('smart-splits').move_cursor_right() end, desc = 'Move cursor right', mode = { 'n', 't' } },
-      { '<leader><leader>h', function() require('smart-splits').swap_buf_left() end,     desc = 'Swap buffer left' },
-      { '<leader><leader>j', function() require('smart-splits').swap_buf_down() end,     desc = 'Swap buffer down' },
-      { '<leader><leader>k', function() require('smart-splits').swap_buf_up() end,       desc = 'Swap buffer up' },
-      { '<leader><leader>l', function() require('smart-splits').swap_buf_right() end,    desc = 'Swap buffer right' },
-    }
+    keys = function()
+      -- No-op in floats (fzf-lua, lspsaga, ...) so alt-hjkl can't resize them
+      local function resize(dir)
+        return function()
+          if vim.api.nvim_win_get_config(0).relative ~= '' then return end
+          require('smart-splits')['resize_' .. dir]()
+        end
+      end
+      return {
+        { '<A-h>',             resize('left'),                                      desc = 'Resize left',       mode = { 'n', 't' } },
+        { '<A-j>',             resize('down'),                                      desc = 'Resize down',       mode = { 'n', 't' } },
+        { '<A-k>',             resize('up'),                                        desc = 'Resize up',         mode = { 'n', 't' } },
+        { '<A-l>',             resize('right'),                                     desc = 'Resize right',      mode = { 'n', 't' } },
+        { '<C-h>',             function() require('smart-splits').move_cursor_left() end,  desc = 'Move cursor left',  mode = { 'n', 't' } },
+        { '<C-j>',             function() require('smart-splits').move_cursor_down() end,  desc = 'Move cursor down',  mode = { 'n', 't' } },
+        { '<C-k>',             function() require('smart-splits').move_cursor_up() end,    desc = 'Move cursor up',    mode = { 'n', 't' } },
+        { '<C-l>',             function() require('smart-splits').move_cursor_right() end, desc = 'Move cursor right', mode = { 'n', 't' } },
+        { '<leader><leader>h', function() require('smart-splits').swap_buf_left() end,     desc = 'Swap buffer left' },
+        { '<leader><leader>j', function() require('smart-splits').swap_buf_down() end,     desc = 'Swap buffer down' },
+        { '<leader><leader>k', function() require('smart-splits').swap_buf_up() end,       desc = 'Swap buffer up' },
+        { '<leader><leader>l', function() require('smart-splits').swap_buf_right() end,    desc = 'Swap buffer right' },
+      }
+    end,
   },
   {
     'monaqa/dial.nvim',
