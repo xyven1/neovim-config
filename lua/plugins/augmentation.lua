@@ -66,20 +66,36 @@ return {
     opts = {
       at_edge = "stop",
     },
-    keys = {
-      { '<A-h>',             function() require('smart-splits').resize_left() end,       desc = 'Resize left',       mode = { 'n', 't' } },
-      { '<A-j>',             function() require('smart-splits').resize_down() end,       desc = 'Resize down',       mode = { 'n', 't' } },
-      { '<A-k>',             function() require('smart-splits').resize_up() end,         desc = 'Resize up',         mode = { 'n', 't' } },
-      { '<A-l>',             function() require('smart-splits').resize_right() end,      desc = 'Split right',       mode = { 'n', 't' } },
-      { '<C-h>',             function() require('smart-splits').move_cursor_left() end,  desc = 'Move cursor left',  mode = { 'n', 't' } },
-      { '<C-j>',             function() require('smart-splits').move_cursor_down() end,  desc = 'Move cursor down',  mode = { 'n', 't' } },
-      { '<C-k>',             function() require('smart-splits').move_cursor_up() end,    desc = 'Move cursor up',    mode = { 'n', 't' } },
-      { '<C-l>',             function() require('smart-splits').move_cursor_right() end, desc = 'Move cursor right', mode = { 'n', 't' } },
-      { '<leader><leader>h', function() require('smart-splits').swap_buf_left() end,     desc = 'Swap buffer left' },
-      { '<leader><leader>j', function() require('smart-splits').swap_buf_down() end,     desc = 'Swap buffer down' },
-      { '<leader><leader>k', function() require('smart-splits').swap_buf_up() end,       desc = 'Swap buffer up' },
-      { '<leader><leader>l', function() require('smart-splits').swap_buf_right() end,    desc = 'Swap buffer right' },
-    }
+    keys = function()
+      -- In floats (fzf-lua, lspsaga, ...) pass the key through untouched so the
+      -- float's own binding (e.g. fzf's) still works instead of resizing/moving
+      local function split_key(key, fn, desc)
+        return {
+          key,
+          function()
+            if vim.api.nvim_win_get_config(0).relative ~= '' then return key end
+            return '<Cmd>lua require("smart-splits").' .. fn .. '()<CR>'
+          end,
+          expr = true,
+          desc = desc,
+          mode = { 'n', 't' },
+        }
+      end
+      return {
+        split_key('<A-h>', 'resize_left', 'Resize left'),
+        split_key('<A-j>', 'resize_down', 'Resize down'),
+        split_key('<A-k>', 'resize_up', 'Resize up'),
+        split_key('<A-l>', 'resize_right', 'Resize right'),
+        split_key('<C-h>', 'move_cursor_left', 'Move cursor left'),
+        split_key('<C-j>', 'move_cursor_down', 'Move cursor down'),
+        split_key('<C-k>', 'move_cursor_up', 'Move cursor up'),
+        split_key('<C-l>', 'move_cursor_right', 'Move cursor right'),
+        { '<leader><leader>h', function() require('smart-splits').swap_buf_left() end,     desc = 'Swap buffer left' },
+        { '<leader><leader>j', function() require('smart-splits').swap_buf_down() end,     desc = 'Swap buffer down' },
+        { '<leader><leader>k', function() require('smart-splits').swap_buf_up() end,       desc = 'Swap buffer up' },
+        { '<leader><leader>l', function() require('smart-splits').swap_buf_right() end,    desc = 'Swap buffer right' },
+      }
+    end,
   },
   {
     'monaqa/dial.nvim',
