@@ -85,6 +85,7 @@ If you use the second option run Neovim with the folling environment variable: `
 + [kawre/leetcode.nvim](https://dotfyle.com/plugins/kawre/leetcode.nvim)
 ### completion
 
++ [saghen/blink.cmp](https://dotfyle.com/plugins/saghen/blink.cmp)
 + [zbirenbaum/copilot.lua](https://dotfyle.com/plugins/zbirenbaum/copilot.lua)
 ### cursorline
 
@@ -108,6 +109,9 @@ If you use the second option run Neovim with the folling environment variable: `
 
 + [stevearc/oil.nvim](https://dotfyle.com/plugins/stevearc/oil.nvim)
 + [nvim-neo-tree/neo-tree.nvim](https://dotfyle.com/plugins/nvim-neo-tree/neo-tree.nvim)
+### folding
+
++ [kevinhwang91/nvim-ufo](https://dotfyle.com/plugins/kevinhwang91/nvim-ufo)
 ### formatting
 
 + [stevearc/conform.nvim](https://dotfyle.com/plugins/stevearc/conform.nvim)
@@ -118,6 +122,7 @@ If you use the second option run Neovim with the folling environment variable: `
 ### git
 
 + [sindrets/diffview.nvim](https://dotfyle.com/plugins/sindrets/diffview.nvim)
++ [lewis6991/gitsigns.nvim](https://dotfyle.com/plugins/lewis6991/gitsigns.nvim)
 ### github
 
 + [pwntester/octo.nvim](https://dotfyle.com/plugins/pwntester/octo.nvim)
@@ -146,7 +151,7 @@ If you use the second option run Neovim with the folling environment variable: `
 + [3rd/image.nvim](https://dotfyle.com/plugins/3rd/image.nvim)
 ### motion
 
-+ [ggandor/leap.nvim](https://dotfyle.com/plugins/ggandor/leap.nvim)
++ [folke/flash.nvim](https://dotfyle.com/plugins/folke/flash.nvim)
 ### nvim-dev
 
 + [MunifTanjim/nui.nvim](https://dotfyle.com/plugins/MunifTanjim/nui.nvim)
@@ -170,6 +175,9 @@ If you use the second option run Neovim with the folling environment variable: `
 ### split-and-window
 
 + [mrjones2014/smart-splits.nvim](https://dotfyle.com/plugins/mrjones2014/smart-splits.nvim)
+### stats-tracking
+
++ [ptdewey/pendulum-nvim](https://dotfyle.com/plugins/ptdewey/pendulum-nvim)
 ### statusline
 
 + [nvim-lualine/lualine.nvim](https://dotfyle.com/plugins/nvim-lualine/lualine.nvim)
@@ -186,7 +194,4 @@ If you use the second option run Neovim with the folling environment variable: `
 + [andythigpen/nvim-coverage](https://dotfyle.com/plugins/andythigpen/nvim-coverage)
 ### utility
 
-+ [ptdewey/pendulum-nvim](https://dotfyle.com/plugins/ptdewey/pendulum-nvim)
-+ [kevinhwang91/nvim-ufo](https://dotfyle.com/plugins/kevinhwang91/nvim-ufo)
-+ [rcarriga/nvim-notify](https://dotfyle.com/plugins/rcarriga/nvim-notify)
 + [folke/noice.nvim](https://dotfyle.com/plugins/folke/noice.nvim)
